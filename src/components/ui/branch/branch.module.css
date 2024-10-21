@@ -1,0 +1,39 @@
+.cardBranch {
+  position: relative;
+  min-width: 20%;
+  max-width: 25%;
+  height: 45%;
+  border-radius: 10px;
+  box-shadow: -3px 6px 25px -3px rgba(181, 181, 181, 1);
+  overflow: hidden;
+}
+
+.cardBranch > img {
+  height: 70%;
+  width: 100%;
+  object-fit: cover;
+}
+
+.infoBranch {
+  position: absolute;
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  width: 100%;
+  height: 40%;
+  border-radius: 20px 20px 0px 0px;
+  background-color: #fff;
+}
+
+.infoBranch h3 {
+  font-size: 19px;
+  text-align: center;
+}
+
+.infoIcons {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}

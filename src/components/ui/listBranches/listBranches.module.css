@@ -1,0 +1,23 @@
+.branchInfo {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 10px 20px;
+  padding: 7px 15px;
+}
+
+.branchInfo h3 {
+  font-size: 17px;
+}
+
+.branchContainer {
+  display: flex;
+  flex-wrap: wrap;
+  flex-grow: 1;
+  width: 90%;
+  height: 82vh;
+  margin: 10px auto;
+  border-radius: 10px;
+  overflow-y: auto;
+  gap: 30px;
+}

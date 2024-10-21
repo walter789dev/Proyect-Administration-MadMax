@@ -3,10 +3,12 @@
   align-items: center;
   justify-content: center;
   width: 70%;
+  max-width: 200px;
   padding: 5px 10px;
   background-color: transparent;
   border-radius: 7px;
   gap: 10px;
+  transition: background-color 0.3s ease-in-out;
   cursor: pointer;
 }
 
@@ -15,9 +17,22 @@
   color: #ffff;
 }
 
+.primary:hover {
+  background-color: #0f3b41;
+}
+
 .secondary {
   border: 1px solid #368f8b;
   color: #368f8b;
+}
+
+.secondary:hover {
+  background-color: #368f8b;
+  color: #fff;
+}
+
+.secondary:hover svg {
+  fill: #fff;
 }
 
 .disabled {

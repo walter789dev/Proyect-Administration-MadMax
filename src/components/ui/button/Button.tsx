@@ -1,12 +1,12 @@
 import { FC } from "react";
-import styles from "./primaryButton.module.css";
+import styles from "./button.module.css";
 
 interface ButtonProps {
   text: string;
   type: "primary" | "secondary" | "disabled";
 }
 
-const PrimaryButton: FC<ButtonProps> = ({ text, type }) => {
+const Button: FC<ButtonProps> = ({ text, type }) => {
   const colors = {
     primary: "#fff",
     secondary: "#368f8b",
@@ -29,4 +29,4 @@ const PrimaryButton: FC<ButtonProps> = ({ text, type }) => {
   );
 };
 
-export default PrimaryButton;
+export default Button;
