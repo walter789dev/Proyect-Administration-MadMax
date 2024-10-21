@@ -1,0 +1,25 @@
+.button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 70%;
+  padding: 5px 10px;
+  background-color: transparent;
+  border-radius: 7px;
+  gap: 10px;
+  cursor: pointer;
+}
+
+.primary {
+  border: 1px solid #fff;
+  color: #ffff;
+}
+
+.secondary {
+  border: 1px solid #368f8b;
+  color: #368f8b;
+}
+
+.disabled {
+  border: 1px solid #fff;
+}

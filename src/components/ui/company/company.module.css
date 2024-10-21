@@ -1,0 +1,27 @@
+.company {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding: 15px 0px;
+  transition: background-color 0.3s ease-in-out;
+  cursor: pointer;
+}
+
+.company:hover {
+  background-color: #0f3b41;
+}
+
+.companyTitle {
+  font-weight: bolder;
+  color: #fff;
+}
+
+.companySubTitle {
+  color: #ddeedd;
+}
+
+.companySvg {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}

@@ -1,0 +1,24 @@
+.companies {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-evenly;
+}
+
+.companiesTitle {
+  padding: 10px;
+  font-weight: bold;
+  text-align: center;
+  color: #fff;
+}
+
+.companiesUl {
+  width: 100%;
+  height: 75%;
+  list-style: none;
+  overflow-y: auto;
+}
+
+.companiesUl > li {
+  margin-bottom: 1.2rem;
+}
