@@ -7,24 +7,18 @@
   cursor: pointer;
 }
 
-.company h3 {
-  font-size: var(--text-lg);
-}
-
-.company h4 {
-  font-size: var(--text-md);
-}
-
 .company:hover {
   background-color: #0f3b41;
 }
 
 .companyTitle {
+  font-size: var(--text-lg);
   font-weight: bolder;
   color: #fff;
 }
 
 .companySubTitle {
+  font-size: var(--text-md);
   color: #ddeedd;
 }
 
@@ -32,4 +26,10 @@
   display: flex;
   align-items: center;
   gap: 12px;
+}
+
+.companyButton {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
 }

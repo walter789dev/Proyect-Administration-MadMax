@@ -1,12 +1,13 @@
 import { FC } from "react";
-import styles from "./button.module.css";
+import styles from "./Button.module.css";
 
 interface ButtonProps {
   text: string;
   type: "primary" | "secondary" | "disabled";
+  openModal: (state: boolean) => void;
 }
 
-const Button: FC<ButtonProps> = ({ text, type }) => {
+const Button: FC<ButtonProps> = ({ text, type, openModal }) => {
   const colors = {
     primary: "#fff",
     secondary: "#368f8b",
@@ -14,7 +15,10 @@ const Button: FC<ButtonProps> = ({ text, type }) => {
   };
 
   return (
-    <button className={`${styles.button} ${styles[type]}`}>
+    <button
+      className={`${styles.button} ${styles[type]}`}
+      onClick={() => openModal(true)}
+    >
       <svg
         xmlns="http://www.w3.org/2000/svg"
         width="20"

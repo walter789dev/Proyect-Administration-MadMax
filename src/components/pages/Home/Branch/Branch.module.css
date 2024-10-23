@@ -1,4 +1,4 @@
-.cardBranch {
+.card {
   position: relative;
   min-width: 180px;
   flex-grow: 1;
@@ -11,17 +11,13 @@
   transition: transform 0.2s ease;
 }
 
-.cardBranch:hover {
-  transform: scale(1.05);
-}
-
-.cardBranch > img {
+.card > img {
   height: 70%;
   width: 100%;
   object-fit: cover;
 }
 
-.infoBranch {
+.cardInfo {
   position: absolute;
   bottom: 0;
   display: flex;
@@ -34,17 +30,22 @@
   background-color: #fff;
 }
 
-.infoBranch h3 {
+.cardInfo h3 {
   font-size: var(--text-lg);
 }
 
-.infoBranch h4 {
+.cardInfoh4 {
   font-size: var(--text-md);
-  font-weight: 300;
 }
 
-.infoIcons {
+.cardIcons {
   display: flex;
   align-items: center;
   gap: 15px;
+}
+
+.cardButton {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
 }

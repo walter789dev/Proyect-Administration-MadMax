@@ -1,6 +1,5 @@
 import ContainerGrid from "../../ui/ContainerGrid/ContainerGrid";
 import Header from "../../ui/Header/Header";
-// import ModalEmpresa from "../../ui/modalEmpresa/ModalEmpresa";
 import ListBranches from "./ListBranches/ListBranches";
 import ListCompanies from "./ListCompanies/ListCompanies";
 
@@ -12,7 +11,6 @@ function Home() {
         <ListCompanies />
         <ListBranches />
       </ContainerGrid>
-      {/* <ModalEmpresa /> */}
     </>
   );
 }
