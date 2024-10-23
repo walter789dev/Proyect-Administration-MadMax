@@ -1,11 +1,11 @@
-import Home from "./components/screen/Home"
+import Home from "./components/pages/Home";
 
 function App() {
-   return (
-      <>
-         <Home />
-      </>
-   )
+  return (
+    <>
+      <Home />
+    </>
+  );
 }
 
-export default App
+export default App;

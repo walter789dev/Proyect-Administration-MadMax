@@ -1,5 +1,5 @@
+import IconItem from "../../../ui/iconItem/IconItem";
 import styles from "./company.module.css";
-import IconItem from "../iconItem/IconItem";
 
 const Company = () => {
   return (

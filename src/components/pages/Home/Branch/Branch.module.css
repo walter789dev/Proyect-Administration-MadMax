@@ -1,11 +1,18 @@
 .cardBranch {
   position: relative;
-  min-width: 20%;
-  max-width: 25%;
+  min-width: 180px;
+  flex-grow: 1;
+  max-width: 20%;
   height: 45%;
+  max-height: 300px;
   border-radius: 10px;
-  box-shadow: -3px 6px 25px -3px rgba(181, 181, 181, 1);
+  box-shadow: -3px 6px 7px -3px rgba(181, 181, 181, 1);
   overflow: hidden;
+  transition: transform 0.2s ease;
+}
+
+.cardBranch:hover {
+  transform: scale(1.05);
 }
 
 .cardBranch > img {
@@ -19,7 +26,7 @@
   bottom: 0;
   display: flex;
   flex-direction: column;
-  justify-content: space-around;
+  justify-content: space-evenly;
   align-items: center;
   width: 100%;
   height: 40%;
@@ -28,8 +35,12 @@
 }
 
 .infoBranch h3 {
-  font-size: 19px;
-  text-align: center;
+  font-size: var(--text-lg);
+}
+
+.infoBranch h4 {
+  font-size: var(--text-md);
+  font-weight: 300;
 }
 
 .infoIcons {

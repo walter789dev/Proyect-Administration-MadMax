@@ -3,8 +3,9 @@
   align-items: center;
   justify-content: center;
   width: 70%;
-  max-width: 200px;
-  padding: 5px 10px;
+  max-width: 160px;
+  padding: 6px 7px;
+  font-size: var(--text-sm);
   background-color: transparent;
   border-radius: 7px;
   gap: 10px;
@@ -13,8 +14,8 @@
 }
 
 .primary {
-  border: 1px solid #fff;
-  color: #ffff;
+  border: 1px solid var(--accent-color);
+  color: var(--accent-color);
 }
 
 .primary:hover {

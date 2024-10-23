@@ -1,10 +1,10 @@
-import Branch from "../branch/Branch";
-import Button from "../button/Button";
+import Button from "../../../ui/Button/Button";
+import Branch from "../Branch/Branch";
 import styles from "./listBranches.module.css";
 
 const ListBranches = () => {
   return (
-    <section>
+    <section style={{ gridArea: "1 / 2 / 2 / 4", backgroundColor: "#ecf0f1" }}>
       <header className={styles.branchInfo}>
         <h3>Cantidad de sucursales: </h3>
         <Button text="Sucursal" type="secondary" />

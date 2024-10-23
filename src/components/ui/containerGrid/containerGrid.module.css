@@ -1,14 +1,6 @@
 .container {
   display: grid;
   min-height: calc(100vh - 50px);
-  grid-template-columns: 260px repeat(2, 1fr);
+  grid-template-columns: minmax(230px, 15%) repeat(2, 1fr);
   grid-template-rows: 1fr;
-}
-
-.container > nav {
-  grid-area: 1 / 1 / 2 / 2;
-}
-
-.container > section {
-  grid-area: 1 / 2 / 2 / 4;
 }

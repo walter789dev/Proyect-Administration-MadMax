@@ -1,10 +1,22 @@
-*{
-   margin: 0;
-   padding: 0;
-   box-sizing: border-box;
-   font-family: monospace;
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: monospace;
 }
 
-:root{
-   --font-title: 1.563rem;
+:root {
+  /*------- Tamaño Tipografia ------- */
+  --text-xs: 0.889rem;
+  --text-sm: 1rem;
+  --text-md: 1.125rem;
+  --text-lg: 1.266rem;
+  --text-xl: 1.424rem;
+  --text-xxl: 1.602rem;
+  /* ------- Paleta de Colores ------- */
+  --primary-color: #246a73;
+  --secondary-color: #368f8b;
+  --primary-background: #160f29;
+  --secondary-background: #160f29;
+  --accent-color: #fff;
 }
