@@ -15,10 +15,9 @@ const Button: FC<ButtonProps> = ({ text, type }) => {
 
   return (
     <button className={`${styles.button} ${styles[type]}`}>
-      {/* Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.*/}
       <svg
         xmlns="http://www.w3.org/2000/svg"
-        width="25"
+        width="20"
         viewBox="0 0 512 512"
         fill={colors[type]}
       >

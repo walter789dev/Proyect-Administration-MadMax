@@ -1,15 +1,17 @@
 import { FC } from "react";
-import styles from './header.module.css'
+import styles from "./header.module.css";
 
 interface HeaderProps {
   title: string;
-  color: string;
+  type: "primary" | "secondary";
 }
 
-const Header: FC<HeaderProps> = ({ title, color }) => {
+const Header: FC<HeaderProps> = ({ title, type }) => {
   return (
-     <header className={styles.header} style={{ backgroundColor: color }}>
-      <h1 className={styles.headerTitle}>{title}</h1>
+    <header className={`${styles.header} ${styles[type]}`}>
+      <h1 className={styles.headerTitle}>
+        {title ? `Sucursales: ${title}` : "MadMax Administration"}
+      </h1>
     </header>
   );
 };

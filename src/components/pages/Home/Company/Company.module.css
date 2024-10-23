@@ -7,6 +7,14 @@
   cursor: pointer;
 }
 
+.company h3 {
+  font-size: var(--text-lg);
+}
+
+.company h4 {
+  font-size: var(--text-md);
+}
+
 .company:hover {
   background-color: #0f3b41;
 }
