@@ -6,6 +6,7 @@ interface InputProps {
   text: string;
 }
 
+// Input con animación - Texto Flotante
 const InputForm: FC<InputProps> = ({ type, text }) => {
   return (
     <div className={styles.inputGroup}>

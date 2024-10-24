@@ -11,14 +11,17 @@ import { IEmpresa } from "../../../../types/dtos/empresa/IEmpresa";
 const URL_API = "http://190.221.207.224:8090";
 
 const ListCompanies = () => {
-  const [openModal, setOpenModal] = useState(false);
-  const [loading, setLoading] = useState(true);
+  const [openModal, setOpenModal] = useState(false); // Abrir/Cerrar Modal Empresa
+  const [loading, setLoading] = useState(true); // Loading para cargar Empresas
+  // Verifica si hay una Empresa a editar en ModalForm
   const [dataToEdit, setDataToEdit] = useState<IEmpresa | null>(null);
 
+  // Manejo de Redux y Conexion Tipada para Empresa
   const companyService = new CompanyService(`${URL_API}/empresas`);
   const companies = useAppSelector((state) => state.companyReducer.companies);
   const dispatch = useAppDispatch();
 
+  // Conexion a la BBDD - GET ALL Empresa
   const getCompanies = async () => {
     await companyService.getAll().then((companiesData) => {
       dispatch(setCompaniesData(companiesData));
@@ -26,12 +29,14 @@ const ListCompanies = () => {
     });
   };
 
+  // Envia Empresa a editar en ModalForm
   const editCompany = (data: IEmpresa) => {
     setOpenModal(true);
     setDataToEdit(data);
   };
 
   useEffect(() => {
+    // Obtiene todas las Empresas al iniciar
     setLoading(true);
     getCompanies();
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -57,6 +62,7 @@ const ListCompanies = () => {
             ))
           )}
         </ul>
+        {/* Boton Añadir Empresa*/}
         <Button text="Empresa" type="primary" openModal={setOpenModal} />
       </nav>
     </>

@@ -6,6 +6,7 @@ interface ButtonProps {
   event: (state: boolean) => void;
 }
 
+// Props: event -> Evento a realizar por el Button
 const ButtonForm: FC<ButtonProps> = ({ type, event }) => {
   return (
     <button

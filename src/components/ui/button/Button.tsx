@@ -7,7 +7,9 @@ interface ButtonProps {
   openModal: (state: boolean) => void;
 }
 
+// Props: openModal -> Abre el Modal correspondiente
 const Button: FC<ButtonProps> = ({ text, type, openModal }) => {
+  // Estilos personalizados para Icono
   const colors = {
     primary: "#fff",
     secondary: "#368f8b",

@@ -4,27 +4,30 @@ import { IUpdateEmpresaDto } from "../../types/dtos/empresa/IUpdateEmpresaDto";
 
 interface CompanyState {
    companies: IEmpresa[],
-   updateCompany: IUpdateEmpresaDto | null
+   selectCompany: IUpdateEmpresaDto | null
 }
 
+// Estado inicial de Empresa
 const initialState: CompanyState = {
    companies: [],
-   updateCompany: null
+   selectCompany: null
 }
 
+// Reducers para manejar información de Empresas
 export const companySlice = createSlice({
    name: "Company",
    initialState,
    reducers: {
+      // Actualiza el arreglo de Empresas
       setCompaniesData(state, action: PayloadAction<IEmpresa[]>) {
          state.companies = action.payload
       },
-      setUpdateCompany(state, action: PayloadAction<IUpdateEmpresaDto>) {
-         state.updateCompany = action.payload
+      // Inidica la Empresa seleccionada para obtener Sucursales
+      setSelectCompany(state, action: PayloadAction<IUpdateEmpresaDto>) {
+         state.selectCompany = action.payload
       }
    }
 })
 
-export const { setCompaniesData, setUpdateCompany } = companySlice.actions
-
+export const { setCompaniesData, setSelectCompany } = companySlice.actions
 export default companySlice.reducer

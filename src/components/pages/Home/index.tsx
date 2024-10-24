@@ -6,9 +6,12 @@ import ListCompanies from "./ListCompanies/ListCompanies";
 function Home() {
   return (
     <>
-      <Header title="Bendito Rufian" type="primary" />
+      <Header title="MaxMax Administración" type="primary" />
+      {/* Grilla de 3x1 */}
       <ContainerGrid>
+        {/* Sección de Empresas */}
         <ListCompanies />
+        {/* Sección de Sucursales x Empresa */}
         <ListBranches />
       </ContainerGrid>
     </>

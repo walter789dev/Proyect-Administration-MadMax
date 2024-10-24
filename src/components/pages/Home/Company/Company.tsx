@@ -7,6 +7,8 @@ interface CompanyProp {
   editCompany: (data: IEmpresa) => void;
 }
 
+/* Props: editCompany -> Envia la informacion de Empresa para editar
+en ModalForm (Formulario de Añadir/Editar Empresa) */
 const Company: FC<CompanyProp> = ({ company, editCompany }) => {
   return (
     <li className={styles.company}>
@@ -15,11 +17,13 @@ const Company: FC<CompanyProp> = ({ company, editCompany }) => {
         <h4 className={styles.companySubTitle}>{company.razonSocial}</h4>
       </div>
       <div className={styles.companySvg}>
+        {/* Boton de Ver información */}
         <button className={styles.companyButton}>
           <svg width="30" viewBox="0 0 576 512" fill="#fff">
             <path d="M288 144a110.9 110.9 0 0 0 -31.2 5 55.4 55.4 0 0 1 7.2 27 56 56 0 0 1 -56 56 55.4 55.4 0 0 1 -27-7.2A111.7 111.7 0 1 0 288 144zm284.5 97.4C518.3 135.6 410.9 64 288 64S57.7 135.6 3.5 241.4a32.4 32.4 0 0 0 0 29.2C57.7 376.4 165.1 448 288 448s230.3-71.6 284.5-177.4a32.4 32.4 0 0 0 0-29.2zM288 400c-98.7 0-189.1-55-237.9-144C98.9 167 189.3 112 288 112s189.1 55 237.9 144C477.1 345 386.7 400 288 400z" />
           </svg>
         </button>
+        {/* Boton de Editar información */}
         <button
           className={styles.companyButton}
           onClick={() => editCompany(company)}
