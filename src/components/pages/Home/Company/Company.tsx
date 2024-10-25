@@ -1,5 +1,5 @@
 import { FC } from "react";
-import { IEmpresa } from "../../../../types/dtos/empresa/IEmpresa";
+import { IEmpresa } from "../../../../types/dtos/empresa/IEmpresa2";
 import styles from "./Company.module.css";
 
 interface CompanyProp {
@@ -12,7 +12,7 @@ en ModalForm (Formulario de Añadir/Editar Empresa) */
 const Company: FC<CompanyProp> = ({ company, editCompany }) => {
   return (
     <li className={styles.company}>
-      <div>
+      <div className={styles.companyData}>
         <h3 className={styles.companyTitle}>{company.nombre}</h3>
         <h4 className={styles.companySubTitle}>{company.razonSocial}</h4>
       </div>

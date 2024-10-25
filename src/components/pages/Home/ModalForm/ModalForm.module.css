@@ -14,8 +14,8 @@
   position: relative;
   min-width: 300px;
   width: 25%;
-  min-height: 360px;
-  height: 40%;
+  min-height: 380px;
+  height: 45%;
   padding: 10px 0px;
   border-radius: 10px;
   background-color: #ffff;
@@ -33,6 +33,11 @@
   align-items: center;
   justify-content: space-between;
   gap: 20px;
+}
+
+.modalForm input {
+  width: 80%;
+  padding: 7px 15px;
 }
 
 .modalLabel {

@@ -1,60 +1,104 @@
-import ButtonForm from "../../../ui/ButtonForm/ButtonForm";
+import { ChangeEvent, FC, useEffect, useState } from "react";
 import styles from "./ModalForm.module.css";
-import closeImage from "../../../../assets/svg/close.svg";
-import InputForm from "../../../ui/InputForm/InputForm";
-import { FC } from "react";
+import ButtonForm from "../../../ui/ButtonForm/ButtonForm";
 import { IEmpresa } from "../../../../types/dtos/empresa/IEmpresa";
+import { helpHttp } from "../../../../helpers/helpHttp";
+
+const URL_API = "http://190.221.207.224:8090";
 
 interface ModalProps {
-  editCompany: IEmpresa | null;
-  setEditCompany: (state: IEmpresa | null) => void;
-  closeModal: (state: boolean) => void;
+  dataToEdit: IEmpresa | null;
+  setDataToEdit: (state: IEmpresa | null) => void;
+  setOpenModal: (state: boolean) => void;
+  getCompanies: () => void;
 }
 
-// Props: editCompany -> Empresa a Actualizar
 const ModalForm: FC<ModalProps> = ({
-  editCompany,
-  setEditCompany,
-  closeModal,
+  dataToEdit,
+  setDataToEdit,
+  getCompanies,
+  setOpenModal,
 }) => {
-  // Campos a llenar por Usuario
-  const fields = [
-    ["Nombre", "text"],
-    ["Razon social", "text"],
-    ["Ciut", "number"],
-  ];
+  const [dataForm, setDataForm] = useState<IEmpresa>({
+    nombre: "",
+    cuit: "",
+    logo: "https://cdn2.thecatapi.com/images/e94.jpg",
+    razonSocial: "",
+  });
 
-  // Elimina la Empresa a Editar del Modal
-  const resetForm = () => {
-    if (editCompany) setEditCompany(null);
-    closeModal(false);
+  const handlerChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setDataForm((data) => ({
+      ...data,
+      [e.target.name]: e.target.value,
+    }));
   };
+
+  const resetForm = () => {
+    setOpenModal(false);
+    setDataToEdit(null);
+  };
+
+  const handlerSubmit = async () => {
+    if (dataToEdit) {
+      helpHttp<IEmpresa>()
+        .put(`${URL_API}/empresas/${dataForm.id}`, dataForm)
+        .then(() => {
+          resetForm();
+          getCompanies();
+        });
+    } else {
+      helpHttp<IEmpresa>()
+        .post(`${URL_API}/empresas`, dataForm)
+        .then(() => {
+          resetForm();
+          getCompanies();
+        });
+    }
+  };
+
+  useEffect(() => {
+    if (dataToEdit) setDataForm(dataToEdit);
+  }, [dataToEdit]);
 
   return (
     <div className={styles.modal}>
       <section className={styles.modalSection}>
-        <h2>{editCompany ? "Editar" : "Añadir"} Empresa</h2>
+        <h2>{dataToEdit ? "Editar" : "Añadir"} Empresa</h2>
         <form className={styles.modalForm}>
-          {fields.map((item, i) => (
-            <InputForm key={i} type={item[1]} text={item[0]} />
-          ))}
+          <input
+            name="nombre"
+            type="text"
+            required
+            placeholder="Ingrese Nombre"
+            value={dataForm.nombre}
+            onChange={handlerChange}
+          />
+          <input
+            name="razonSocial"
+            type="text"
+            required
+            placeholder="Ingrese Razon Social"
+            value={dataForm.razonSocial}
+            onChange={handlerChange}
+          />
+          <input
+            name="cuit"
+            type="number"
+            required
+            placeholder="Ingrese Cuit"
+            value={dataForm.cuit}
+            onChange={handlerChange}
+          />
           <label className={styles.modalLabel} htmlFor="image">
             Ingrese Logo:
           </label>
           <input id="image" type="file" accept="image/jpge, image/jpg" />
           {/* Cancelar y Enviar/Actualizar Empresa en BBDD */}
           <div className={styles.modalButtons}>
-            <ButtonForm type="cancel" event={resetForm} />
-            <ButtonForm type="confirm" event={closeModal} />
+            <ButtonForm text="Cancelar" type="cancel" event={resetForm} />
+            <ButtonForm text="Confirmar" type="confirm" event={handlerSubmit} />
           </div>
         </form>
-        {/* Icono de Cerrar Modal*/}
-        <img
-          className={styles.modalClose}
-          src={closeImage}
-          alt="Cerrar Modal"
-          onClick={resetForm}
-        />
       </section>
     </div>
   );
