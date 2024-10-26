@@ -3,28 +3,29 @@ import styles from "./ModalForm.module.css";
 import ButtonForm from "../../../ui/ButtonForm/ButtonForm";
 import { IEmpresa } from "../../../../types/dtos/empresa/IEmpresa";
 import { helpHttp } from "../../../../helpers/helpHttp";
+import { useAppDispatch } from "../../../../hooks/redux";
+import {
+  updateCompaniesData,
+  updateCompany,
+} from "../../../../redux/slices/companySlice";
 
 const URL_API = "http://190.221.207.224:8090";
 
 interface ModalProps {
+  initial: IEmpresa;
   dataToEdit: IEmpresa | null;
   setDataToEdit: (state: IEmpresa | null) => void;
   setOpenModal: (state: boolean) => void;
-  getCompanies: () => void;
 }
 
 const ModalForm: FC<ModalProps> = ({
+  initial,
   dataToEdit,
   setDataToEdit,
-  getCompanies,
   setOpenModal,
 }) => {
-  const [dataForm, setDataForm] = useState<IEmpresa>({
-    nombre: "",
-    cuit: "",
-    logo: "https://cdn2.thecatapi.com/images/e94.jpg",
-    razonSocial: "",
-  });
+  const [dataForm, setDataForm] = useState<IEmpresa>(initial);
+  const dispatch = useAppDispatch();
 
   const handlerChange = (e: ChangeEvent<HTMLInputElement>) => {
     setDataForm((data) => ({
@@ -38,20 +39,20 @@ const ModalForm: FC<ModalProps> = ({
     setDataToEdit(null);
   };
 
-  const handlerSubmit = async () => {
+  const handlerSubmit = () => {
     if (dataToEdit) {
       helpHttp<IEmpresa>()
         .put(`${URL_API}/empresas/${dataForm.id}`, dataForm)
         .then(() => {
+          dispatch(updateCompany(dataForm));
           resetForm();
-          getCompanies();
         });
     } else {
       helpHttp<IEmpresa>()
         .post(`${URL_API}/empresas`, dataForm)
         .then(() => {
+          dispatch(updateCompaniesData(dataForm));
           resetForm();
-          getCompanies();
         });
     }
   };

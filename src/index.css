@@ -5,6 +5,10 @@
   font-family: monospace;
 }
 
+body {
+  overflow-y: hidden;
+}
+
 :root {
   /*------- Tamaño Tipografia ------- */
   --text-xs: 0.889rem;

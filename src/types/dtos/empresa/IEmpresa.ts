@@ -3,6 +3,6 @@ export interface IEmpresa {
    nombre: string;
    razonSocial: string;
    cuit: number | string;
-   logo: string | null;
+   logo: string;
    eliminado?: boolean;
 }

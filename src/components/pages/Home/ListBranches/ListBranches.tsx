@@ -6,9 +6,7 @@ const ListBranches = () => {
   return (
     <>
       {/* Ubico la sección en ContainerGrid mediante gridArea */}
-      <section
-        style={{ gridArea: "1 / 2 / 2 / 4", backgroundColor: "#ecf0f1" }}
-      >
+      <section style={{ backgroundColor: "#ecf0f1" }}>
         <header className={styles.branchInfo}>
           <h3>Sucursales: </h3>
           {/* Boton para abrir Modal de Sucursal */}

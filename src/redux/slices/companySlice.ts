@@ -15,12 +15,20 @@ export const companySlice = createSlice({
    name: "Company",
    initialState,
    reducers: {
-      // Actualiza el arreglo de Empresas
       setCompaniesData(state, action: PayloadAction<IEmpresa[]>) {
          state.companies = action.payload
+      },
+      updateCompaniesData(state, action: PayloadAction<IEmpresa>) {
+         state.companies = [...state.companies, action.payload]
+      },
+      updateCompany(state, action: PayloadAction<IEmpresa>) {
+         const newState = state.companies.map((item) => (
+            (item.id === action.payload.id) ? action.payload : item
+         ))
+         state.companies = newState
       }
    }
 })
 
-export const { setCompaniesData } = companySlice.actions
+export const { setCompaniesData, updateCompaniesData, updateCompany } = companySlice.actions
 export default companySlice.reducer

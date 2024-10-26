@@ -4,3 +4,11 @@
   grid-template-columns: minmax(250px, 15%) repeat(2, 1fr);
   grid-template-rows: 1fr;
 }
+
+.container > nav {
+  grid-area: 1 / 1 / 2 / 2;
+}
+
+.container > section {
+  grid-area: 1 / 2 / 2 / 4;
+}
