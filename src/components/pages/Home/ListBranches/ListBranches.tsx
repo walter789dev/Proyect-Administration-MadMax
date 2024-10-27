@@ -18,7 +18,7 @@ const ListBranches = () => {
     "nombre",
     "empresa",
     "domicilio",
-    "casaMatriz",
+    "esCasaMatriz",
     "horarioApertura",
     "horarioCierre",
   ];

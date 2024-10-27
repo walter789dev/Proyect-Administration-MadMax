@@ -14,10 +14,11 @@
   position: relative;
   display: flex;
   flex-direction: column;
+  justify-content: space-around;
   align-items: center;
-  min-width: 300px;
-  width: 25%;
-  min-height: 280px;
+  min-width: 30px;
+  width: 33%;
+  min-height: 350px;
   padding: 15px 10px;
   border-radius: 10px;
   background-color: #ffff;
@@ -38,10 +39,14 @@
 }
 
 .modalImage {
-  width: 55%;
+  width: 40%;
   height: 100%;
   border-radius: 15px;
   overflow: hidden;
+}
+
+.modal2 {
+  width: 45%;
 }
 
 .modalImage > img {

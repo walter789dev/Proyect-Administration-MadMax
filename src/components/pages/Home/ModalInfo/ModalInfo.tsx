@@ -14,24 +14,24 @@ const ModalInfo: FC<ModalInfoProps> = ({ columns, info, setOpenModal }) => {
   return (
     <div className={styles.modal}>
       <section className={styles.modalSection}>
-        <h2>Empresa</h2>
+        <h2>{"empresa" in info ? "Sucursal" : "Empresa"}</h2>
         <div className={styles.modalInfo}>
           <div className={styles.modalImage}>
             {"logo" in info && <img src={info["logo"] as string} alt="Logo" />}
           </div>
-          <div>
+          <div className={styles.modal2}>
             {columns.map((key, id) => {
-              if ("empresa" in info) {
+              if ("esCasaMatriz" in info) {
                 switch (key) {
                   case "empresa":
                     return (
-                      <p key={id}>
+                      <p key={id} className={styles.modalText}>
                         <b>Empresa: </b> {info.empresa.nombre}
                       </p>
                     );
-                  case "direccion":
+                  case "domicilio":
                     return (
-                      <p key={id}>
+                      <p key={id} className={styles.modalText}>
                         <b>Domicilio: </b> Calle: {info.domicilio.calle}, n°
                         {info.domicilio.numero},
                         {info.domicilio.localidad.nombre},
@@ -39,19 +39,30 @@ const ModalInfo: FC<ModalInfoProps> = ({ columns, info, setOpenModal }) => {
                         {info.domicilio.localidad.provincia.pais.nombre}
                       </p>
                     );
-                  default:
+                  case "nombre":
+                  case "horarioApertura":
+                  case "horarioCierre":
                     return (
                       <p key={key} className={styles.modalText}>
-                        <b>{key}:</b> {info[key as keyof ISucursal]}
+                        <b>{key}:</b> {info[key]}
+                      </p>
+                    );
+                  case "esCasaMatriz":
+                    return (
+                      <p key={key} className={styles.modalText}>
+                        <b>{key}:</b> {info[key] ? "Si" : "No"}
                       </p>
                     );
                 }
               } else {
-                return columns.map((key) => (
-                  <p key={key} className={styles.modalText}>
+                return (
+                  <p
+                    key={`${key}-${Math.random() * 1000}`}
+                    className={styles.modalText}
+                  >
                     <b>{key}:</b> {info[key as keyof IEmpresa]}
                   </p>
-                ));
+                );
               }
             })}
           </div>
