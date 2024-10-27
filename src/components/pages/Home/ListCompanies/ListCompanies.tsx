@@ -11,10 +11,8 @@ import { IEmpresa } from "../../../../types/dtos/empresa/IEmpresa";
 import ModalInfo from "../ModalInfo/ModalInfo";
 import ModalOptions from "../ModalOptions/ModalOptions";
 
-const URL_API = "http://190.221.207.224:8090";
-const columns = ["nombre", "razonSocial", "cuit"];
-
 const ListCompanies = () => {
+  const columns = ["nombre", "razonSocial", "cuit"];
   // Manejo de Ver Empresa
   const [openModalInfo, setOpenModalInfo] = useState(false);
   const [infoCompany, setInfoCompany] = useState<IEmpresa | void>();
@@ -40,7 +38,7 @@ const ListCompanies = () => {
 
   useEffect(() => {
     helpHttp<IEmpresa>()
-      .getAll(`${URL_API}/empresas`)
+      .getAll(`http://190.221.207.224:8090/empresas`)
       .then((companiesData) => {
         dispatch(setCompaniesData(companiesData));
       });

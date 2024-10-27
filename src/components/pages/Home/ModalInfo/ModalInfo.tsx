@@ -20,13 +20,38 @@ const ModalInfo: FC<ModalInfoProps> = ({ columns, info, setOpenModal }) => {
             {"logo" in info && <img src={info["logo"] as string} alt="Logo" />}
           </div>
           <div>
-            {Object.keys(info).map((key, id) => {
-              if (columns.includes(key)) {
-                return (
-                  <span className={styles.modalText} key={id}>
-                    <b>{key}:</b> {info[key as keyof (IEmpresa | ISucursal)]}
-                  </span>
-                );
+            {columns.map((key, id) => {
+              if ("empresa" in info) {
+                switch (key) {
+                  case "empresa":
+                    return (
+                      <p key={id}>
+                        <b>Empresa: </b> {info.empresa.nombre}
+                      </p>
+                    );
+                  case "direccion":
+                    return (
+                      <p key={id}>
+                        <b>Domicilio: </b> Calle: {info.domicilio.calle}, n°
+                        {info.domicilio.numero},
+                        {info.domicilio.localidad.nombre},
+                        {info.domicilio.localidad.provincia.nombre},
+                        {info.domicilio.localidad.provincia.pais.nombre}
+                      </p>
+                    );
+                  default:
+                    return (
+                      <p key={key} className={styles.modalText}>
+                        <b>{key}:</b> {info[key as keyof ISucursal]}
+                      </p>
+                    );
+                }
+              } else {
+                return columns.map((key) => (
+                  <p key={key} className={styles.modalText}>
+                    <b>{key}:</b> {info[key as keyof IEmpresa]}
+                  </p>
+                ));
               }
             })}
           </div>
