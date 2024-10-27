@@ -7,6 +7,10 @@
   cursor: pointer;
 }
 
+.active {
+  background-color: #0f2e33;
+}
+
 .company:hover {
   background-color: #0f3b41;
 }
@@ -26,18 +30,4 @@
   text-transform: uppercase;
   font-size: var(--text-sm);
   color: #ddeedd;
-}
-
-.companySvg {
-  display: flex;
-  width: 90px;
-  justify-content: center;
-  align-items: center;
-  gap: 10px;
-}
-
-.companyButton {
-  background-color: transparent;
-  border: none;
-  cursor: pointer;
 }

@@ -12,14 +12,19 @@ import {
 const URL_API = "http://190.221.207.224:8090";
 
 interface ModalProps {
-  initial: IEmpresa;
   dataToEdit: IEmpresa | null;
   setDataToEdit: (state: IEmpresa | null) => void;
   setOpenModal: (state: boolean) => void;
 }
 
+const initial: IEmpresa = {
+  nombre: "",
+  razonSocial: "",
+  cuit: "",
+  logo: "https://cdn2.thecatapi.com/images/e94.jpg",
+};
+
 const ModalForm: FC<ModalProps> = ({
-  initial,
   dataToEdit,
   setDataToEdit,
   setOpenModal,

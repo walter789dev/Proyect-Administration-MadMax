@@ -4,10 +4,12 @@ import { IEmpresa } from "../../types/dtos/empresa/IEmpresa";
 
 interface CompanyState {
    companies: IEmpresa[],
+   activeCompany: IEmpresa | null
 }
 // Estado inicial de Empresa
 const initialState: CompanyState = {
    companies: [],
+   activeCompany: null
 }
 
 // Reducers para manejar información de Empresas
@@ -17,6 +19,8 @@ export const companySlice = createSlice({
    reducers: {
       setCompaniesData(state, action: PayloadAction<IEmpresa[]>) {
          state.companies = action.payload
+         const active = action.payload.find(item => "id" in item)
+         state.activeCompany = active as IEmpresa
       },
       updateCompaniesData(state, action: PayloadAction<IEmpresa>) {
          state.companies = [...state.companies, action.payload]

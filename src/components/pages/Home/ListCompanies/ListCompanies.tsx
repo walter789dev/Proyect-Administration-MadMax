@@ -9,25 +9,23 @@ import { setCompaniesData } from "../../../../redux/slices/companySlice";
 import { helpHttp } from "../../../../helpers/helpHttp";
 import { IEmpresa } from "../../../../types/dtos/empresa/IEmpresa";
 import ModalInfo from "../ModalInfo/ModalInfo";
+import ModalOptions from "../ModalOptions/ModalOptions";
 
 const URL_API = "http://190.221.207.224:8090";
-
-const initial: IEmpresa = {
-  nombre: "",
-  razonSocial: "",
-  cuit: "",
-  logo: "https://cdn2.thecatapi.com/images/e94.jpg",
-};
+const columns = ["nombre", "razonSocial", "cuit"];
 
 const ListCompanies = () => {
   // Manejo de Ver Empresa
   const [openModalInfo, setOpenModalInfo] = useState(false);
-  const [infoCompany, setInfoCompany] = useState<IEmpresa>(initial);
+  const [infoCompany, setInfoCompany] = useState<IEmpresa | void>();
   // Manejo de Añadir/Editar Empresa
   const [openModalForm, setOpenModalForm] = useState(false);
   const [dataToEdit, setDataToEdit] = useState<IEmpresa | null>(null);
   // Manejo de Redux y Conexion Tipada para Empresa
   const companies = useAppSelector((state) => state.companyReducer.companies);
+  const activeCompany = useAppSelector(
+    (state) => state.companyReducer.activeCompany?.id
+  );
   const dispatch = useAppDispatch();
 
   const editCompany = (data: IEmpresa) => {
@@ -40,7 +38,6 @@ const ListCompanies = () => {
     setInfoCompany(company);
   };
 
-  // Conexion a la BBDD - GET ALL Empresa
   useEffect(() => {
     helpHttp<IEmpresa>()
       .getAll(`${URL_API}/empresas`)
@@ -61,10 +58,16 @@ const ListCompanies = () => {
             companies.map((company, id) => (
               <Company
                 key={id}
+                active={activeCompany === company.id}
                 company={company}
-                viewCompany={viewCompany}
-                editCompany={editCompany}
-              />
+              >
+                <ModalOptions
+                  size="lg"
+                  item={company}
+                  edit={editCompany}
+                  view={viewCompany}
+                />
+              </Company>
             ))
           )}
         </ul>
@@ -73,15 +76,14 @@ const ListCompanies = () => {
       </nav>
       {openModalForm && (
         <ModalForm
-          initial={initial}
           dataToEdit={dataToEdit}
           setDataToEdit={setDataToEdit}
           setOpenModal={setOpenModalForm}
         />
       )}
-      {openModalInfo && (
+      {openModalInfo && infoCompany && (
         <ModalInfo
-          type="empresa"
+          columns={columns}
           info={infoCompany}
           setOpenModal={setOpenModalInfo}
         />

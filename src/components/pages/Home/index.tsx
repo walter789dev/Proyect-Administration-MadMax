@@ -6,7 +6,7 @@ import ListCompanies from "./ListCompanies/ListCompanies";
 function Home() {
   return (
     <>
-      <Header title="MaxMax Administración" type="primary" />
+      <Header title="Administración MadMax" type="primary" />
       {/* Grilla de 3x1 */}
       <ContainerGrid>
         {/* Sección de Empresas */}

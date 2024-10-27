@@ -1,39 +1,30 @@
-import { FC } from "react";
-import { IEmpresa } from "../../../../types/dtos/empresa/IEmpresa";
 import styles from "./ModalInfo.module.css";
 import ButtonForm from "../../../ui/ButtonForm/ButtonForm";
+import { IEmpresa } from "../../../../types/dtos/empresa/IEmpresa";
+import { FC } from "react";
+import { ISucursal } from "../../../../types/dtos/sucursal/ISucursal";
 
 interface ModalInfoProps {
-  info: IEmpresa;
-  type: "sucursal" | "empresa";
+  info: IEmpresa | ISucursal;
+  columns: string[];
   setOpenModal: (state: boolean) => void;
 }
 
-interface ICampos {
-  empresa: string[];
-  sucursal: string[];
-}
-
-const ModalInfo: FC<ModalInfoProps> = ({ type, info, setOpenModal }) => {
-  const campos: ICampos = {
-    empresa: ["nombre", "razonSocial", "cuit"],
-    sucursal: [],
-  };
-
+const ModalInfo: FC<ModalInfoProps> = ({ columns, info, setOpenModal }) => {
   return (
     <div className={styles.modal}>
       <section className={styles.modalSection}>
-        <h2>Empresa: {info.nombre}</h2>
+        <h2>Empresa</h2>
         <div className={styles.modalInfo}>
           <div className={styles.modalImage}>
-            <img src={info.logo} alt="Logo" />
+            {"logo" in info && <img src={info["logo"] as string} alt="Logo" />}
           </div>
           <div>
             {Object.keys(info).map((key, id) => {
-              if (campos[type].includes(key)) {
+              if (columns.includes(key)) {
                 return (
                   <span className={styles.modalText} key={id}>
-                    <b>{key}:</b> {info[key as keyof IEmpresa]}
+                    <b>{key}:</b> {info[key as keyof (IEmpresa | ISucursal)]}
                   </span>
                 );
               }

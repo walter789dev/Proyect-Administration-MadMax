@@ -4,5 +4,4 @@ export interface IEmpresa {
    razonSocial: string;
    cuit: number | string;
    logo: string;
-   eliminado?: boolean;
 }

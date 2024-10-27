@@ -1,7 +1,6 @@
 import { IDomicilio } from "../../IDomicilio";
 import { ICategorias } from "../categorias/ICategorias";
-import { IEmpresa } from "../empresa/IEmpresa2";
-
+import { IEmpresa } from "../empresa/IEmpresa";
 
 export interface ISucursal {
    id: number;
