@@ -7,6 +7,7 @@ interface IOptionsHTTP {
 }
 
 export function helpHttp<T>() {
+  // Manejo de la conexion a la BBDD - Generico
   function customFetch(url: string, options: IOptionsHTTP, element: T | void) {
     const defaultHeader = {
       "Content-Type": "application/json",

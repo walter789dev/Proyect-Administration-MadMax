@@ -6,8 +6,7 @@ interface ButtonProps {
   type: "primary" | "secondary" | "disabled";
   openModal: (state: boolean) => void;
 }
-
-// Props: openModal -> Abre el Modal correspondiente
+// --- Componente para abrir el Modal correspondiente --
 const Button: FC<ButtonProps> = ({ text, type, openModal }) => {
   // Estilos personalizados para Icono
   const colors = {

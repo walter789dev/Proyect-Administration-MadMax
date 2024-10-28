@@ -13,9 +13,21 @@
 .branchContainer {
   display: flex;
   flex-wrap: wrap;
-  height: 82vh;
+  height: 83vh;
   margin: 10px 0px 10px 30px;
   padding: 10px;
   overflow-y: auto;
   gap: 30px;
+}
+
+.branchNotResult {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.branchNotResult img {
+  width: 60%;
 }

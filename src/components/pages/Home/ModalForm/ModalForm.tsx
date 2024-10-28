@@ -9,8 +9,6 @@ import {
   updateCompany,
 } from "../../../../redux/slices/companySlice";
 
-const URL_API = "http://190.221.207.224:8090";
-
 interface ModalProps {
   dataToEdit: IEmpresa | null;
   setDataToEdit: (state: IEmpresa | null) => void;
@@ -24,6 +22,7 @@ const initial: IEmpresa = {
   logo: "https://cdn2.thecatapi.com/images/e94.jpg",
 };
 
+// Formulario Empresa para Editar y Añadir
 const ModalForm: FC<ModalProps> = ({
   dataToEdit,
   setDataToEdit,
@@ -32,29 +31,30 @@ const ModalForm: FC<ModalProps> = ({
   const [dataForm, setDataForm] = useState<IEmpresa>(initial);
   const dispatch = useAppDispatch();
 
+  // Manejo de Valores del Formulario
   const handlerChange = (e: ChangeEvent<HTMLInputElement>) => {
     setDataForm((data) => ({
       ...data,
       [e.target.name]: e.target.value,
     }));
   };
-
+  // Cierra el Modal Actual + Resetear el formulario
   const resetForm = () => {
     setOpenModal(false);
     setDataToEdit(null);
   };
-
+  // Manejo de Conexion a la BBDD PUT + POST
   const handlerSubmit = () => {
     if (dataToEdit) {
       helpHttp<IEmpresa>()
-        .put(`${URL_API}/empresas/${dataForm.id}`, dataForm)
+        .put(`http://190.221.207.224:8090/empresas/${dataForm.id}`, dataForm)
         .then(() => {
           dispatch(updateCompany(dataForm));
           resetForm();
         });
     } else {
       helpHttp<IEmpresa>()
-        .post(`${URL_API}/empresas`, dataForm)
+        .post(`http://190.221.207.224:8090/empresas`, dataForm)
         .then(() => {
           dispatch(updateCompaniesData(dataForm));
           resetForm();

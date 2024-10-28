@@ -7,7 +7,7 @@ interface BranchProps {
   branch: ISucursal;
   children: ReactNode;
 }
-
+// -- Componente Card Sucursal --------
 const Branch: FC<BranchProps> = ({ branch, children }) => {
   return (
     <figure className={styles.card}>

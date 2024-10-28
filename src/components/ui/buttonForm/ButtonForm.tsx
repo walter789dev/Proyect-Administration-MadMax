@@ -6,8 +6,7 @@ interface ButtonProps {
   type: "confirm" | "cancel";
   event: () => void;
 }
-
-// Props: event -> Evento a realizar por el Button
+// --- Componente para manejar Eventos de Formularios --
 const ButtonForm: FC<ButtonProps> = ({ text, type, event }) => {
   return (
     <button

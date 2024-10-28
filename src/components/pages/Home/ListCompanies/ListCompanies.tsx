@@ -5,32 +5,30 @@ import { useEffect, useState } from "react";
 import ModalForm from "../ModalForm/ModalForm";
 import { useAppDispatch, useAppSelector } from "../../../../hooks/redux";
 import { setCompaniesData } from "../../../../redux/slices/companySlice";
-
 import { helpHttp } from "../../../../helpers/helpHttp";
 import { IEmpresa } from "../../../../types/dtos/empresa/IEmpresa";
 import ModalInfo from "../ModalInfo/ModalInfo";
 import ModalOptions from "../ModalOptions/ModalOptions";
 
 const ListCompanies = () => {
-  const columns = ["nombre", "razonSocial", "cuit"];
-  // Manejo de Ver Empresa
-  const [openModalInfo, setOpenModalInfo] = useState(false);
-  const [infoCompany, setInfoCompany] = useState<IEmpresa | void>();
-  // Manejo de Añadir/Editar Empresa
-  const [openModalForm, setOpenModalForm] = useState(false);
+  const [openModalInfo, setOpenModalInfo] = useState(false); // Manejo de Ver Empresa
+  const [infoCompany, setInfoCompany] = useState<IEmpresa | void>(); // Ver Empresa seleccionada
+  const [openModalForm, setOpenModalForm] = useState(false); // Manejo de Añadir/Editar Empresa
   const [dataToEdit, setDataToEdit] = useState<IEmpresa | null>(null);
   // Manejo de Redux y Conexion Tipada para Empresa
+  const dispatch = useAppDispatch();
   const companies = useAppSelector((state) => state.companyReducer.companies);
   const activeCompany = useAppSelector(
-    (state) => state.companyReducer.activeCompany?.id
+    (state) => state.companyReducer.activeCompany
   );
-  const dispatch = useAppDispatch();
-
+  // Campos UI a mostrar
+  const columns = ["nombre", "razonSocial", "cuit"];
+  // Editar Empresda + Abrir Modal
   const editCompany = (data: IEmpresa) => {
     setOpenModalForm(true);
     setDataToEdit(data);
   };
-
+  // Manejo de Modal de Información
   const viewCompany = (company: IEmpresa) => {
     setOpenModalInfo(true);
     setInfoCompany(company);

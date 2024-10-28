@@ -9,7 +9,7 @@ interface ModalInfoProps {
   columns: string[];
   setOpenModal: (state: boolean) => void;
 }
-
+// Muestra Información de la Empresa | Sucursal seleccionada
 const ModalInfo: FC<ModalInfoProps> = ({ columns, info, setOpenModal }) => {
   return (
     <div className={styles.modal}>
@@ -29,16 +29,17 @@ const ModalInfo: FC<ModalInfoProps> = ({ columns, info, setOpenModal }) => {
                         <b>Empresa: </b> {info.empresa.nombre}
                       </p>
                     );
-                  case "domicilio":
+                  case "domicilio": {
+                    const elm = info.domicilio;
                     return (
                       <p key={id} className={styles.modalText}>
-                        <b>Domicilio: </b> Calle: {info.domicilio.calle}, n°
-                        {info.domicilio.numero},
-                        {info.domicilio.localidad.nombre},
-                        {info.domicilio.localidad.provincia.nombre},
-                        {info.domicilio.localidad.provincia.pais.nombre}
+                        <b>Domicilio: </b> Calle: {elm.calle}, n°
+                        {elm.numero}, {elm.localidad.nombre},{" "}
+                        {elm.localidad.provincia.nombre},{" "}
+                        {elm.localidad.provincia.pais.nombre}
                       </p>
                     );
+                  }
                   case "nombre":
                   case "horarioApertura":
                   case "horarioCierre":

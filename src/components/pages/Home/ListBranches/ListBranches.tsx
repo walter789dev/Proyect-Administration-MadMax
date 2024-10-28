@@ -7,13 +7,15 @@ import { helpHttp } from "../../../../helpers/helpHttp";
 import { useAppSelector } from "../../../../hooks/redux";
 import ModalOptions from "../ModalOptions/ModalOptions";
 import ModalInfo from "../ModalInfo/ModalInfo";
+import defaultImage from "../../../../assets/images/goods-truck.svg";
 
 const ListBranches = () => {
+  // Estado que maneja las Sucursales
   const [branches, setBranches] = useState<ISucursal[] | void>();
-
+  // Manejo de Modal de Información
   const [openInfoModal, setOpenInfoModal] = useState(false);
   const [infoBranch, setInfoBranch] = useState<ISucursal | void>();
-
+  // Campos de UI para mostrar info
   const columns = [
     "nombre",
     "empresa",
@@ -22,16 +24,17 @@ const ListBranches = () => {
     "horarioApertura",
     "horarioCierre",
   ];
-
+  // Obtengo ID de Empresa Activa
   const activeCompanyId = useAppSelector(
-    (state) => state.companyReducer.activeCompany?.id
+    (state) => state.companyReducer.activeCompany
   );
 
+  // Manejo de Modal de Informacion Sucursal
   const viewBranch = (element: ISucursal) => {
     setOpenInfoModal(true);
     setInfoBranch(element);
   };
-
+  // Conexion a la BBDD mediante ID Empresa
   useEffect(() => {
     if (activeCompanyId) {
       helpHttp<ISucursal>()
@@ -49,20 +52,25 @@ const ListBranches = () => {
       {/* Ubico la sección en ContainerGrid mediante gridArea */}
       <section style={{ backgroundColor: "#ecf0f1" }}>
         <header className={styles.branchInfo}>
-          <h3>Sucursales: </h3>
+          <h2>
+            Cantidad de sucursales: {branches?.length ? branches.length : "0"}
+          </h2>
           {/* Boton para abrir Modal de Sucursal */}
           <Button text="Sucursal" type="secondary" openModal={() => {}} />
         </header>
         {/* Sección que contiene Sucursales*/}
         <section className={styles.branchContainer}>
-          {branches ? (
+          {branches?.length ? (
             branches.map((branch, id) => (
               <Branch key={id} branch={branch}>
                 <ModalOptions item={branch} edit={() => {}} view={viewBranch} />
               </Branch>
             ))
           ) : (
-            <p>No hay Sucursales</p>
+            <div className={styles.branchNotResult}>
+              <h2>No hay sucursales disponibles</h2>
+              <img src={defaultImage} alt="No hay Sucursales" />
+            </div>
           )}
         </section>
       </section>

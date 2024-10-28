@@ -3,6 +3,7 @@ import companySlice from '../slices/companySlice'
 
 export const store = configureStore({
    reducer: {
+      // Manejo de datos de Empresa
       companyReducer: companySlice
    }
 })
