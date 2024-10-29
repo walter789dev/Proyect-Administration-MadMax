@@ -1,5 +1,5 @@
 import { ChangeEvent, FC, useEffect, useState } from "react";
-import styles from "./ModalForm.module.css";
+import styles from "./ModalFormCompany.module.css";
 import ButtonForm from "../../../ui/ButtonForm/ButtonForm";
 import { IEmpresa } from "../../../../types/dtos/empresa/IEmpresa";
 import { helpHttp } from "../../../../helpers/helpHttp";
@@ -23,7 +23,7 @@ const initial: IEmpresa = {
 };
 
 // Formulario Empresa para Editar y Añadir
-const ModalForm: FC<ModalProps> = ({
+const ModalFormCompany: FC<ModalProps> = ({
   dataToEdit,
   setDataToEdit,
   setOpenModal,
@@ -110,4 +110,4 @@ const ModalForm: FC<ModalProps> = ({
   );
 };
 
-export default ModalForm;
+export default ModalFormCompany;

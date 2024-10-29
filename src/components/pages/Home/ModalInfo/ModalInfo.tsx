@@ -17,7 +17,7 @@ const ModalInfo: FC<ModalInfoProps> = ({ columns, info, setOpenModal }) => {
         <h2>{"empresa" in info ? "Sucursal" : "Empresa"}</h2>
         <div className={styles.modalInfo}>
           <div className={styles.modalImage}>
-            {"logo" in info && <img src={info["logo"] as string} alt="Logo" />}
+            <img src={info["logo"] as string} alt="Logo" />
           </div>
           <div className={styles.modal2}>
             {columns.map((key, id) => {
@@ -40,6 +40,12 @@ const ModalInfo: FC<ModalInfoProps> = ({ columns, info, setOpenModal }) => {
                       </p>
                     );
                   }
+                  case "esCasaMatriz":
+                    return (
+                      <p key={key} className={styles.modalText}>
+                        <b>{key}:</b> {info[key] ? "Si" : "No"}
+                      </p>
+                    );
                   case "nombre":
                   case "horarioApertura":
                   case "horarioCierre":
@@ -48,19 +54,10 @@ const ModalInfo: FC<ModalInfoProps> = ({ columns, info, setOpenModal }) => {
                         <b>{key}:</b> {info[key]}
                       </p>
                     );
-                  case "esCasaMatriz":
-                    return (
-                      <p key={key} className={styles.modalText}>
-                        <b>{key}:</b> {info[key] ? "Si" : "No"}
-                      </p>
-                    );
                 }
               } else {
                 return (
-                  <p
-                    key={`${key}-${Math.random() * 1000}`}
-                    className={styles.modalText}
-                  >
+                  <p key={key} className={styles.modalText}>
                     <b>{key}:</b> {info[key as keyof IEmpresa]}
                   </p>
                 );

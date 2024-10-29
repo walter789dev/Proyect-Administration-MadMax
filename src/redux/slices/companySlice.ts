@@ -3,12 +3,12 @@ import { IEmpresa } from "../../types/dtos/empresa/IEmpresa";
 
 interface CompanyState {
    companies: IEmpresa[],
-   activeCompany: number | undefined
+   id: number | undefined
 }
 // Listado de Empresas + ID Empresa activa para obtener Sucursales
 const initialState: CompanyState = {
    companies: [],
-   activeCompany: undefined
+   id: undefined
 }
 // Reducers para manejar información de Empresas
 export const companySlice = createSlice({
@@ -19,7 +19,7 @@ export const companySlice = createSlice({
       setCompaniesData(state, action: PayloadAction<IEmpresa[]>) {
          state.companies = action.payload
          const active = action.payload.find(item => "id" in item)
-         state.activeCompany = active?.id
+         state.id = active?.id
       },
       // Recibo las empresas de la API
       updateCompaniesData(state, action: PayloadAction<IEmpresa>) {
@@ -34,7 +34,7 @@ export const companySlice = createSlice({
       },
       // Actualizo la empresa activa
       setActiveCompany(state, action: PayloadAction<number | undefined>) {
-         state.activeCompany = action.payload
+         state.id = action.payload
       }
    }
 })
