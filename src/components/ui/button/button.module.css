@@ -36,6 +36,21 @@
   fill: #fff;
 }
 
+.tertiary{
+  border: 1px solid #0093e9;
+  color: #0093e9;
+}
+
+.tertiary:hover{
+  border: 1px solid #0093e9;
+  color: #fff;
+  background-color: #0093e9
+}
+
+.tertiary:hover svg {
+  fill: #fff;
+}
+
 .disabled {
   border: 1px solid #fff;
 }

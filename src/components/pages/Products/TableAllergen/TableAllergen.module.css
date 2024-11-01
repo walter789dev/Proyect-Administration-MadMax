@@ -1,0 +1,40 @@
+.contenedor{
+    background-color: rgb(255, 255, 160);
+    padding: 7px 35px;
+}
+
+.button{
+    display: flex;
+    justify-content: end;
+    margin: 10px 0px;
+}
+
+.tables{
+    height: 82vh;
+    background-color: #fff;
+    list-style: none;
+    border-radius: 15px;
+    overflow: hidden;
+}
+
+.tables li p{
+    padding: 15px 0px;
+}
+
+.headerTable{
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    border-bottom: 1px solid #0093e9;
+}
+
+.columnOne{
+    text-align: center;
+    flex-grow: 1;
+}
+
+.columnTwo{
+    width: 350px;
+    background-color: rgb(169, 169, 255);
+    text-align: center;
+}

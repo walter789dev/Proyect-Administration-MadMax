@@ -3,7 +3,7 @@ import styles from "./Button.module.css";
 
 interface ButtonProps {
   text: string;
-  type: "primary" | "secondary" | "disabled";
+  type: "primary" | "secondary" | "tertiary" | "disabled";
   openModal: (state: boolean) => void;
 }
 // --- Componente para abrir el Modal correspondiente --
@@ -12,6 +12,7 @@ const Button: FC<ButtonProps> = ({ text, type, openModal }) => {
   const colors = {
     primary: "#fff",
     secondary: "#368f8b",
+    tertiary: "#0093e9",
     disabled: "#879796",
   };
 
