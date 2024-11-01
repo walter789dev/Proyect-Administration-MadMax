@@ -1,0 +1,28 @@
+.element {
+  display: flex;
+  align-items: center;
+  font-size: 1.2rem;
+  border-bottom: 3px solid #ECF0F1;
+}
+
+.columnOne {
+  text-align: center;
+  flex-grow: 1;
+}
+
+.columnTwo {
+  width: 350px;
+  text-align: center;
+}
+
+.columnTwo:has(button) {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 30px;
+}
+
+.button {
+  border: none;
+  background-color: transparent;
+}
