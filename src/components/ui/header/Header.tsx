@@ -2,7 +2,7 @@ import { FC } from "react";
 import styles from "./header.module.css";
 
 interface HeaderProps {
-  title: string;
+  title: string | undefined;
   type: "primary" | "secondary";
 }
 // Header con el titulo de la página + estilos

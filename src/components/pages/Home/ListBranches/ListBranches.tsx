@@ -19,7 +19,7 @@ const ListBranches = () => {
   const [infoBranch, setInfoBranch] = useState<ISucursal | void>();
 
   const dispatch = useAppDispatch();
-  const branches = useAppSelector((state) => state.branchReducer.companies);
+  const branches = useAppSelector((state) => state.branchReducer.branches);
   const activeId = useAppSelector((state) => state.companyReducer.id);
 
   const editBranch = (data: ISucursal) => {

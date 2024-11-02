@@ -3,16 +3,14 @@ import styles from "./Options.module.css";
 export const Options = () => {
   return (
     <>
-     <nav className={styles.opciones}>
-        {/*Poner nombre de la sucursal*/}
-        <h2 className={styles.opcionesTitle}>Administración </h2>
+      <nav className={styles.opciones}>
+        <h2 className={styles.opcionesTitle}>Administración</h2>
         <ul className={styles.opcionesUl}>
-            <li className={styles.opcion}>CATEGORÍAS</li>
-            <li className={styles.opcion}>PRODUCTOS</li>
-            <li className={styles.opcion}>ALÉRGENOS</li>
-
+          <li className={styles.opcion}>Categorías</li>
+          <li className={styles.opcion}>Productos</li>
+          <li className={styles.opcion}>Alérgenos</li>
         </ul>
       </nav>
     </>
-  )
-}
+  );
+};

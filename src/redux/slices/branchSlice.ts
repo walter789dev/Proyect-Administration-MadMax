@@ -2,11 +2,13 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit"
 import { ISucursal } from "../../types/dtos/sucursal/ISucursal"
 
 interface BranchState {
-   companies: ISucursal[],
+   branches: ISucursal[],
+   activeBranch: ISucursal | null
 }
 // Listado de Empresas + ID Empresa activa para obtener Sucursales
 const initialState: BranchState = {
-   companies: [],
+   branches: [],
+   activeBranch: null
 }
 
 export const branchSlice = createSlice({
@@ -14,20 +16,23 @@ export const branchSlice = createSlice({
    initialState,
    reducers: {
       setBranchesData(state, action: PayloadAction<ISucursal[]>) {
-         state.companies = action.payload
+         state.branches = action.payload
+      },
+      setActiveBranch(state, action: PayloadAction<ISucursal>) {
+         state.activeBranch = action.payload
       },
       updateBranchesData(state, action: PayloadAction<ISucursal>) {
-         state.companies = [...state.companies, action.payload]
+         state.branches = [...state.branches, action.payload]
       },
       // Actualizo las empresas con la Empresa creada / actualizada
       updateBranch(state, action: PayloadAction<ISucursal>) {
-         const newState = state.companies.map((item) => (
+         const newState = state.branches.map((item) => (
             (item.id === action.payload.id) ? action.payload : item
          ))
-         state.companies = newState
+         state.branches = newState
       },
    }
 })
 
-export const { setBranchesData, updateBranchesData, updateBranch } = branchSlice.actions
+export const { setBranchesData, setActiveBranch, updateBranchesData, updateBranch } = branchSlice.actions
 export default branchSlice.reducer

@@ -1,5 +1,8 @@
 import { useNavigate } from "react-router-dom";
 import styles from "./ModalOptions.module.css";
+import { useAppDispatch } from "../../../../hooks/redux";
+import { setActiveBranch } from "../../../../redux/slices/BranchSlice";
+import { ISucursal } from "../../../../types/dtos/sucursal/ISucursal";
 
 interface OptionsProp<T> {
   size?: "sm" | "lg";
@@ -15,9 +18,16 @@ const ModalOptions = <T,>({
   edit,
   view,
 }: OptionsProp<T>) => {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
+  const dispatch = useAppDispatch();
+
   const color = size == "lg" ? "#fff" : "#246A73";
   const svgSize = size == "lg" ? ["30", "20", "0"] : ["25", "18", "15"];
+
+  const activeBranch = () => {
+    dispatch(setActiveBranch(item as ISucursal));
+    navigate("/products");
+  };
 
   return (
     <div className={styles.options}>
@@ -47,7 +57,7 @@ const ModalOptions = <T,>({
       </button>
       {/* Boton de ¿Ver Productos de Sucursal? */}
       {size === "sm" && (
-        <button className={styles.button} onClick={() => navigate("/products")}>
+        <button className={styles.button} onClick={activeBranch}>
           <svg width={svgSize[2]} viewBox="0 0 384 512" fill={color}>
             <path d="M48 0C21.5 0 0 21.5 0 48L0 464c0 26.5 21.5 48 48 48l96 0 0-80c0-26.5 21.5-48 48-48s48 21.5 48 48l0 80 96 0c26.5 0 48-21.5 48-48l0-416c0-26.5-21.5-48-48-48L48 0zM64 240c0-8.8 7.2-16 16-16l32 0c8.8 0 16 7.2 16 16l0 32c0 8.8-7.2 16-16 16l-32 0c-8.8 0-16-7.2-16-16l0-32zm112-16l32 0c8.8 0 16 7.2 16 16l0 32c0 8.8-7.2 16-16 16l-32 0c-8.8 0-16-7.2-16-16l0-32c0-8.8 7.2-16 16-16zm80 16c0-8.8 7.2-16 16-16l32 0c8.8 0 16 7.2 16 16l0 32c0 8.8-7.2 16-16 16l-32 0c-8.8 0-16-7.2-16-16l0-32zM80 96l32 0c8.8 0 16 7.2 16 16l0 32c0 8.8-7.2 16-16 16l-32 0c-8.8 0-16-7.2-16-16l0-32c0-8.8 7.2-16 16-16zm80 16c0-8.8 7.2-16 16-16l32 0c8.8 0 16 7.2 16 16l0 32c0 8.8-7.2 16-16 16l-32 0c-8.8 0-16-7.2-16-16l0-32zM272 96l32 0c8.8 0 16 7.2 16 16l0 32c0 8.8-7.2 16-16 16l-32 0c-8.8 0-16-7.2-16-16l0-32c0-8.8 7.2-16 16-16z" />
           </svg>
