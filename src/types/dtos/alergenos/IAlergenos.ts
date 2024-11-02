@@ -1,7 +1,7 @@
 import { IImagen } from '../../IImagen';
 
 export interface IAlergenos {
-  id: number;
+  id?: number;
   denominacion: string;
-  imagen: IImagen;
+  imagen: IImagen | null;
 }
