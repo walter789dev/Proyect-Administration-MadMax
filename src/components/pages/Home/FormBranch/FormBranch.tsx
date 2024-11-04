@@ -7,12 +7,12 @@ import { ISucursal } from "../../../../types/dtos/sucursal/ISucursal";
 import { IPais } from "../../../../types/IPais";
 import { IProvincia } from "../../../../types/IProvincia";
 import { ILocalidad } from "../../../../types/ILocalidad";
+import Modal from "../../../ui/Modal/Modal";
 
 interface ModalFormProps {
   idCompany: number | undefined;
   dataToEdit: ISucursal | null;
-  setDataToEdit: (state: ISucursal | null) => void;
-  setOpenModal: (state: boolean) => void;
+  closeModal: (state?: boolean) => void;
   getBranches: () => void;
 }
 
@@ -38,8 +38,7 @@ const initial: ICreateSucursal = {
 const FormBranch: FC<ModalFormProps> = ({
   idCompany,
   dataToEdit,
-  setDataToEdit,
-  setOpenModal,
+  closeModal,
   getBranches,
 }) => {
   initial.idEmpresa = idCompany || 0;
@@ -86,15 +85,9 @@ const FormBranch: FC<ModalFormProps> = ({
         .post(`http://190.221.207.224:8090/sucursales/create`, dataForm)
         .then(() => {
           getBranches();
-          resetForm();
+          closeModal();
         });
     }
-  };
-
-  // Cierra el Modal Actual + Resetear el formulario
-  const resetForm = () => {
-    setOpenModal(false);
-    setDataToEdit(null);
   };
 
   useEffect(() => {
@@ -110,7 +103,7 @@ const FormBranch: FC<ModalFormProps> = ({
   }, []);
 
   return (
-    <div className={styles.modal}>
+    <Modal>
       <div className={styles.modalContent}>
         <h2>{dataToEdit ? "Editar" : "Añadir"} Sucursal</h2>
         <form className={styles.modalForm}>
@@ -275,7 +268,7 @@ const FormBranch: FC<ModalFormProps> = ({
               </label>
             </div>
             <div className={styles.containerButtons}>
-              <ButtonForm type="cancel" text="Cancelar" event={resetForm} />
+              <ButtonForm type="cancel" text="Cancelar" event={closeModal} />
               <ButtonForm
                 type="confirm"
                 text="Confirmar"
@@ -285,7 +278,7 @@ const FormBranch: FC<ModalFormProps> = ({
           </div>
         </form>
       </div>
-    </div>
+    </Modal>
   );
 };
 

@@ -7,25 +7,19 @@ import { IAlergenos } from "../../../../types/dtos/alergenos/IAlergenos";
 import FormAllergen from "../FormAllergen/FormAllergen";
 import ModalInfo from "../../../ui/ModalInfo/ModalInfo";
 import ModalOptions from "../../../ui/ModalOptions/ModalOptions";
+import useModals from "../../../../hooks/useModals";
 
 export const TableAllergen = () => {
   const [alergenos, setAlergenos] = useState<IAlergenos[]>([]);
-
-  const [modalEdit, setModalEdit] = useState(false);
-  const [dataToEdit, setDataToEdit] = useState<IAlergenos | null>(null);
-
-  const [openModalInfo, setOpenModalInfo] = useState(false);
-  const [infoAlergeno, setInfoAlergeno] = useState<IAlergenos | void>();
-
-  const editAlergeno = (alergeno: IAlergenos) => {
-    setModalEdit(true);
-    setDataToEdit(alergeno);
-  };
-
-  const viewAlergeno = (alergeno: IAlergenos) => {
-    setOpenModalInfo(true);
-    setInfoAlergeno(alergeno);
-  };
+  const {
+    modalForm,
+    modalInfo,
+    dataToEdit,
+    info,
+    openForm,
+    openView,
+    resetForm,
+  } = useModals<IAlergenos>();
 
   const deleteAlergeno = (id: number | undefined) => {
     helpHttp<IAlergenos>()
@@ -45,7 +39,7 @@ export const TableAllergen = () => {
           <Button
             text="Alergeno"
             type="tertiary"
-            openModal={() => setModalEdit(true)}
+            openModal={() => openForm()}
           />
         </div>
         <div className={styles.title}>
@@ -62,8 +56,8 @@ export const TableAllergen = () => {
                 <ModalOptions
                   type="custom"
                   item={alergeno}
-                  view={viewAlergeno}
-                  edit={editAlergeno}
+                  view={openView}
+                  edit={openForm}
                   del={deleteAlergeno}
                 />
               </Allergen>
@@ -73,24 +67,19 @@ export const TableAllergen = () => {
           )}
         </ul>
       </section>
-      {modalEdit && (
+      {modalForm && (
         <FormAllergen
-          closeModal={setModalEdit}
           dataToEdit={dataToEdit}
-          setDataToEdit={setDataToEdit}
+          closeModal={resetForm}
           setAlergenos={setAlergenos}
         />
       )}
-      {openModalInfo && infoAlergeno && (
+      {modalInfo && info && (
         <ModalInfo
           columns={["denominacion"]}
-          info={infoAlergeno}
-          setOpenModal={setOpenModalInfo}
+          info={info}
+          setOpenModal={resetForm}
         />
-        //   <ModalAllergenInfo
-        //     allergen={infoAlergeno}
-        //     setOpenModal={setOpenModalInfo}
-        //   />
       )}
     </>
   );

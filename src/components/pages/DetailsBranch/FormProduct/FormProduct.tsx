@@ -1,4 +1,5 @@
 import { IProductos } from "../../../../types/dtos/productos/IProductos";
+import Modal from "../../../ui/Modal/Modal";
 import styles from "./FormProduct.module.css";
 
 interface ModalProps {
@@ -7,11 +8,11 @@ interface ModalProps {
 
 const FormProduct = () => {
   return (
-    <div className={styles.modal}>
+    <Modal>
       <section className={styles.modalSection}>
         <h2>Añadir Articulo</h2>
       </section>
-    </div>
+    </Modal>
   );
 };
 

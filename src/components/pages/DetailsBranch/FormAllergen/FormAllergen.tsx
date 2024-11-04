@@ -3,11 +3,11 @@ import ButtonForm from "../../../ui/ButtonForm/ButtonForm";
 import { FC, useState, ChangeEvent, useEffect } from "react";
 import { IAlergenos } from "../../../../types/dtos/alergenos/IAlergenos";
 import { helpHttp } from "../../../../helpers/helpHttp";
+import Modal from "../../../ui/Modal/Modal";
 
 interface ModalProps {
   dataToEdit: IAlergenos | null;
-  setDataToEdit: (data: IAlergenos | null) => void;
-  closeModal: (state: boolean) => void;
+  closeModal: (state?: boolean) => void;
   setAlergenos: (updater: (state: IAlergenos[]) => IAlergenos[]) => void;
 }
 
@@ -18,17 +18,11 @@ const initial: IAlergenos = {
 
 // ------------ Añadir - Editar Alergeno --------------
 const FormAllergen: FC<ModalProps> = ({
-  closeModal,
   dataToEdit,
-  setDataToEdit,
+  closeModal,
   setAlergenos,
 }) => {
   const [alergeno, setAlergeno] = useState(initial);
-
-  const resetForm = () => {
-    setDataToEdit(null);
-    closeModal(false);
-  };
 
   const handlerChange = (e: ChangeEvent<HTMLInputElement>) => {
     setAlergeno((data) => ({
@@ -46,14 +40,14 @@ const FormAllergen: FC<ModalProps> = ({
             const filter = state.filter((item) => item.id != alergeno.id);
             return [...filter, alergeno];
           });
-          resetForm();
+          closeModal();
         });
     } else {
       helpHttp<IAlergenos>()
         .post(`http://190.221.207.224:8090/alergenos`, alergeno)
         .then(() => {
           setAlergenos((state: IAlergenos[]) => [...state, alergeno]);
-          resetForm();
+          closeModal();
         });
     }
   };
@@ -63,7 +57,7 @@ const FormAllergen: FC<ModalProps> = ({
   }, [dataToEdit]);
 
   return (
-    <div className={styles.modal}>
+    <Modal>
       <section className={styles.modalSection}>
         <h2 className={styles.modalTitle}>
           {dataToEdit ? "Editar" : "Añadir"} Alergeno
@@ -80,16 +74,12 @@ const FormAllergen: FC<ModalProps> = ({
           <label htmlFor="file">Ingrese una imagen:</label>
           <input id="file" type="file" />
           <div className={styles.modalButtons}>
-            <ButtonForm
-              type="cancel"
-              text="Cancelar"
-              event={() => resetForm()}
-            />
+            <ButtonForm type="cancel" text="Cancelar" event={closeModal} />
             <ButtonForm type="confirm" text="Confirmar" event={handlerSubmit} />
           </div>
         </form>
       </section>
-    </div>
+    </Modal>
   );
 };
 

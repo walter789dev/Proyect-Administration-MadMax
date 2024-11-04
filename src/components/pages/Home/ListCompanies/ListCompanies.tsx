@@ -1,7 +1,7 @@
 import styles from "./ListCompanies.module.css";
 import Company from "../Company/Company";
 import Button from "../../../ui/Button/Button";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "../../../../hooks/redux";
 import { setCompaniesData } from "../../../../redux/slices/companySlice";
 import { helpHttp } from "../../../../helpers/helpHttp";
@@ -9,27 +9,22 @@ import { IEmpresa } from "../../../../types/dtos/empresa/IEmpresa";
 import ModalInfo from "../../../ui/ModalInfo/ModalInfo";
 import ModalOptions from "../../../ui/ModalOptions/ModalOptions";
 import FormCompany from "../FormCompany/FormCompany";
+import useModals from "../../../../hooks/useModals";
 
 const ListCompanies = () => {
-  const [openModalInfo, setOpenModalInfo] = useState(false); // Manejo de Ver Empresa
-  const [infoCompany, setInfoCompany] = useState<IEmpresa | void>(); // Ver Empresa seleccionada
-  // Manejo de Añadir/Editar Empresa
-  const [openModalForm, setOpenModalForm] = useState(false);
-  const [dataToEdit, setDataToEdit] = useState<IEmpresa | null>(null);
+  const {
+    modalForm,
+    modalInfo,
+    dataToEdit,
+    info,
+    openForm,
+    openView,
+    resetForm,
+  } = useModals<IEmpresa>();
 
   const dispatch = useAppDispatch();
   const companies = useAppSelector((state) => state.companyReducer.companies);
   const activeId = useAppSelector((state) => state.companyReducer.id);
-  // Editar Empresda + Abrir Modal
-  const editCompany = (data: IEmpresa) => {
-    setOpenModalForm(true);
-    setDataToEdit(data);
-  };
-  // Manejo de Modal de Información
-  const viewCompany = (company: IEmpresa) => {
-    setOpenModalInfo(true);
-    setInfoCompany(company);
-  };
 
   useEffect(() => {
     helpHttp<IEmpresa>()
@@ -37,7 +32,6 @@ const ListCompanies = () => {
       .then((companiesData) => {
         dispatch(setCompaniesData(companiesData));
       });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
@@ -57,27 +51,23 @@ const ListCompanies = () => {
                 <ModalOptions
                   type="secondary"
                   item={company}
-                  edit={editCompany}
-                  view={viewCompany}
+                  edit={openForm}
+                  view={openView}
                 />
               </Company>
             ))
           )}
         </ul>
-        <Button text="Empresa" type="primary" openModal={setOpenModalForm} />
+        <Button text="Empresa" type="primary" openModal={() => openForm()} />
       </nav>
-      {openModalForm && (
-        <FormCompany
-          dataToEdit={dataToEdit}
-          setDataToEdit={setDataToEdit}
-          setOpenModal={setOpenModalForm}
-        />
+      {modalForm && (
+        <FormCompany dataToEdit={dataToEdit} closeModal={resetForm} />
       )}
-      {openModalInfo && infoCompany && (
+      {modalInfo && info && (
         <ModalInfo
           columns={["nombre", "razonSocial", "cuit"]}
-          info={infoCompany}
-          setOpenModal={setOpenModalInfo}
+          info={info}
+          setOpenModal={resetForm}
         />
       )}
     </>

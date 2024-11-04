@@ -8,11 +8,11 @@ import {
   updateCompaniesData,
   updateCompany,
 } from "../../../../redux/slices/companySlice";
+import Modal from "../../../ui/Modal/Modal";
 
 interface ModalProps {
   dataToEdit: IEmpresa | null;
-  setDataToEdit: (state: IEmpresa | null) => void;
-  setOpenModal: (state: boolean) => void;
+  closeModal: (state?: boolean) => void;
 }
 
 const initial: IEmpresa = {
@@ -23,11 +23,7 @@ const initial: IEmpresa = {
 };
 
 // Formulario Empresa para Editar y Añadir
-const FormCompany: FC<ModalProps> = ({
-  dataToEdit,
-  setDataToEdit,
-  setOpenModal,
-}) => {
+const FormCompany: FC<ModalProps> = ({ dataToEdit, closeModal }) => {
   const [dataForm, setDataForm] = useState<IEmpresa>(initial);
   const dispatch = useAppDispatch();
 
@@ -38,11 +34,6 @@ const FormCompany: FC<ModalProps> = ({
       [e.target.name]: e.target.value,
     }));
   };
-  // Cierra el Modal Actual + Resetear el formulario
-  const resetForm = () => {
-    setOpenModal(false);
-    setDataToEdit(null);
-  };
   // Manejo de Conexion a la BBDD PUT + POST
   const handlerSubmit = () => {
     if (dataToEdit) {
@@ -50,14 +41,14 @@ const FormCompany: FC<ModalProps> = ({
         .put(`http://190.221.207.224:8090/empresas/${dataForm.id}`, dataForm)
         .then(() => {
           dispatch(updateCompany(dataForm));
-          resetForm();
+          closeModal();
         });
     } else {
       helpHttp<IEmpresa>()
         .post(`http://190.221.207.224:8090/empresas`, dataForm)
         .then(() => {
           dispatch(updateCompaniesData(dataForm));
-          resetForm();
+          closeModal();
         });
     }
   };
@@ -67,7 +58,7 @@ const FormCompany: FC<ModalProps> = ({
   }, [dataToEdit]);
 
   return (
-    <div className={styles.modal}>
+    <Modal>
       <section className={styles.modalSection}>
         <h2>{dataToEdit ? "Editar" : "Añadir"} Empresa</h2>
         <form className={styles.modalForm}>
@@ -101,12 +92,12 @@ const FormCompany: FC<ModalProps> = ({
           <input id="image" type="file" accept="image/jpge, image/jpg" />
           {/* Cancelar y Enviar/Actualizar Empresa en BBDD */}
           <div className={styles.modalButtons}>
-            <ButtonForm text="Cancelar" type="cancel" event={resetForm} />
+            <ButtonForm text="Cancelar" type="cancel" event={closeModal} />
             <ButtonForm text="Confirmar" type="confirm" event={handlerSubmit} />
           </div>
         </form>
       </section>
-    </div>
+    </Modal>
   );
 };
 

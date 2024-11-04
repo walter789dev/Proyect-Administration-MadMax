@@ -7,29 +7,20 @@ interface OptionsProps {
 }
 
 export const Options: FC<OptionsProps> = ({ routes, setRoutes }) => {
+  const columns = ["Categorías", "Productos", "Alérgenos"];
   return (
     <>
       <nav className={styles.opciones}>
         <h2 className={styles.opcionesTitle}>Administración</h2>
         <ul className={styles.opcionesUl}>
-          <li
-            className={`${styles.opcion} ${routes == 0 && styles.active}`}
-            onClick={() => setRoutes(0)}
-          >
-            Categorías
-          </li>
-          <li
-            className={`${styles.opcion} ${routes == 1 && styles.active}`}
-            onClick={() => setRoutes(1)}
-          >
-            Productos
-          </li>
-          <li
-            className={`${styles.opcion} ${routes == 2 && styles.active}`}
-            onClick={() => setRoutes(2)}
-          >
-            Alérgenos
-          </li>
+          {columns.map((column, id) => (
+            <li
+              className={`${styles.opcion} ${routes == id && styles.active}`}
+              onClick={() => setRoutes(id)}
+            >
+              {column}
+            </li>
+          ))}
         </ul>
       </nav>
     </>

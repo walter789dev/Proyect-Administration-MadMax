@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import Button from "../../../ui/Button/Button";
 import Branch from "../Branch/Branch";
 import styles from "./listBranches.module.css";
@@ -10,27 +10,31 @@ import defaultImage from "../../../../assets/images/goods-truck.svg";
 import { setBranchesData } from "../../../../redux/slices/BranchSlice";
 import ModalOptions from "../../../ui/ModalOptions/ModalOptions";
 import FormBranch from "../FormBranch/FormBranch";
+import useModals from "../../../../hooks/useModals";
 
 const ListBranches = () => {
-  const [openModalForm, setOpenModalForm] = useState(false);
-  const [dataToEdit, setDataToEdit] = useState<ISucursal | null>(null);
-  // Manejo de Modal de Información
-  const [openInfoModal, setOpenInfoModal] = useState(false);
-  const [infoBranch, setInfoBranch] = useState<ISucursal | void>();
+  const {
+    modalForm,
+    modalInfo,
+    dataToEdit,
+    info,
+    openForm,
+    openView,
+    resetForm,
+  } = useModals<ISucursal>();
 
   const dispatch = useAppDispatch();
   const branches = useAppSelector((state) => state.branchReducer.branches);
   const activeId = useAppSelector((state) => state.companyReducer.id);
 
-  const editBranch = (data: ISucursal) => {
-    setOpenModalForm(true);
-    setDataToEdit(data);
-  };
-  // Manejo de Modal de Informacion Sucursal
-  const viewBranch = (element: ISucursal) => {
-    setOpenInfoModal(true);
-    setInfoBranch(element);
-  };
+  const columns = [
+    "nombre",
+    "empresa",
+    "domicilio",
+    "esCasaMatriz",
+    "horarioApertura",
+    "horarioCierre",
+  ];
 
   const getBranches = () => {
     helpHttp<ISucursal>()
@@ -59,7 +63,7 @@ const ListBranches = () => {
           <Button
             text="Sucursal"
             type="secondary"
-            openModal={setOpenModalForm}
+            openModal={() => openForm()}
           />
         </header>
         {/* Sección que contiene Sucursales*/}
@@ -67,11 +71,7 @@ const ListBranches = () => {
           {branches?.length ? (
             branches.map((branch, id) => (
               <Branch key={id} branch={branch}>
-                <ModalOptions
-                  item={branch}
-                  edit={editBranch}
-                  view={viewBranch}
-                />
+                <ModalOptions item={branch} edit={openForm} view={openView} />
               </Branch>
             ))
           ) : (
@@ -82,28 +82,16 @@ const ListBranches = () => {
           )}
         </section>
       </section>
-      {openModalForm && (
+      {modalForm && (
         <FormBranch
           idCompany={activeId}
           dataToEdit={dataToEdit}
-          setDataToEdit={setDataToEdit}
-          setOpenModal={setOpenModalForm}
+          closeModal={resetForm}
           getBranches={getBranches}
         />
       )}
-      {openInfoModal && infoBranch && (
-        <ModalInfo
-          columns={[
-            "nombre",
-            "empresa",
-            "domicilio",
-            "esCasaMatriz",
-            "horarioApertura",
-            "horarioCierre",
-          ]}
-          info={infoBranch}
-          setOpenModal={setOpenInfoModal}
-        />
+      {modalInfo && info && (
+        <ModalInfo columns={columns} info={info} setOpenModal={resetForm} />
       )}
     </>
   );
