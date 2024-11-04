@@ -7,9 +7,9 @@ import { helpHttp } from "../../../../helpers/helpHttp";
 import { useAppDispatch, useAppSelector } from "../../../../hooks/redux";
 import ModalInfo from "../../../ui/ModalInfo/ModalInfo";
 import defaultImage from "../../../../assets/images/goods-truck.svg";
-import ModalFormBranch from "../ModalFormBranch/ModalFormBranch";
 import { setBranchesData } from "../../../../redux/slices/BranchSlice";
 import ModalOptions from "../../../ui/ModalOptions/ModalOptions";
+import FormBranch from "../FormBranch/FormBranch";
 
 const ListBranches = () => {
   const [openModalForm, setOpenModalForm] = useState(false);
@@ -83,7 +83,7 @@ const ListBranches = () => {
         </section>
       </section>
       {openModalForm && (
-        <ModalFormBranch
+        <FormBranch
           idCompany={activeId}
           dataToEdit={dataToEdit}
           setDataToEdit={setDataToEdit}

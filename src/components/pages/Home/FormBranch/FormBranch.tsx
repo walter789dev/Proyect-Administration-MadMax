@@ -1,6 +1,6 @@
 import { ChangeEvent, FC, useEffect, useState } from "react";
 import ButtonForm from "../../../ui/ButtonForm/ButtonForm";
-import styles from "./ModalFormBranch.module.css";
+import styles from "./FormBranch.module.css";
 import { ICreateSucursal } from "../../../../types/dtos/sucursal/ICreateSucursal";
 import { helpHttp } from "../../../../helpers/helpHttp";
 import { ISucursal } from "../../../../types/dtos/sucursal/ISucursal";
@@ -35,7 +35,7 @@ const initial: ICreateSucursal = {
   idEmpresa: 0,
 };
 
-const ModalFormBranch: FC<ModalFormProps> = ({
+const FormBranch: FC<ModalFormProps> = ({
   idCompany,
   dataToEdit,
   setDataToEdit,
@@ -289,4 +289,4 @@ const ModalFormBranch: FC<ModalFormProps> = ({
   );
 };
 
-export default ModalFormBranch;
+export default FormBranch;

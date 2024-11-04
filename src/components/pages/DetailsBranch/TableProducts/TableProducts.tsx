@@ -4,7 +4,7 @@ import styles from "./TableProducts.module.css";
 import { helpHttp } from "../../../../helpers/helpHttp";
 import { IProductos } from "../../../../types/dtos/productos/IProductos";
 import Product from "../Product/Product";
-import ModalProduct from "../ModalProduct/ModalProduct";
+import FormProduct from "../FormProduct/FormProduct";
 import ModalOptions from "../../../ui/ModalOptions/ModalOptions";
 
 interface TableAllergenProps {
@@ -69,7 +69,7 @@ const TableProducts: FC<TableAllergenProps> = ({ id }) => {
           )}
         </ul>
       </section>
-      {modalEdit && <ModalProduct />}
+      {modalEdit && <FormProduct />}
     </>
   );
 };

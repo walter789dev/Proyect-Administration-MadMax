@@ -62,7 +62,8 @@ const ModalOptions = <T,>({
       {type == "custom" && (
         <button
           className={styles.button}
-          onClick={() => {
+          onClick={(e) => {
+            e.stopPropagation();
             if (hasId(item) && del) del(item.id);
           }}
         >

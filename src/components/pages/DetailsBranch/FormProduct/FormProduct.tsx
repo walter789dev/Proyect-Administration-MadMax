@@ -1,11 +1,11 @@
 import { IProductos } from "../../../../types/dtos/productos/IProductos";
-import styles from "./ModalProduct.module.css";
+import styles from "./FormProduct.module.css";
 
-interface ModalProductProps {
+interface ModalProps {
   product: IProductos;
 }
 
-const ModalProduct = () => {
+const FormProduct = () => {
   return (
     <div className={styles.modal}>
       <section className={styles.modalSection}>
@@ -15,4 +15,4 @@ const ModalProduct = () => {
   );
 };
 
-export default ModalProduct;
+export default FormProduct;

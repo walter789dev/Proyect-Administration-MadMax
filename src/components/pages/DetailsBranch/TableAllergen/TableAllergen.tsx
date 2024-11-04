@@ -4,7 +4,7 @@ import Allergen from "../Allergen/Allergen";
 import styles from "./TableAllergen.module.css";
 import { helpHttp } from "../../../../helpers/helpHttp";
 import { IAlergenos } from "../../../../types/dtos/alergenos/IAlergenos";
-import ModalAllergen from "../ModalAllergen/ModalAllergen";
+import FormAllergen from "../FormAllergen/FormAllergen";
 import ModalInfo from "../../../ui/ModalInfo/ModalInfo";
 import ModalOptions from "../../../ui/ModalOptions/ModalOptions";
 
@@ -74,7 +74,7 @@ export const TableAllergen = () => {
         </ul>
       </section>
       {modalEdit && (
-        <ModalAllergen
+        <FormAllergen
           closeModal={setModalEdit}
           dataToEdit={dataToEdit}
           setDataToEdit={setDataToEdit}

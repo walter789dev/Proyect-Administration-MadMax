@@ -7,8 +7,8 @@ import { setCompaniesData } from "../../../../redux/slices/companySlice";
 import { helpHttp } from "../../../../helpers/helpHttp";
 import { IEmpresa } from "../../../../types/dtos/empresa/IEmpresa";
 import ModalInfo from "../../../ui/ModalInfo/ModalInfo";
-import ModalFormCompany from "../ModalFormCompany/ModalFormCompany";
 import ModalOptions from "../../../ui/ModalOptions/ModalOptions";
+import FormCompany from "../FormCompany/FormCompany";
 
 const ListCompanies = () => {
   const [openModalInfo, setOpenModalInfo] = useState(false); // Manejo de Ver Empresa
@@ -67,7 +67,7 @@ const ListCompanies = () => {
         <Button text="Empresa" type="primary" openModal={setOpenModalForm} />
       </nav>
       {openModalForm && (
-        <ModalFormCompany
+        <FormCompany
           dataToEdit={dataToEdit}
           setDataToEdit={setDataToEdit}
           setOpenModal={setOpenModalForm}
