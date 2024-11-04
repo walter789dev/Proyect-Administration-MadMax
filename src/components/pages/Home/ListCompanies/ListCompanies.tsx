@@ -6,9 +6,9 @@ import { useAppDispatch, useAppSelector } from "../../../../hooks/redux";
 import { setCompaniesData } from "../../../../redux/slices/companySlice";
 import { helpHttp } from "../../../../helpers/helpHttp";
 import { IEmpresa } from "../../../../types/dtos/empresa/IEmpresa";
-import ModalInfo from "../ModalInfo/ModalInfo";
-import ModalOptions from "../ModalOptions/ModalOptions";
+import ModalInfo from "../../../ui/ModalInfo/ModalInfo";
 import ModalFormCompany from "../ModalFormCompany/ModalFormCompany";
+import ModalOptions from "../../../ui/ModalOptions/ModalOptions";
 
 const ListCompanies = () => {
   const [openModalInfo, setOpenModalInfo] = useState(false); // Manejo de Ver Empresa
@@ -55,7 +55,7 @@ const ListCompanies = () => {
                 company={company}
               >
                 <ModalOptions
-                  size="lg"
+                  type="secondary"
                   item={company}
                   edit={editCompany}
                   view={viewCompany}

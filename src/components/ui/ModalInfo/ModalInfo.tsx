@@ -1,14 +1,16 @@
 import styles from "./ModalInfo.module.css";
-import ButtonForm from "../../../ui/ButtonForm/ButtonForm";
-import { IEmpresa } from "../../../../types/dtos/empresa/IEmpresa";
+import ButtonForm from "../ButtonForm/ButtonForm";
+import { IEmpresa } from "../../../types/dtos/empresa/IEmpresa";
 import { FC } from "react";
-import { ISucursal } from "../../../../types/dtos/sucursal/ISucursal";
+import { ISucursal } from "../../../types/dtos/sucursal/ISucursal";
+import { IAlergenos } from "../../../types/dtos/alergenos/IAlergenos";
 
 interface ModalInfoProps {
-  info: IEmpresa | ISucursal;
+  info: IEmpresa | ISucursal | IAlergenos;
   columns: string[];
   setOpenModal: (state: boolean) => void;
 }
+
 // Muestra Información de la Empresa | Sucursal seleccionada
 const ModalInfo: FC<ModalInfoProps> = ({ columns, info, setOpenModal }) => {
   return (
@@ -17,7 +19,10 @@ const ModalInfo: FC<ModalInfoProps> = ({ columns, info, setOpenModal }) => {
         <h2>{"empresa" in info ? "Sucursal" : "Empresa"}</h2>
         <div className={styles.modalInfo}>
           <div className={styles.modalImage}>
-            <img src={info["logo"] as string} alt="Logo" />
+            <img
+              src={"imagen" in info ? info.imagen?.url : info["logo"]}
+              alt="Logo"
+            />
           </div>
           <div className={styles.modal2}>
             {columns.map((key, id) => {
@@ -58,7 +63,7 @@ const ModalInfo: FC<ModalInfoProps> = ({ columns, info, setOpenModal }) => {
               } else {
                 return (
                   <p key={key} className={styles.modalText}>
-                    <b>{key}:</b> {info[key as keyof IEmpresa]}
+                    <b>{key}:</b> {info[key as keyof (IEmpresa | IAlergenos)]}
                   </p>
                 );
               }

@@ -5,11 +5,11 @@ import styles from "./listBranches.module.css";
 import { ISucursal } from "../../../../types/dtos/sucursal/ISucursal";
 import { helpHttp } from "../../../../helpers/helpHttp";
 import { useAppDispatch, useAppSelector } from "../../../../hooks/redux";
-import ModalOptions from "../ModalOptions/ModalOptions";
-import ModalInfo from "../ModalInfo/ModalInfo";
+import ModalInfo from "../../../ui/ModalInfo/ModalInfo";
 import defaultImage from "../../../../assets/images/goods-truck.svg";
 import ModalFormBranch from "../ModalFormBranch/ModalFormBranch";
 import { setBranchesData } from "../../../../redux/slices/BranchSlice";
+import ModalOptions from "../../../ui/ModalOptions/ModalOptions";
 
 const ListBranches = () => {
   const [openModalForm, setOpenModalForm] = useState(false);
