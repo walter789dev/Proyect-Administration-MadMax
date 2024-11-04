@@ -5,8 +5,8 @@ import styles from "./TableAllergen.module.css";
 import { helpHttp } from "../../../../helpers/helpHttp";
 import { IAlergenos } from "../../../../types/dtos/alergenos/IAlergenos";
 import ModalAllergen from "../ModalAllergen/ModalAllergen";
-import { ModalOption } from "../ModalOption/ModalOption";
-import { ModalAllergenInfo } from "../ModalAllergenInfo/ModalAllergenInfo";
+import ModalInfo from "../../../ui/ModalInfo/ModalInfo";
+import ModalOptions from "../../../ui/ModalOptions/ModalOptions";
 
 export const TableAllergen = () => {
   const [alergenos, setAlergenos] = useState<IAlergenos[]>([]);
@@ -30,8 +30,8 @@ export const TableAllergen = () => {
   const deleteAlergeno = (id: number | undefined) => {
     helpHttp<IAlergenos>()
       .del(`http://190.221.207.224:8090/alergenos/${id}`)
-      .then(() => setAlergenos(alergenos.filter(item => item.id !== id)));
-  }
+      .then(() => setAlergenos(alergenos.filter((item) => item.id !== id)));
+  };
 
   useEffect(() => {
     helpHttp<IAlergenos>()
@@ -42,7 +42,14 @@ export const TableAllergen = () => {
     <>
       <section className={styles.contenedor}>
         <div className={styles.button}>
-          <Button text="Alergeno" type="tertiary" openModal={() => setModalEdit(true)} />
+          <Button
+            text="Alergeno"
+            type="tertiary"
+            openModal={() => setModalEdit(true)}
+          />
+        </div>
+        <div className={styles.title}>
+          <h2>Lista de Alergenos: </h2>
         </div>
         <ul className={styles.tables}>
           <li className={`${styles.firstRow} ${styles.element}`}>
@@ -52,11 +59,12 @@ export const TableAllergen = () => {
           {alergenos.length > 0 ? (
             alergenos.map((alergeno, id) => (
               <Allergen key={id} denominacion={alergeno.denominacion}>
-                <ModalOption
+                <ModalOptions
+                  type="custom"
                   item={alergeno}
                   view={viewAlergeno}
                   edit={editAlergeno}
-                  del={deleteAlergeno} 
+                  del={deleteAlergeno}
                 />
               </Allergen>
             ))
@@ -67,17 +75,23 @@ export const TableAllergen = () => {
       </section>
       {modalEdit && (
         <ModalAllergen
-          closeModal={setModalEdit} 
+          closeModal={setModalEdit}
           dataToEdit={dataToEdit}
           setDataToEdit={setDataToEdit}
           setAlergenos={setAlergenos}
-        />)}
-        {openModalInfo && infoAlergeno &&(
-          <ModalAllergenInfo
-          allergen={infoAlergeno}
-          setOpenModal={setOpenModalInfo} />
-        )}
-      
+        />
+      )}
+      {openModalInfo && infoAlergeno && (
+        <ModalInfo
+          columns={["denominacion"]}
+          info={infoAlergeno}
+          setOpenModal={setOpenModalInfo}
+        />
+        //   <ModalAllergenInfo
+        //     allergen={infoAlergeno}
+        //     setOpenModal={setOpenModalInfo}
+        //   />
+      )}
     </>
   );
 };

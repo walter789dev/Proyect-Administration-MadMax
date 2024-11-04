@@ -1,0 +1,56 @@
+.options {
+  display: flex;
+  width: 90px;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
+}
+
+.primary svg {
+  fill: #246a73;
+}
+
+.primary .first {
+  width: 25px;
+}
+
+.primary .second {
+  width: 18px;
+}
+
+.primary .sucursal {
+  width: 15px;
+}
+
+.secondary svg {
+  fill: #fff;
+}
+
+.secondary .first {
+  width: 30px;
+}
+
+.secondary .second {
+  width: 20px;
+}
+
+.custom .first {
+  width: 32px;
+  fill: #0093e9;
+}
+
+.custom .second {
+  width: 24px;
+  fill: #1abc9c;
+}
+
+.custom .delete {
+  width: 30px;
+  fill: #d63031;
+}
+
+.button {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+}
