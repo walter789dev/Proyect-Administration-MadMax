@@ -58,7 +58,7 @@ const ListCompanies = () => {
             ))
           )}
         </ul>
-        <Button text="Empresa" type="primary" openModal={() => openForm()} />
+        <Button text="Empresa" type="primary" openModal={openForm} />
       </nav>
       {modalForm && (
         <FormCompany dataToEdit={dataToEdit} closeModal={resetForm} />

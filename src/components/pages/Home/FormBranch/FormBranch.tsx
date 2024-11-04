@@ -12,7 +12,7 @@ import Modal from "../../../ui/Modal/Modal";
 interface ModalFormProps {
   idCompany: number | undefined;
   dataToEdit: ISucursal | null;
-  closeModal: (state?: boolean) => void;
+  closeModal: (state?: string) => void;
   getBranches: () => void;
 }
 
@@ -268,7 +268,11 @@ const FormBranch: FC<ModalFormProps> = ({
               </label>
             </div>
             <div className={styles.containerButtons}>
-              <ButtonForm type="cancel" text="Cancelar" event={closeModal} />
+              <ButtonForm
+                type="cancel"
+                text="Cancelar"
+                event={() => closeModal()}
+              />
               <ButtonForm
                 type="confirm"
                 text="Confirmar"

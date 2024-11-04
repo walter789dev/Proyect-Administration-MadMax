@@ -15,6 +15,7 @@ export const Options: FC<OptionsProps> = ({ routes, setRoutes }) => {
         <ul className={styles.opcionesUl}>
           {columns.map((column, id) => (
             <li
+              key={id}
               className={`${styles.opcion} ${routes == id && styles.active}`}
               onClick={() => setRoutes(id)}
             >

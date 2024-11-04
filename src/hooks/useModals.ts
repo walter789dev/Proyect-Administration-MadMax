@@ -12,8 +12,10 @@ function useModals<T>() {
       setModalForm(true);
    };
 
-   const resetForm = (option?: boolean) => {
-      if (!option) setModalInfo(option as boolean)
+   const resetForm = (option?: string) => {
+      if (option) {
+         setModalInfo(false)
+      }
       else {
          setDataToEdit(null);
          setModalForm(false);

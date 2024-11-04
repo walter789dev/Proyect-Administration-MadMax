@@ -27,15 +27,6 @@ const ListBranches = () => {
   const branches = useAppSelector((state) => state.branchReducer.branches);
   const activeId = useAppSelector((state) => state.companyReducer.id);
 
-  const columns = [
-    "nombre",
-    "empresa",
-    "domicilio",
-    "esCasaMatriz",
-    "horarioApertura",
-    "horarioCierre",
-  ];
-
   const getBranches = () => {
     helpHttp<ISucursal>()
       .getAll(`http://190.221.207.224:8090/sucursales/porEmpresa/${activeId}`)
@@ -48,7 +39,6 @@ const ListBranches = () => {
     if (activeId) {
       getBranches();
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [activeId]);
 
   return (
@@ -60,11 +50,7 @@ const ListBranches = () => {
             Cantidad de sucursales: {branches?.length ? branches.length : "0"}
           </h2>
           {/* Boton para abrir Modal de Sucursal */}
-          <Button
-            text="Sucursal"
-            type="secondary"
-            openModal={() => openForm()}
-          />
+          <Button text="Sucursal" type="secondary" openModal={openForm} />
         </header>
         {/* Sección que contiene Sucursales*/}
         <section className={styles.branchContainer}>
@@ -91,7 +77,18 @@ const ListBranches = () => {
         />
       )}
       {modalInfo && info && (
-        <ModalInfo columns={columns} info={info} setOpenModal={resetForm} />
+        <ModalInfo
+          columns={[
+            "nombre",
+            "empresa",
+            "domicilio",
+            "esCasaMatriz",
+            "horarioApertura",
+            "horarioCierre",
+          ]}
+          info={info}
+          setOpenModal={resetForm}
+        />
       )}
     </>
   );

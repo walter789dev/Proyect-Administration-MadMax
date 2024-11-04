@@ -6,19 +6,23 @@ import { IProductos } from "../../../../types/dtos/productos/IProductos";
 import Product from "../Product/Product";
 import FormProduct from "../FormProduct/FormProduct";
 import ModalOptions from "../../../ui/ModalOptions/ModalOptions";
+import useModals from "../../../../hooks/useModals";
 
-interface TableAllergenProps {
-  id: number | undefined;
+interface TableProps {
+  id: string | undefined;
 }
 
-const TableProducts: FC<TableAllergenProps> = ({ id }) => {
+const TableProducts: FC<TableProps> = ({ id }) => {
   const [products, setProducts] = useState<IProductos[] | []>([]);
-
-  const [modalEdit, setModalEdit] = useState(false);
-  const [dataToEdit, setDataToEdit] = useState<IProductos | null>(null);
-
-  // const [openModalInfo, setOpenModalInfo] = useState(false);
-  // const [infoAlergeno, setInfoAlergeno] = useState<IProductos | void>();
+  const {
+    modalForm,
+    //  modalInfo,
+    //  dataToEdit,
+    //  info,
+    openForm,
+    openView,
+    //  resetForm,
+  } = useModals<IProductos>();
 
   useEffect(() => {
     helpHttp<IProductos>()
@@ -30,11 +34,7 @@ const TableProducts: FC<TableAllergenProps> = ({ id }) => {
       <section className={styles.contenedor}>
         <header>
           <div className={styles.button}>
-            <Button
-              text="Producto"
-              type="tertiary"
-              openModal={() => setModalEdit(true)}
-            />
+            <Button text="Producto" type="tertiary" openModal={openForm} />
           </div>
           <div className={styles.filter}>
             <h2>Filtrar Por Categoria: </h2>
@@ -58,8 +58,8 @@ const TableProducts: FC<TableAllergenProps> = ({ id }) => {
                 <ModalOptions
                   type="custom"
                   item={product}
-                  view={() => {}}
-                  edit={() => {}}
+                  view={openView}
+                  edit={openForm}
                   del={() => {}}
                 />
               </Product>
@@ -69,7 +69,7 @@ const TableProducts: FC<TableAllergenProps> = ({ id }) => {
           )}
         </ul>
       </section>
-      {modalEdit && <FormProduct />}
+      {modalForm && <FormProduct />}
     </>
   );
 };

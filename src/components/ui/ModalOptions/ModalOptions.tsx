@@ -23,14 +23,14 @@ const ModalOptions = <T,>({
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
 
-  const activeBranch = () => {
-    dispatch(setActiveBranch(item as ISucursal));
-    navigate("/products");
-  };
-
   function hasId(item: any): item is { id: number } {
     return item && typeof item.id === "number";
   }
+
+  const activeBranch = () => {
+    dispatch(setActiveBranch(item as ISucursal));
+    navigate(`/productos/${hasId(item) && item.id}`);
+  };
 
   return (
     <div className={`${styles.options} ${styles[type]}`}>
@@ -82,10 +82,6 @@ const ModalOptions = <T,>({
       )}
     </div>
   );
-};
-
-ModalOptions.PropTypes = {
-  del: () => {},
 };
 
 export default ModalOptions;

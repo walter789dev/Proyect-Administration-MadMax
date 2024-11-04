@@ -7,7 +7,7 @@ import Modal from "../../../ui/Modal/Modal";
 
 interface ModalProps {
   dataToEdit: IAlergenos | null;
-  closeModal: (state?: boolean) => void;
+  closeModal: (state?: string) => void;
   setAlergenos: (updater: (state: IAlergenos[]) => IAlergenos[]) => void;
 }
 
@@ -74,7 +74,11 @@ const FormAllergen: FC<ModalProps> = ({
           <label htmlFor="file">Ingrese una imagen:</label>
           <input id="file" type="file" />
           <div className={styles.modalButtons}>
-            <ButtonForm type="cancel" text="Cancelar" event={closeModal} />
+            <ButtonForm
+              type="cancel"
+              text="Cancelar"
+              event={() => closeModal()}
+            />
             <ButtonForm type="confirm" text="Confirmar" event={handlerSubmit} />
           </div>
         </form>

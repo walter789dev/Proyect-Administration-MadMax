@@ -4,7 +4,7 @@ import styles from "./Button.module.css";
 interface ButtonProps {
   text: string;
   type: "primary" | "secondary" | "tertiary" | "disabled";
-  openModal: (state: boolean) => void;
+  openModal: () => void;
 }
 // --- Componente para abrir el Modal correspondiente --
 const Button: FC<ButtonProps> = ({ text, type, openModal }) => {
@@ -19,7 +19,7 @@ const Button: FC<ButtonProps> = ({ text, type, openModal }) => {
   return (
     <button
       className={`${styles.button} ${styles[type]}`}
-      onClick={() => openModal(true)}
+      onClick={() => openModal()}
     >
       <svg
         xmlns="http://www.w3.org/2000/svg"

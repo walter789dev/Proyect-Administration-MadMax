@@ -12,7 +12,7 @@ import Modal from "../../../ui/Modal/Modal";
 
 interface ModalProps {
   dataToEdit: IEmpresa | null;
-  closeModal: (state?: boolean) => void;
+  closeModal: (state?: string) => void;
 }
 
 const initial: IEmpresa = {
@@ -92,7 +92,11 @@ const FormCompany: FC<ModalProps> = ({ dataToEdit, closeModal }) => {
           <input id="image" type="file" accept="image/jpge, image/jpg" />
           {/* Cancelar y Enviar/Actualizar Empresa en BBDD */}
           <div className={styles.modalButtons}>
-            <ButtonForm text="Cancelar" type="cancel" event={closeModal} />
+            <ButtonForm
+              text="Cancelar"
+              type="cancel"
+              event={() => closeModal()}
+            />
             <ButtonForm text="Confirmar" type="confirm" event={handlerSubmit} />
           </div>
         </form>

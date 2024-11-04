@@ -8,7 +8,7 @@ import { IAlergenos } from "../../../types/dtos/alergenos/IAlergenos";
 interface ModalInfoProps {
   info: IEmpresa | ISucursal | IAlergenos;
   columns: string[];
-  setOpenModal: (state: boolean) => void;
+  setOpenModal: (state?: string) => void;
 }
 
 // Muestra Información de la Empresa | Sucursal seleccionada
@@ -73,7 +73,7 @@ const ModalInfo: FC<ModalInfoProps> = ({ columns, info, setOpenModal }) => {
         <ButtonForm
           text="Cerrar"
           type="cancel"
-          event={() => setOpenModal(false)}
+          event={() => setOpenModal("info")}
         />
       </section>
     </div>
