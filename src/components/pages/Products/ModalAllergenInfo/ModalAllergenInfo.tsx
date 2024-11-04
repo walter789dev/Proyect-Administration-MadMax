@@ -2,7 +2,6 @@ import styles from "./ModalAllergenInfo.module.css";
 import { IAlergenos } from "../../../../types/dtos/alergenos/IAlergenos";
 import { FC } from "react";
 import ButtonForm from "../../../ui/ButtonForm/ButtonForm";
-import { useStore } from "react-redux";
 
 interface ModalInfoProps {
   allergen: IAlergenos;
