@@ -4,9 +4,10 @@ import styles from "./TableProducts.module.css";
 import { helpHttp } from "../../../../helpers/helpHttp";
 import { IProductos } from "../../../../types/dtos/productos/IProductos";
 import Product from "../Product/Product";
-import FormProduct from "../FormProduct/FormProduct";
+// import FormProduct from "../FormProduct/FormProduct";
 import ModalOptions from "../../../ui/ModalOptions/ModalOptions";
 import useModals from "../../../../hooks/useModals";
+import { ViewProduct } from "../ViewProduct/ViewProduct";
 
 interface TableProps {
   id: string | undefined;
@@ -16,12 +17,12 @@ const TableProducts: FC<TableProps> = ({ id }) => {
   const [products, setProducts] = useState<IProductos[] | []>([]);
   const {
     modalForm,
-    //  modalInfo,
-    //  dataToEdit,
-    //  info,
+    modalInfo,
+    dataToEdit,
+    info,
     openForm,
     openView,
-    //  resetForm,
+    resetForm,
   } = useModals<IProductos>();
 
   const deleteProducto = (id:number | undefined) => {
@@ -74,7 +75,11 @@ const TableProducts: FC<TableProps> = ({ id }) => {
           )}
         </ul>
       </section>
-      {modalForm && <FormProduct />}
+      {/* {modalForm &&( <FormProduct product={dataToEdit} closeModal={resetForm} setProductos={setProducts} />)} */}
+      {modalInfo && info && (
+        <ViewProduct info={info} setOpenModal={resetForm} />
+
+      )}
     </>
   );
 };

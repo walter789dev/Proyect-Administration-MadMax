@@ -65,6 +65,7 @@ const ListCompanies = () => {
       )}
       {modalInfo && info && (
         <ModalInfo
+          title="Sucursal"
           columns={["nombre", "razonSocial", "cuit"]}
           info={info}
           setOpenModal={resetForm}

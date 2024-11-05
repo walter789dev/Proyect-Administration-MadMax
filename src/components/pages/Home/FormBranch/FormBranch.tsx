@@ -8,7 +8,8 @@ import { IPais } from "../../../../types/IPais";
 import { IProvincia } from "../../../../types/IProvincia";
 import { ILocalidad } from "../../../../types/ILocalidad";
 import Modal from "../../../ui/Modal/Modal";
-import useModals from "../../../../hooks/useModals";
+import { IUpdateSucursal } from "../../../../types/dtos/sucursal/IUpdateSucursal";
+import Loader from "../../../ui/Loader/Loader";
 
 interface ModalFormProps {
   idCompany: number | undefined;
@@ -34,6 +35,7 @@ const initial: ICreateSucursal = {
     piso: 0,
   },
   idEmpresa: 0,
+  eliminado: false,
 };
 
 const FormBranch: FC<ModalFormProps> = ({
@@ -42,47 +44,55 @@ const FormBranch: FC<ModalFormProps> = ({
   closeModal,
   getBranches,
 }) => {
-  const [dataForm, setDataForm] = useState<ICreateSucursal>({
+  const [fileImage, setFileImage] = useState<FormData>();
+  const [loading, setLoading] = useState(false);
+  const [dataForm, setDataForm] = useState<ICreateSucursal | ISucursal>({
     ...initial,
     idEmpresa: idCompany || 0,
   });
 
   const [paises, setPaises] = useState<IPais[] | void>();
   const [provincias, setProvincias] = useState<IProvincia[] | void>();
-   const [localidades, setLocalidades] = useState<ILocalidad[] | void>();
-   const [selectLocalidad, setSelectLocalidad] = useState<ILocalidad>();
+  const [localidades, setLocalidades] = useState<ILocalidad[] | void>();
 
   const handlerChange = (
     e: ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => {
+    const { target } = e;
     setDataForm((data) => ({
       ...data,
-      [e.target.name]: e.target.value,
+      [target.name]:
+        isNaN(Number(target.value)) || Number(target.value) == 0
+          ? target.value
+          : Number(target.value),
     }));
   };
 
   const handlerChangeDomicilio = (
     e: ChangeEvent<HTMLSelectElement | HTMLInputElement>
   ) => {
-    setDataForm((data) => ({
-      ...data,
-      domicilio: {
-        ...data.domicilio,
-        [e.target.name]: e.target.value,
-      },
-    }));
-   };
-   
-   const handlerLocalidad = (
-     e: ChangeEvent<HTMLSelectElement | HTMLInputElement>
-   ) => {
-      if (dataToEdit) {
-         const findLocal = localidades?.find(local => local.id === Number(e.target.value))
-         setSelectLocalidad(findLocal)
-      } else {
-         handlerChangeDomicilio(e)
-      }
-   };
+    setDataForm(
+      (data) =>
+        ({
+          ...data,
+          domicilio: {
+            ...data.domicilio,
+            [e.target.name]:
+              isNaN(Number(e.target.value)) || Number(e.target.value) == 0
+                ? e.target.value
+                : Number(e.target.value),
+          },
+        } as ISucursal | ICreateSucursal)
+    );
+  };
+
+  const handlerImage = (e: ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files.length > 0) {
+      const formData = new FormData();
+      formData.append("uploads", e.target.files[0]);
+      setFileImage(formData);
+    }
+  };
 
   const manageData = (url: string) => {
     helpHttp<IProvincia | ILocalidad>()
@@ -93,13 +103,46 @@ const FormBranch: FC<ModalFormProps> = ({
       });
   };
 
-   const handlerSubmit = () => {
-     const {} = useModals()
+  const handlerSubmit = async () => {
+    setLoading(true);
+
+    const resImage = await fetch(`http://190.221.207.224:8090/images/uploads`, {
+      method: "POST",
+      body: fileImage,
+    });
+    const newData = await resImage.text();
+
+    if (!newData) {
+      alert("No se ha podido subir a la BBDD");
+      return;
+    }
+
+    console.log(newData);
+
     if (dataToEdit) {
-      
+      const { empresa, domicilio, ...preDataForm } = dataForm as ISucursal;
+      const { localidad, ...finalDomicilio } = domicilio;
+
+      const finalEdit: IUpdateSucursal = {
+        ...preDataForm,
+        idEmpresa: empresa?.id as number,
+        domicilio: finalDomicilio,
+        logo: newData,
+      };
+
+      const response = await helpHttp<IUpdateSucursal>().put(
+        `sucursales/update/${finalEdit.idEmpresa}`,
+        finalEdit
+      );
+
+      if (response) {
+        getBranches();
+        closeModal();
+      }
     } else {
+      const finalDataForm = { ...dataForm, logo: newData } as ICreateSucursal;
       helpHttp<ICreateSucursal>()
-        .post(`sucursales/create`, dataForm)
+        .post(`sucursales/create`, finalDataForm)
         .then(() => {
           getBranches();
           closeModal();
@@ -108,26 +151,7 @@ const FormBranch: FC<ModalFormProps> = ({
   };
 
   useEffect(() => {
-    if (dataToEdit)
-      setDataForm({
-        nombre: dataToEdit.nombre,
-        horarioApertura: dataToEdit.horarioApertura,
-        horarioCierre: dataToEdit.horarioCierre,
-        esCasaMatriz: dataToEdit.esCasaMatriz,
-        latitud: dataToEdit.latitud,
-        longitud: dataToEdit.longitud,
-        domicilio: {
-          calle: dataToEdit.domicilio.calle,
-          numero: dataToEdit.domicilio.numero,
-          cp: dataToEdit.domicilio.cp,
-          piso: dataToEdit.domicilio.piso,
-          nroDpto: dataToEdit.domicilio.nroDpto,
-        },
-        idEmpresa: dataToEdit.empresa.id!,
-        logo: dataToEdit.logo ?? null,
-        eliminado: dataToEdit.eliminado,
-        categorias: dataToEdit.categorias,
-      });
+    if (dataToEdit) setDataForm(dataToEdit);
   }, []);
 
   useEffect(() => {
@@ -284,7 +308,7 @@ const FormBranch: FC<ModalFormProps> = ({
               <label>Seleccione localidad: </label>
               <select
                 name="idLocalidad"
-                onChange={handlerLocalidad}
+                onChange={handlerChangeDomicilio}
                 required
               >
                 <option value="">Seleccione...</option>
@@ -300,20 +324,32 @@ const FormBranch: FC<ModalFormProps> = ({
             <div>
               <label htmlFor="image">Elija una imagen: </label>
               <label className={styles.customFileUpload}>
-                <input type="file" id="image" name="image" required />
+                <input
+                  type="file"
+                  id="image"
+                  name="image"
+                  required
+                  onChange={handlerImage}
+                />
               </label>
             </div>
             <div className={styles.containerButtons}>
-              <ButtonForm
-                type="cancel"
-                text="Cancelar"
-                event={() => closeModal()}
-              />
-              <ButtonForm
-                type="confirm"
-                text="Confirmar"
-                event={handlerSubmit}
-              />
+              {loading ? (
+                <Loader />
+              ) : (
+                <>
+                  <ButtonForm
+                    type="cancel"
+                    text="Cancelar"
+                    event={() => closeModal()}
+                  />
+                  <ButtonForm
+                    type="confirm"
+                    text="Confirmar"
+                    event={handlerSubmit}
+                  />
+                </>
+              )}
             </div>
           </div>
         </form>

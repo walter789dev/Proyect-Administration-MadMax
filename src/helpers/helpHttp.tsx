@@ -36,6 +36,13 @@ export function helpHttp<T>() {
       .catch((err) => err);
   }
 
+  function getBy(url: string): Promise<T> {
+    const options: IOptionsHTTP = {
+      method: "GET",
+    };
+    return customFetch(url, options);
+  }
+
   function getAll(url: string): Promise<T[]> {
     const options: IOptionsHTTP = {
       method: "GET",
@@ -65,6 +72,7 @@ export function helpHttp<T>() {
   };
 
   return {
+    getBy,
     getAll,
     post,
     put,

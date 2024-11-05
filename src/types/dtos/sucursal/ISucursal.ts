@@ -3,17 +3,16 @@ import { ICategorias } from "../categorias/ICategorias";
 import { IEmpresa } from "../empresa/IEmpresa";
 
 export interface ISucursal {
-   id: number;
+   id?: number | undefined;
    nombre: string;
-   empresa: IEmpresa;
+   empresa?: IEmpresa;
    domicilio: IDomicilio;
-   calle: string;
    latitud: number;
    longitud: number;
-   categorias: ICategorias[];
+   categorias?: ICategorias[]
    esCasaMatriz: boolean;
    horarioApertura: string;
    eliminado: boolean;
    horarioCierre: string;
-   logo?: string;
+   logo: string;
 }

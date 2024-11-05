@@ -1,7 +1,7 @@
 import { IProvincia } from "./IProvincia";
 
 export interface ILocalidad {
-  id: number;
+  id: number | undefined;
   nombre: string;
   provincia: IProvincia;
 }

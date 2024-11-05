@@ -76,6 +76,7 @@ export const TableAllergen = () => {
       )}
       {modalInfo && info && (
         <ModalInfo
+          title="Alergeno"
           columns={["denominacion"]}
           info={info}
           setOpenModal={resetForm}

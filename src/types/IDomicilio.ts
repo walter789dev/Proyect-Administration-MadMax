@@ -9,4 +9,5 @@ export interface IDomicilio {
    eliminado?: boolean;
    nroDpto: number;
    localidad: ILocalidad;
+   idLocalidad: number
 }

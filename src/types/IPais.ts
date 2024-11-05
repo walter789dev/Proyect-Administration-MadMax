@@ -1,4 +1,4 @@
 export interface IPais {
-  nombre: string;
-  id: number;
+   nombre: string;
+   id: number | undefined;
 }

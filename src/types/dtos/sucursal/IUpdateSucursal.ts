@@ -8,16 +8,16 @@ export interface IUpdateSucursal extends baseDto {
    latitud: number;
    longitud: number;
    domicilio: {
-      id: number;
+      id?: number | undefined;
       calle: string;
-      numero: number;
-      cp: number;
-      piso: number;
-      nroDpto: number;
-      idLocalidad: number;
+      numero: number | undefined;
+      cp: number | undefined;
+      piso: number | undefined;
+      nroDpto: number | undefined;
+      idLocalidad:number | undefined;
    };
-   logo: string | null;
-   categorias: ICategorias[];
+   logo: string;
+   categorias?: ICategorias[] | undefined;
    esCasaMatriz: boolean;
    horarioApertura: string;
    horarioCierre: string;

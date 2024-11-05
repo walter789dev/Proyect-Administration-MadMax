@@ -6,17 +6,18 @@ import { ISucursal } from "../../../types/dtos/sucursal/ISucursal";
 import { IAlergenos } from "../../../types/dtos/alergenos/IAlergenos";
 
 interface ModalInfoProps {
+   title: string
   info: IEmpresa | ISucursal | IAlergenos;
   columns: string[];
   setOpenModal: (state?: string) => void;
 }
 
 // Muestra Información de la Empresa | Sucursal seleccionada
-const ModalInfo: FC<ModalInfoProps> = ({ columns, info, setOpenModal }) => {
+const ModalInfo: FC<ModalInfoProps> = ({ title, columns, info, setOpenModal }) => {
   return (
     <div className={styles.modal}>
       <section className={styles.modalSection}>
-        <h2>{"empresa" in info ? "Sucursal" : "Empresa"}</h2>
+        <h2>{title}</h2>
         <div className={styles.modalInfo}>
           <div className={styles.modalImage}>
             <img
@@ -31,7 +32,7 @@ const ModalInfo: FC<ModalInfoProps> = ({ columns, info, setOpenModal }) => {
                   case "empresa":
                     return (
                       <p key={id} className={styles.modalText}>
-                        <b>Empresa: </b> {info.empresa.nombre}
+                        <b>Empresa: </b> {info.empresa?.nombre}
                       </p>
                     );
                   case "domicilio": {
@@ -39,9 +40,9 @@ const ModalInfo: FC<ModalInfoProps> = ({ columns, info, setOpenModal }) => {
                     return (
                       <p key={id} className={styles.modalText}>
                         <b>Domicilio: </b> Calle: {elm.calle}, n°
-                        {elm.numero}, {elm.localidad.nombre},{" "}
-                        {elm.localidad.provincia.nombre},{" "}
-                        {elm.localidad.provincia.pais.nombre}
+                        {elm.numero}, {elm.localidad?.nombre},{" "}
+                        {elm.localidad?.provincia.nombre},{" "}
+                        {elm.localidad?.provincia.pais.nombre}
                       </p>
                     );
                   }

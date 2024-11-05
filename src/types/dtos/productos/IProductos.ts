@@ -12,6 +12,6 @@ export interface IProductos {
   eliminado: boolean;
   habilitado: boolean;
   codigo: string;
-  alergenos: IAlergenos[];
-  imagenes: IImagen[];
+  alergenos: IAlergenos[] | [];
+  imagenes: IImagen[] | [];
 }

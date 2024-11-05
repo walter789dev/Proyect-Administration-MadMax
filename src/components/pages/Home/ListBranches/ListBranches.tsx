@@ -78,6 +78,7 @@ const ListBranches = () => {
       )}
       {modalInfo && info && (
         <ModalInfo
+          title="Empresa"
           columns={[
             "nombre",
             "empresa",

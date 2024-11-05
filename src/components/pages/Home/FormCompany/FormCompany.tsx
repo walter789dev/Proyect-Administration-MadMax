@@ -30,7 +30,6 @@ const FormCompany: FC<ModalProps> = ({ dataToEdit, closeModal }) => {
   const [dataForm, setDataForm] = useState<IEmpresa>(initial);
 
   const { put, post } = helpHttp<IEmpresa>();
-  const API_URL = "http://190.221.207.224:8090";
   const dispatch = useAppDispatch();
 
   // Manejo de Valores del Formulario
@@ -51,6 +50,7 @@ const FormCompany: FC<ModalProps> = ({ dataToEdit, closeModal }) => {
   // Manejo de Conexion a la BBDD PUT + POST
   const handlerSubmit = async () => {
     setLoading(true);
+
     const voidValues = Object.keys(dataForm).some((item) => item.length === 0);
 
     if (voidValues || !fileImage) {
@@ -59,7 +59,7 @@ const FormCompany: FC<ModalProps> = ({ dataToEdit, closeModal }) => {
       return;
     }
 
-    const resImage = await fetch(`${API_URL}/images/uploads`, {
+    const resImage = await fetch(`http://190.221.207.224:8090/images/uploads`, {
       method: "POST",
       body: fileImage,
     });
