@@ -29,7 +29,7 @@ const ListBranches = () => {
 
   const getBranches = () => {
     helpHttp<ISucursal>()
-      .getAll(`http://190.221.207.224:8090/sucursales/porEmpresa/${activeId}`)
+      .getAll(`sucursales/porEmpresa/${activeId}`)
       .then((companiesData) => {
         dispatch(setBranchesData(companiesData));
       });

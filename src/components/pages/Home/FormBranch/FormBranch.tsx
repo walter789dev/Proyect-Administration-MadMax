@@ -8,6 +8,7 @@ import { IPais } from "../../../../types/IPais";
 import { IProvincia } from "../../../../types/IProvincia";
 import { ILocalidad } from "../../../../types/ILocalidad";
 import Modal from "../../../ui/Modal/Modal";
+import useModals from "../../../../hooks/useModals";
 
 interface ModalFormProps {
   idCompany: number | undefined;
@@ -41,11 +42,15 @@ const FormBranch: FC<ModalFormProps> = ({
   closeModal,
   getBranches,
 }) => {
-  initial.idEmpresa = idCompany || 0;
-  const [dataForm, setDataForm] = useState<ICreateSucursal>(initial);
+  const [dataForm, setDataForm] = useState<ICreateSucursal>({
+    ...initial,
+    idEmpresa: idCompany || 0,
+  });
+
   const [paises, setPaises] = useState<IPais[] | void>();
   const [provincias, setProvincias] = useState<IProvincia[] | void>();
-  const [localidades, setLocalidades] = useState<ILocalidad[] | void>();
+   const [localidades, setLocalidades] = useState<ILocalidad[] | void>();
+   const [selectLocalidad, setSelectLocalidad] = useState<ILocalidad>();
 
   const handlerChange = (
     e: ChangeEvent<HTMLInputElement | HTMLSelectElement>
@@ -66,23 +71,35 @@ const FormBranch: FC<ModalFormProps> = ({
         [e.target.name]: e.target.value,
       },
     }));
-  };
+   };
+   
+   const handlerLocalidad = (
+     e: ChangeEvent<HTMLSelectElement | HTMLInputElement>
+   ) => {
+      if (dataToEdit) {
+         const findLocal = localidades?.find(local => local.id === Number(e.target.value))
+         setSelectLocalidad(findLocal)
+      } else {
+         handlerChangeDomicilio(e)
+      }
+   };
 
   const manageData = (url: string) => {
     helpHttp<IProvincia | ILocalidad>()
-      .getAll(`http://190.221.207.224:8090/${url}`)
+      .getAll(url)
       .then((items) => {
         if ("provincia" in items[0]) setLocalidades(items as ILocalidad[]);
         else setProvincias(items as IProvincia[]);
       });
   };
 
-  const handlerSubmit = () => {
+   const handlerSubmit = () => {
+     const {} = useModals()
     if (dataToEdit) {
-      console.log(dataToEdit);
+      
     } else {
       helpHttp<ICreateSucursal>()
-        .post(`http://190.221.207.224:8090/sucursales/create`, dataForm)
+        .post(`sucursales/create`, dataForm)
         .then(() => {
           getBranches();
           closeModal();
@@ -91,12 +108,31 @@ const FormBranch: FC<ModalFormProps> = ({
   };
 
   useEffect(() => {
-    if (dataToEdit) console.log("En Producción");
-  }, [dataToEdit]);
+    if (dataToEdit)
+      setDataForm({
+        nombre: dataToEdit.nombre,
+        horarioApertura: dataToEdit.horarioApertura,
+        horarioCierre: dataToEdit.horarioCierre,
+        esCasaMatriz: dataToEdit.esCasaMatriz,
+        latitud: dataToEdit.latitud,
+        longitud: dataToEdit.longitud,
+        domicilio: {
+          calle: dataToEdit.domicilio.calle,
+          numero: dataToEdit.domicilio.numero,
+          cp: dataToEdit.domicilio.cp,
+          piso: dataToEdit.domicilio.piso,
+          nroDpto: dataToEdit.domicilio.nroDpto,
+        },
+        idEmpresa: dataToEdit.empresa.id!,
+        logo: dataToEdit.logo ?? null,
+        eliminado: dataToEdit.eliminado,
+        categorias: dataToEdit.categorias,
+      });
+  }, []);
 
   useEffect(() => {
     helpHttp<IPais>()
-      .getAll(`http://190.221.207.224:8090/paises`)
+      .getAll(`paises`)
       .then((paises) => {
         setPaises(paises);
       });
@@ -248,7 +284,7 @@ const FormBranch: FC<ModalFormProps> = ({
               <label>Seleccione localidad: </label>
               <select
                 name="idLocalidad"
-                onChange={handlerChangeDomicilio}
+                onChange={handlerLocalidad}
                 required
               >
                 <option value="">Seleccione...</option>

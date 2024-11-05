@@ -15,6 +15,10 @@
   margin-bottom: 10px;
 }
 
+.formGroup select {
+  width: 300px;
+}
+
 .modalContent label {
   display: block;
   width: 100%;

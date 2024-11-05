@@ -29,6 +29,11 @@
   text-align: center;
 }
 
+.columnButton {
+  width: 100px;
+  text-align: center;
+}
+
 .lastColumn:has(button) {
   display: flex;
   justify-content: center;

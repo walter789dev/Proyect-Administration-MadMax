@@ -7,6 +7,7 @@ interface IOptionsHTTP {
 }
 
 export function helpHttp<T>() {
+  const API_URL = "http://190.221.207.224:8090";
   // Manejo de la conexion a la BBDD - Generico
   function customFetch(url: string, options: IOptionsHTTP, element: T | void) {
     const defaultHeader = {
@@ -22,7 +23,7 @@ export function helpHttp<T>() {
     options.body = JSON.stringify(element) || null;
     if (options.body === null) delete options.body;
 
-    return fetch(url, options)
+    return fetch(`${API_URL}/${url}`, options)
       .then((res) =>
         res.ok
           ? res.json()
@@ -42,14 +43,14 @@ export function helpHttp<T>() {
     return customFetch(url, options);
   }
 
-  const post = (url: string, element: T) => {
+  const post = (url: string, element: T): Promise<Response> => {
     const options: IOptionsHTTP = {
       method: "POST",
     };
     return customFetch(url, options, element);
   };
 
-  const put = (url: string, element: T) => {
+  const put = (url: string, element: T): Promise<Response> => {
     const options: IOptionsHTTP = {
       method: "PUT",
     };

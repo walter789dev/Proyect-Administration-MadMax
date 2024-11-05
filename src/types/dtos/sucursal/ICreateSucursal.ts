@@ -1,7 +1,6 @@
 import { ICategorias } from "../categorias/ICategorias";
 
 export interface ICreateSucursal {
-   id?: number
    nombre: string;
    horarioApertura: string;
    horarioCierre: string;
@@ -14,10 +13,10 @@ export interface ICreateSucursal {
       cp: number;
       piso: number;
       nroDpto: number;
-      idLocalidad: number;
+      idLocalidad?: number;
    };
    idEmpresa: number;
    logo: string | null;
-   eliminado?: boolean
-   categorias?: ICategorias[]
+   eliminado?: boolean;
+   categorias?: ICategorias[];
 }

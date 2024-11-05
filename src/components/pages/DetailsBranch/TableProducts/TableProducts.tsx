@@ -24,9 +24,14 @@ const TableProducts: FC<TableProps> = ({ id }) => {
     //  resetForm,
   } = useModals<IProductos>();
 
+  const deleteProducto = (id:number | undefined) => {
+    helpHttp<IProductos>().del(`articulos/${id}`)
+      .then(() => setProducts(products.filter((item) => item.id !== id)));
+  }
+
   useEffect(() => {
     helpHttp<IProductos>()
-      .getAll(`http://190.221.207.224:8090/articulos/porSucursal/${id}`)
+      .getAll(`articulos/porSucursal/${id}`)
       .then((res) => setProducts(res));
   }, []);
   return (
@@ -60,7 +65,7 @@ const TableProducts: FC<TableProps> = ({ id }) => {
                   item={product}
                   view={openView}
                   edit={openForm}
-                  del={() => {}}
+                  del={deleteProducto}
                 />
               </Product>
             ))

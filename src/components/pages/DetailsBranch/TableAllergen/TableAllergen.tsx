@@ -23,13 +23,13 @@ export const TableAllergen = () => {
 
   const deleteAlergeno = (id: number | undefined) => {
     helpHttp<IAlergenos>()
-      .del(`http://190.221.207.224:8090/alergenos/${id}`)
+      .del(`alergenos/${id}`)
       .then(() => setAlergenos(alergenos.filter((item) => item.id !== id)));
   };
 
   useEffect(() => {
     helpHttp<IAlergenos>()
-      .getAll("http://190.221.207.224:8090/alergenos")
+      .getAll("alergenos")
       .then((res) => setAlergenos(res));
   }, []);
   return (

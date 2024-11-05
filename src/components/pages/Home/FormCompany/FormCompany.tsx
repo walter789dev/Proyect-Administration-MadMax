@@ -9,6 +9,7 @@ import {
   updateCompany,
 } from "../../../../redux/slices/companySlice";
 import Modal from "../../../ui/Modal/Modal";
+import Loader from "../../../ui/Loader/Loader";
 
 interface ModalProps {
   dataToEdit: IEmpresa | null;
@@ -19,12 +20,17 @@ const initial: IEmpresa = {
   nombre: "",
   razonSocial: "",
   cuit: "",
-  logo: "https://cdn2.thecatapi.com/images/e94.jpg",
+  logo: "",
 };
 
 // Formulario Empresa para Editar y Añadir
 const FormCompany: FC<ModalProps> = ({ dataToEdit, closeModal }) => {
+  const [loading, setLoading] = useState(false);
+  const [fileImage, setFileImage] = useState<FormData>();
   const [dataForm, setDataForm] = useState<IEmpresa>(initial);
+
+  const { put, post } = helpHttp<IEmpresa>();
+  const API_URL = "http://190.221.207.224:8090";
   const dispatch = useAppDispatch();
 
   // Manejo de Valores del Formulario
@@ -34,22 +40,46 @@ const FormCompany: FC<ModalProps> = ({ dataToEdit, closeModal }) => {
       [e.target.name]: e.target.value,
     }));
   };
+
+  const handlerImage = (e: ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files.length > 0) {
+      const formData = new FormData();
+      formData.append("uploads", e.target.files[0]);
+      setFileImage(formData);
+    }
+  };
   // Manejo de Conexion a la BBDD PUT + POST
-  const handlerSubmit = () => {
+  const handlerSubmit = async () => {
+    setLoading(true);
+    const voidValues = Object.keys(dataForm).some((item) => item.length === 0);
+
+    if (voidValues || !fileImage) {
+      setLoading(false);
+      alert("Faltan campos por completar");
+      return;
+    }
+
+    const resImage = await fetch(`${API_URL}/images/uploads`, {
+      method: "POST",
+      body: fileImage,
+    });
+    const newData = await resImage.text();
+    let resInfo = { ...dataForm, logo: newData };
+
     if (dataToEdit) {
-      helpHttp<IEmpresa>()
-        .put(`http://190.221.207.224:8090/empresas/${dataForm.id}`, dataForm)
-        .then(() => {
-          dispatch(updateCompany(dataForm));
+      if (resImage) {
+        const res = await put(`empresas/${dataForm.id}`, resInfo);
+        if (res) {
+          dispatch(updateCompany(resInfo));
           closeModal();
-        });
+        }
+      }
     } else {
-      helpHttp<IEmpresa>()
-        .post(`http://190.221.207.224:8090/empresas`, dataForm)
-        .then(() => {
-          dispatch(updateCompaniesData(dataForm));
-          closeModal();
-        });
+      const res = await post(`empresas`, resInfo);
+      if (res) {
+        dispatch(updateCompaniesData(resInfo));
+        closeModal();
+      }
     }
   };
 
@@ -89,15 +119,30 @@ const FormCompany: FC<ModalProps> = ({ dataToEdit, closeModal }) => {
           <label className={styles.modalLabel} htmlFor="image">
             Ingrese Logo:
           </label>
-          <input id="image" type="file" accept="image/jpge, image/jpg" />
+          <input
+            id="image"
+            type="file"
+            onChange={handlerImage}
+            accept="image/jpge, image/jpg"
+          />
           {/* Cancelar y Enviar/Actualizar Empresa en BBDD */}
           <div className={styles.modalButtons}>
-            <ButtonForm
-              text="Cancelar"
-              type="cancel"
-              event={() => closeModal()}
-            />
-            <ButtonForm text="Confirmar" type="confirm" event={handlerSubmit} />
+            {loading ? (
+              <Loader />
+            ) : (
+              <>
+                <ButtonForm
+                  text="Cancelar"
+                  type="cancel"
+                  event={() => closeModal()}
+                />
+                <ButtonForm
+                  text="Confirmar"
+                  type="confirm"
+                  event={handlerSubmit}
+                />
+              </>
+            )}
           </div>
         </form>
       </section>

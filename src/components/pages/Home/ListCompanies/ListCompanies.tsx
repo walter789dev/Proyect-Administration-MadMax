@@ -28,7 +28,7 @@ const ListCompanies = () => {
 
   useEffect(() => {
     helpHttp<IEmpresa>()
-      .getAll(`http://190.221.207.224:8090/empresas`)
+      .getAll(`empresas`)
       .then((companiesData) => {
         dispatch(setCompaniesData(companiesData));
       });
