@@ -1,12 +1,14 @@
 import styles from "./FormAllergen.module.css";
 import ButtonForm from "../../../ui/ButtonForm/ButtonForm";
-import { FC, useState, ChangeEvent, useEffect } from "react";
+import { FC, useEffect } from "react";
 import { IAlergenos } from "../../../../types/dtos/alergenos/IAlergenos";
 import { helpHttp } from "../../../../helpers/helpHttp";
 import Modal from "../../../ui/Modal/Modal";
 import Loader from "../../../ui/Loader/Loader";
 import { ICreateAlergeno } from "../../../../types/dtos/alergenos/ICreateAlergeno";
 import { IUpdateAlergeno } from "../../../../types/dtos/alergenos/IUpdateAlergeno";
+import useImage from "../../../../hooks/useImage";
+import useForm from "../../../../hooks/useForm";
 
 interface ModalProps {
   dataToEdit: IAlergenos | null;
@@ -14,81 +16,54 @@ interface ModalProps {
   setAlergenos: (updater: (state: IAlergenos[]) => IAlergenos[]) => void;
 }
 
-const initial: ICreateAlergeno = {
-  denominacion: "",
-  imagen: {
-    name: "",
-    url: "",
-  },
-};
-
-// ------------ Añadir - Editar Alergeno --------------
 const FormAllergen: FC<ModalProps> = ({
   dataToEdit,
   closeModal,
   setAlergenos,
 }) => {
-  const [fileImage, setFileImage] = useState<FormData>();
-  const [loading, setLoading] = useState(false);
-  const [alergeno, setAlergeno] = useState(initial);
+  const { dataForm, setDataForm, handlerChange } = useForm<ICreateAlergeno>({
+    denominacion: "",
+    imagen: {
+      name: "",
+      url: "",
+    },
+  });
 
-  const handlerImage = (e: ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files.length > 0) {
-      const formData = new FormData();
-      formData.append("uploads", e.target.files[0]);
-      setFileImage(formData);
-    }
-  };
-
-  const handlerChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setAlergeno((data) => ({
-      ...data,
-      [e.target.name]: e.target.value,
-    }));
-  };
+  const { post, put } = helpHttp();
+  const { image, loading, handler, service } = useImage();
 
   const handlerSubmit = async () => {
-    setLoading(true);
+    const voidValues = Object.keys(dataForm).some((item) => item.length === 0);
 
-    const voidValues = Object.keys(alergeno).some((item) => item.length === 0);
-
-    if (voidValues || !fileImage) {
-      setLoading(false);
+    if (voidValues || !image) {
       alert("Faltan campos por completar");
       return;
     }
 
-    const resImage = await fetch(`http://190.221.207.224:8090/images/uploads`, {
-      method: "POST",
-      body: fileImage,
-    });
-
-    const newData = await resImage.text();
-    let resInfo = { ...alergeno, logo: newData };
+    const newData = await service();
+    let resInfo = { ...dataForm, logo: newData };
 
     if (dataToEdit) {
-      const res = await helpHttp<IUpdateAlergeno>().put(
-        `alergenos/${alergeno.id}`,
+      const res = await put<IUpdateAlergeno>(
+        `alergenos/${dataForm.id}`,
         resInfo
       );
       if (res) {
         setAlergenos((state: IAlergenos[]) => {
-          const filter = state.filter((item) => item.id != alergeno.id);
+          const filter = state.filter((item) => item.id != dataForm.id);
           return [...filter, resInfo];
         });
-        closeModal();
       }
     } else {
-      const res = await helpHttp<ICreateAlergeno>().post(`alergenos`, resInfo);
-      if (res) {
-        setAlergenos((state: IAlergenos[]) => [...state, resInfo]);
-        closeModal();
-      }
+      const res = await post<ICreateAlergeno>(`alergenos`, resInfo);
+      if (res) setAlergenos((state: IAlergenos[]) => [...state, resInfo]);
     }
+
+    closeModal();
   };
 
   useEffect(() => {
-    if (dataToEdit) setAlergeno(dataToEdit);
+    if (dataToEdit) setDataForm(dataToEdit);
   }, [dataToEdit]);
 
   return (
@@ -103,11 +78,11 @@ const FormAllergen: FC<ModalProps> = ({
             name="denominacion"
             type="text"
             placeholder="Ingresa denominacion"
-            value={alergeno.denominacion}
+            value={dataForm.denominacion}
             onChange={handlerChange}
           />
           <label htmlFor="file">Ingrese una imagen:</label>
-          <input id="file" type="file" onChange={handlerImage} />
+          <input id="file" type="file" onChange={handler} />
           <div className={styles.modalButtons}>
             {loading ? (
               <Loader />

@@ -2,72 +2,74 @@ import styles from "./ModalInfo.module.css";
 import ButtonForm from "../ButtonForm/ButtonForm";
 import { IEmpresa } from "../../../types/dtos/empresa/IEmpresa";
 import { FC } from "react";
-import { ISucursal } from "../../../types/dtos/sucursal/ISucursal";
 import { IAlergenos } from "../../../types/dtos/alergenos/IAlergenos";
+import Modal from "../Modal/Modal";
+import { IProductos } from "../../../types/dtos/productos/IProductos";
 
 interface ModalInfoProps {
-   title: string
-  info: IEmpresa | ISucursal | IAlergenos;
+  title: string;
+  info: IEmpresa | IAlergenos | IProductos;
   columns: string[];
   setOpenModal: (state?: string) => void;
 }
 
 // Muestra Información de la Empresa | Sucursal seleccionada
-const ModalInfo: FC<ModalInfoProps> = ({ title, columns, info, setOpenModal }) => {
+const ModalInfo: FC<ModalInfoProps> = ({
+  title,
+  columns,
+  info,
+  setOpenModal,
+}) => {
+  const validateImage = () => {
+    if ("imagen" in info) {
+      return info.imagen ? info.imagen?.url : "";
+    }
+    if ("imagenes" in info) {
+      return info.imagenes.length ? info.imagenes[0].url : "";
+    }
+    return info.logo || "";
+  };
   return (
-    <div className={styles.modal}>
+    <Modal>
       <section className={styles.modalSection}>
         <h2>{title}</h2>
         <div className={styles.modalInfo}>
           <div className={styles.modalImage}>
-            <img
-              src={"imagen" in info ? info.imagen?.url : info["logo"]}
-              alt="Logo"
-            />
+            <img src={validateImage()} alt="Logo" />
           </div>
           <div className={styles.modal2}>
-            {columns.map((key, id) => {
-              if ("esCasaMatriz" in info) {
-                switch (key) {
-                  case "empresa":
-                    return (
-                      <p key={id} className={styles.modalText}>
-                        <b>Empresa: </b> {info.empresa?.nombre}
-                      </p>
-                    );
-                  case "domicilio": {
-                    const elm = info.domicilio;
-                    return (
-                      <p key={id} className={styles.modalText}>
-                        <b>Domicilio: </b> Calle: {elm.calle}, n°
-                        {elm.numero}, {elm.localidad?.nombre},{" "}
-                        {elm.localidad?.provincia.nombre},{" "}
-                        {elm.localidad?.provincia.pais.nombre}
-                      </p>
-                    );
-                  }
-                  case "esCasaMatriz":
-                    return (
-                      <p key={key} className={styles.modalText}>
-                        <b>{key}:</b> {info[key] ? "Si" : "No"}
-                      </p>
-                    );
-                  case "nombre":
-                  case "horarioApertura":
-                  case "horarioCierre":
-                    return (
-                      <p key={key} className={styles.modalText}>
-                        <b>{key}:</b> {info[key]}
-                      </p>
-                    );
-                }
-              } else {
+            {columns.map((key) => {
+              if ("categoria" in info && key === "categoria") {
                 return (
                   <p key={key} className={styles.modalText}>
-                    <b>{key}:</b> {info[key as keyof (IEmpresa | IAlergenos)]}
+                    <b>{key}:</b> {info.categoria["denominacion"]}
                   </p>
                 );
               }
+              if ("habilitado" in info && key === "habilitado") {
+                <p key={key} className={styles.modalText}>
+                  <b>{key}: </b> {info.habilitado ? "Si" : "No"}
+                </p>;
+              }
+
+              if ("alergenos" in info && key === "alergenos") {
+                return (
+                  <p key={key} className={styles.modalText}>
+                    <b>Alergenos: </b>{" "}
+                    {info.alergenos.length > 0
+                      ? info.alergenos
+                          .map((element) => element.denominacion)
+                          .join(", ")
+                      : "No tiene"}
+                  </p>
+                );
+              }
+              return (
+                <p key={key} className={styles.modalText}>
+                  <b>{key}:</b>{" "}
+                  {info[key as keyof (IEmpresa | IAlergenos | IProductos)]}
+                </p>
+              );
             })}
           </div>
         </div>
@@ -77,7 +79,7 @@ const ModalInfo: FC<ModalInfoProps> = ({ title, columns, info, setOpenModal }) =
           event={() => setOpenModal("info")}
         />
       </section>
-    </div>
+    </Modal>
   );
 };
 

@@ -27,11 +27,9 @@ const ListCompanies = () => {
   const activeId = useAppSelector((state) => state.companyReducer.id);
 
   useEffect(() => {
-    helpHttp<IEmpresa>()
-      .getAll(`empresas`)
-      .then((companiesData) => {
-        dispatch(setCompaniesData(companiesData));
-      });
+    helpHttp()
+      .getAll<IEmpresa>(`empresas`)
+      .then((companiesData) => dispatch(setCompaniesData(companiesData)));
   }, []);
 
   return (
@@ -65,7 +63,7 @@ const ListCompanies = () => {
       )}
       {modalInfo && info && (
         <ModalInfo
-          title="Sucursal"
+          title="Empresa"
           columns={["nombre", "razonSocial", "cuit"]}
           info={info}
           setOpenModal={resetForm}

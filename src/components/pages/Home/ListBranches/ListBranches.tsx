@@ -5,12 +5,12 @@ import styles from "./listBranches.module.css";
 import { ISucursal } from "../../../../types/dtos/sucursal/ISucursal";
 import { helpHttp } from "../../../../helpers/helpHttp";
 import { useAppDispatch, useAppSelector } from "../../../../hooks/redux";
-import ModalInfo from "../../../ui/ModalInfo/ModalInfo";
 import defaultImage from "../../../../assets/images/goods-truck.svg";
 import { setBranchesData } from "../../../../redux/slices/BranchSlice";
 import ModalOptions from "../../../ui/ModalOptions/ModalOptions";
 import FormBranch from "../FormBranch/FormBranch";
 import useModals from "../../../../hooks/useModals";
+import ViewBranch from "../ViewBranch/ViewBranch";
 
 const ListBranches = () => {
   const {
@@ -28,13 +28,11 @@ const ListBranches = () => {
   const activeId = useAppSelector((state) => state.companyReducer.id);
 
   const getBranches = () => {
-    helpHttp<ISucursal>()
-      .getAll(`sucursales/porEmpresa/${activeId}`)
-      .then((companiesData) => {
-        dispatch(setBranchesData(companiesData));
-      });
+    helpHttp()
+      .getAll<ISucursal>(`sucursales/porEmpresa/${activeId}`)
+      .then((companiesData) => dispatch(setBranchesData(companiesData)));
   };
-  // Conexion a la BBDD mediante ID Empresa
+
   useEffect(() => {
     if (activeId) {
       getBranches();
@@ -43,7 +41,6 @@ const ListBranches = () => {
 
   return (
     <>
-      {/* Ubico la sección en ContainerGrid mediante gridArea */}
       <section style={{ backgroundColor: "#ecf0f1" }}>
         <header className={styles.branchInfo}>
           <h2>
@@ -77,8 +74,7 @@ const ListBranches = () => {
         />
       )}
       {modalInfo && info && (
-        <ModalInfo
-          title="Empresa"
+        <ViewBranch
           columns={[
             "nombre",
             "empresa",

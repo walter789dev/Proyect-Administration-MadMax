@@ -6,10 +6,14 @@ interface IOptionsHTTP {
   body?: string | null;
 }
 
-export function helpHttp<T>() {
+export function helpHttp() {
   const API_URL = "http://190.221.207.224:8090";
   // Manejo de la conexion a la BBDD - Generico
-  function customFetch(url: string, options: IOptionsHTTP, element: T | void) {
+  function customFetch<T>(
+    url: string,
+    options: IOptionsHTTP,
+    element: T | void
+  ) {
     const defaultHeader = {
       "Content-Type": "application/json",
     };
@@ -36,40 +40,40 @@ export function helpHttp<T>() {
       .catch((err) => err);
   }
 
-  function getBy(url: string): Promise<T> {
+  function getBy<T>(url: string): Promise<T> {
     const options: IOptionsHTTP = {
       method: "GET",
     };
-    return customFetch(url, options);
+    return customFetch<T>(url, options);
   }
 
-  function getAll(url: string): Promise<T[]> {
+  function getAll<T>(url: string): Promise<T[]> {
     const options: IOptionsHTTP = {
       method: "GET",
     };
-    return customFetch(url, options);
+    return customFetch<T>(url, options);
   }
 
-  const post = (url: string, element: T): Promise<Response> => {
+  function post<T>(url: string, element: T): Promise<Response> {
     const options: IOptionsHTTP = {
       method: "POST",
     };
-    return customFetch(url, options, element);
-  };
+    return customFetch<T>(url, options, element);
+  }
 
-  const put = (url: string, element: T): Promise<Response> => {
+  function put<T>(url: string, element: T): Promise<Response> {
     const options: IOptionsHTTP = {
       method: "PUT",
     };
-    return customFetch(url, options, element);
-  };
+    return customFetch<T>(url, options, element);
+  }
 
-  const del = (url: string) => {
+  function del<T>(url: string) {
     const options: IOptionsHTTP = {
       method: "DELETE",
     };
-    return customFetch(url, options);
-  };
+    return customFetch<T>(url, options);
+  }
 
   return {
     getBy,

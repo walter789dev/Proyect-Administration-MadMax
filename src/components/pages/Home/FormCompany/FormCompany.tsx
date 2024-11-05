@@ -1,4 +1,4 @@
-import { ChangeEvent, FC, useEffect, useState } from "react";
+import { FC, useEffect } from "react";
 import styles from "./FormCompany.module.css";
 import ButtonForm from "../../../ui/ButtonForm/ButtonForm";
 import { IEmpresa } from "../../../../types/dtos/empresa/IEmpresa";
@@ -10,82 +10,51 @@ import {
 } from "../../../../redux/slices/companySlice";
 import Modal from "../../../ui/Modal/Modal";
 import Loader from "../../../ui/Loader/Loader";
+import useImage from "../../../../hooks/useImage";
+import useForm from "../../../../hooks/useForm";
 
 interface ModalProps {
   dataToEdit: IEmpresa | null;
   closeModal: (state?: string) => void;
 }
 
-const initial: IEmpresa = {
-  nombre: "",
-  razonSocial: "",
-  cuit: "",
-  logo: "",
-};
-
-// Formulario Empresa para Editar y Añadir
 const FormCompany: FC<ModalProps> = ({ dataToEdit, closeModal }) => {
-  const [loading, setLoading] = useState(false);
-  const [fileImage, setFileImage] = useState<FormData>();
-  const [dataForm, setDataForm] = useState<IEmpresa>(initial);
+  const { dataForm, setDataForm, handlerChange } = useForm<IEmpresa>({
+    nombre: "",
+    razonSocial: "",
+    cuit: "",
+    logo: "",
+  });
 
-  const { put, post } = helpHttp<IEmpresa>();
   const dispatch = useAppDispatch();
+  const { put, post } = helpHttp();
+  const { image, loading, handler, service, setLoading } = useImage();
 
-  // Manejo de Valores del Formulario
-  const handlerChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setDataForm((data) => ({
-      ...data,
-      [e.target.name]: e.target.value,
-    }));
-  };
-
-  const handlerImage = (e: ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files.length > 0) {
-      const formData = new FormData();
-      formData.append("uploads", e.target.files[0]);
-      setFileImage(formData);
-    }
-  };
-  // Manejo de Conexion a la BBDD PUT + POST
   const handlerSubmit = async () => {
-    setLoading(true);
-
     const voidValues = Object.keys(dataForm).some((item) => item.length === 0);
 
-    if (voidValues || !fileImage) {
-      setLoading(false);
+    if (voidValues || !image) {
       alert("Faltan campos por completar");
+      setLoading(false);
       return;
     }
 
-    const resImage = await fetch(`http://190.221.207.224:8090/images/uploads`, {
-      method: "POST",
-      body: fileImage,
-    });
-    const newData = await resImage.text();
-    let resInfo = { ...dataForm, logo: newData };
+    const newImage = await service();
+    let resInfo = { ...dataForm, logo: newImage };
 
     if (dataToEdit) {
-      if (resImage) {
-        const res = await put(`empresas/${dataForm.id}`, resInfo);
-        if (res) {
-          dispatch(updateCompany(resInfo));
-          closeModal();
-        }
-      }
+      const res = await put<IEmpresa>(`empresas/${dataForm.id}`, resInfo);
+      if (res) dispatch(updateCompany(resInfo));
     } else {
-      const res = await post(`empresas`, resInfo);
-      if (res) {
-        dispatch(updateCompaniesData(resInfo));
-        closeModal();
-      }
+      const res = await post<IEmpresa>(`empresas`, resInfo);
+      if (res) dispatch(updateCompaniesData(resInfo));
     }
+    closeModal();
   };
 
   useEffect(() => {
     if (dataToEdit) setDataForm(dataToEdit);
-  }, [dataToEdit]);
+  }, []);
 
   return (
     <Modal>
@@ -122,7 +91,7 @@ const FormCompany: FC<ModalProps> = ({ dataToEdit, closeModal }) => {
           <input
             id="image"
             type="file"
-            onChange={handlerImage}
+            onChange={handler}
             accept="image/jpge, image/jpg"
           />
           {/* Cancelar y Enviar/Actualizar Empresa en BBDD */}

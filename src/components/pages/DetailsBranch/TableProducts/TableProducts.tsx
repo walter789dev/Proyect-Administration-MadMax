@@ -7,33 +7,36 @@ import Product from "../Product/Product";
 // import FormProduct from "../FormProduct/FormProduct";
 import ModalOptions from "../../../ui/ModalOptions/ModalOptions";
 import useModals from "../../../../hooks/useModals";
-import { ViewProduct } from "../ViewProduct/ViewProduct";
+import ModalInfo from "../../../ui/ModalInfo/ModalInfo";
 
 interface TableProps {
   id: string | undefined;
 }
 
 const TableProducts: FC<TableProps> = ({ id }) => {
-  const [products, setProducts] = useState<IProductos[] | []>([]);
+  const [products, setProducts] = useState<IProductos[]>([]);
   const {
     modalForm,
     modalInfo,
-    dataToEdit,
+    //  dataToEdit,
     info,
     openForm,
     openView,
     resetForm,
   } = useModals<IProductos>();
 
-  const deleteProducto = (id:number | undefined) => {
-    helpHttp<IProductos>().del(`articulos/${id}`)
-      .then(() => setProducts(products.filter((item) => item.id !== id)));
-  }
+  const { getAll, del } = helpHttp();
+
+  const deleteProducto = (id: number | undefined) => {
+    del<IProductos>(`articulos/${id}`).then(() =>
+      setProducts(products.filter((item) => item.id !== id))
+    );
+  };
 
   useEffect(() => {
-    helpHttp<IProductos>()
-      .getAll(`articulos/porSucursal/${id}`)
-      .then((res) => setProducts(res));
+    getAll<IProductos>(`articulos/porSucursal/${id}`).then((res) =>
+      setProducts(res)
+    );
   }, []);
   return (
     <>
@@ -75,10 +78,29 @@ const TableProducts: FC<TableProps> = ({ id }) => {
           )}
         </ul>
       </section>
-      {/* {modalForm &&( <FormProduct product={dataToEdit} closeModal={resetForm} setProductos={setProducts} />)} */}
+      {
+        modalForm && ""
+        //   <FormProduct
+        //     product={dataToEdit}
+        //     closeModal={resetForm}
+        //     setProductos={setProducts}
+        //   />
+      }
       {modalInfo && info && (
-        <ViewProduct info={info} setOpenModal={resetForm} />
-
+        <ModalInfo
+          title="Producto"
+          columns={[
+            "denominacion",
+            "precioVenta",
+            "descripcion",
+            "categoria",
+            "habilitado",
+            "alergenos",
+            "codigo",
+          ]}
+          info={info}
+          setOpenModal={resetForm}
+        />
       )}
     </>
   );

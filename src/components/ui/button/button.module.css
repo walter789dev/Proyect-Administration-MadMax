@@ -22,9 +22,17 @@
   background-color: #0f3b41;
 }
 
+.primary svg {
+   fill: #fff
+}
+
 .secondary {
   border: 1px solid #368f8b;
   color: #368f8b;
+}
+
+.secondary svg {
+   fill: #368f8b
 }
 
 .secondary:hover {
@@ -39,6 +47,10 @@
 .tertiary{
   border: 1px solid #0093e9;
   color: #0093e9;
+}
+
+.tertiary svg {
+   fill: #0093e9;
 }
 
 .tertiary:hover{

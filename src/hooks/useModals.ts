@@ -5,7 +5,7 @@ function useModals<T>() {
    const [dataToEdit, setDataToEdit] = useState<T | null>(null);
 
    const [modalInfo, setModalInfo] = useState(false);
-   const [info, setInfo] = useState<T | undefined>();
+   const [info, setInfo] = useState<T>();
 
    const openForm = (item?: T) => {
       if (item) setDataToEdit(item);
@@ -14,6 +14,7 @@ function useModals<T>() {
 
    const resetForm = (option?: string) => {
       if (option) {
+         setInfo({} as T)
          setModalInfo(false)
       }
       else {

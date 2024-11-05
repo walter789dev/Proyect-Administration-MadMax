@@ -21,26 +21,22 @@ export const TableAllergen = () => {
     resetForm,
   } = useModals<IAlergenos>();
 
+  const { getAll, del } = helpHttp();
+
   const deleteAlergeno = (id: number | undefined) => {
-    helpHttp<IAlergenos>()
-      .del(`alergenos/${id}`)
-      .then(() => setAlergenos(alergenos.filter((item) => item.id !== id)));
+    del<IAlergenos>(`alergenos/${id}`).then(() =>
+      setAlergenos(alergenos.filter((item) => item.id !== id))
+    );
   };
 
   useEffect(() => {
-    helpHttp<IAlergenos>()
-      .getAll("alergenos")
-      .then((res) => setAlergenos(res));
+    getAll<IAlergenos>("alergenos").then((res) => setAlergenos(res));
   }, []);
   return (
     <>
       <section className={styles.contenedor}>
         <div className={styles.button}>
-          <Button
-            text="Alergeno"
-            type="tertiary"
-            openModal={() => openForm()}
-          />
+          <Button text="Alergeno" type="tertiary" openModal={openForm} />
         </div>
         <div className={styles.title}>
           <h2>Lista de Alergenos: </h2>
