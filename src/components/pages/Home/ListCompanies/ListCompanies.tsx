@@ -29,7 +29,8 @@ const ListCompanies = () => {
   useEffect(() => {
     helpHttp()
       .getAll<IEmpresa>(`empresas`)
-      .then((companiesData) => dispatch(setCompaniesData(companiesData)));
+      .then((companiesData) => dispatch(setCompaniesData(companiesData)))
+      .catch(() => console.log("Conexion: Ha ocurrido un error al obtener Empresas"));
   }, []);
 
   return (
@@ -38,7 +39,7 @@ const ListCompanies = () => {
         <h2 className={styles.companiesTitle}>Todas las Empresas: </h2>
         <ul className={styles.companiesUl}>
           {companies.length === 0 ? (
-            <li>No hay empresas cargadas</li>
+            <li className={styles.void}>No hay empresas cargadas</li>
           ) : (
             companies.map((company, id) => (
               <Company

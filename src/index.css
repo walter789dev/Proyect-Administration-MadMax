@@ -2,7 +2,7 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: monospace;
+  font-family: Calibri;
 }
 
 body {
@@ -11,16 +11,16 @@ body {
 
 :root {
   /*------- Tamaño Tipografia ------- */
-  --text-xs: 0.889rem;
-  --text-sm: 1rem;
-  --text-md: 1.125rem;
-  --text-lg: 1.266rem;
-  --text-xl: 1.424rem;
-  --text-xxl: 1.602rem;
+  --text-xs: 0.789rem;
+  --text-sm: 0.9rem;
+  --text-md: 1.025rem;
+  --text-lg: 1.106rem;
+  --text-xl: 1.324rem;
+  --text-xxl: 1.502rem;
   /* ------- Paleta de Colores ------- */
-  --primary-color: #246a73;
+  --primary-color: #2E236C;
   --secondary-color: #368f8b;
-  --primary-background: #160f29;
+  --primary-background: #170D37;
   --secondary-background: #160f29;
   --accent-color: #fff;
 }

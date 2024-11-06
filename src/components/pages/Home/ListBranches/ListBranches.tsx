@@ -41,13 +41,13 @@ const ListBranches = () => {
 
   return (
     <>
-      <section style={{ backgroundColor: "#ecf0f1" }}>
+      <section>
         <header className={styles.branchInfo}>
           <h2>
             Cantidad de sucursales: {branches?.length ? branches.length : "0"}
           </h2>
           {/* Boton para abrir Modal de Sucursal */}
-          <Button text="Sucursal" type="secondary" openModal={openForm} />
+          <Button text="Sucursal" type={activeId ?  "secondary": "disabled"} openModal={openForm} />
         </header>
         {/* Sección que contiene Sucursales*/}
         <section className={styles.branchContainer}>

@@ -4,7 +4,7 @@
   align-items: center;
   padding-top: 40px;
   gap: 30px;
-  background-color: var(--primary-color);
+  background: var(--primary-color);
 }
 
 .companiesTitle {
@@ -16,7 +16,7 @@
 
 .companiesUl {
   width: 100%;
-  height: 60%;
+  height: 70%;
   max-height: 700px;
   list-style: none;
   overflow-y: auto;
@@ -28,4 +28,9 @@
 
 .companiesUl > li {
   margin-bottom: 1.2rem;
+}
+
+.void {
+   text-align: center;
+   color: #fff;
 }

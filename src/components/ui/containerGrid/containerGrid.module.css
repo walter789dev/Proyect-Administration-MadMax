@@ -11,4 +11,5 @@
 
 .container > section {
   grid-area: 1 / 2 / 2 / 4;
+  background-color: #f1ecf3;
 }

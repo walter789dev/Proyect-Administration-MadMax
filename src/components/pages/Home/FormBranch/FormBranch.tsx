@@ -135,12 +135,14 @@ const FormBranch: FC<ModalFormProps> = ({
   useEffect(() => {
     if (dataToEdit) setDataForm(dataToEdit);
 
-    getAll<IPais>(`paises`).then((paises) =>
-      setPosition((elements) => ({
-        ...elements,
-        paises: paises,
-      }))
-    );
+    getAll<IPais>(`paises`)
+      .then((paises) =>
+        setPosition((elements) => ({
+          ...elements,
+          paises: paises,
+        }))
+      )
+      .catch(() => console.log("Conexion: No se ha podido obtener Paises"));
   }, []);
 
   return (
@@ -261,11 +263,12 @@ const FormBranch: FC<ModalFormProps> = ({
                 }
               >
                 <option value="">Seleccione...</option>
-                {position.paises?.map((pais, id) => (
-                  <option key={id} value={pais.id}>
-                    {pais.nombre}
-                  </option>
-                ))}
+                {position.paises != null &&
+                  position.paises?.map((pais, id) => (
+                    <option key={id} value={pais.id}>
+                      {pais.nombre}
+                    </option>
+                  ))}
               </select>
             </div>
             <div className={styles.formGroup}>
@@ -278,11 +281,12 @@ const FormBranch: FC<ModalFormProps> = ({
                 }
               >
                 <option value="">Seleccione...</option>
-                {position.provincias?.map((prov, id) => (
-                  <option key={id} value={prov.id}>
-                    {prov.nombre}
-                  </option>
-                ))}
+                {position.provincias != null &&
+                  position.provincias?.map((prov, id) => (
+                    <option key={id} value={prov.id}>
+                      {prov.nombre}
+                    </option>
+                  ))}
               </select>
             </div>
             <div className={styles.formGroup}>
@@ -293,11 +297,12 @@ const FormBranch: FC<ModalFormProps> = ({
                 required
               >
                 <option value="">Seleccione...</option>
-                {position.localidades?.map((local, id) => (
-                  <option key={id} value={local.id}>
-                    {local.nombre}
-                  </option>
-                ))}
+                {position.localidades != null &&
+                  position.localidades?.map((local, id) => (
+                    <option key={id} value={local.id}>
+                      {local.nombre}
+                    </option>
+                  ))}
               </select>
             </div>
           </div>

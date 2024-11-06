@@ -1,15 +1,3 @@
-.modal {
-  position: absolute;
-  top: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.4);
-  z-index: 10;
-}
-
 .modalSection {
   position: relative;
   display: flex;
@@ -45,14 +33,14 @@
   overflow: hidden;
 }
 
+.modal2 {
+  width: 45%;
+}
+
 .modalImage > img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-}
-
-.modal2 {
-  width: 45%;
 }
 
 .modalText {

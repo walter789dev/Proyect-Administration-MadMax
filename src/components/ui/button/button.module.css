@@ -7,7 +7,7 @@
   padding: 6px 7px;
   font-size: var(--text-sm);
   background-color: transparent;
-  border-radius: 7px;
+  border-radius: 10px;
   gap: 10px;
   transition: background-color 0.3s ease-in-out;
   cursor: pointer;
@@ -19,7 +19,7 @@
 }
 
 .primary:hover {
-  background-color: #0f3b41;
+  background-color: #17153B;
 }
 
 .primary svg {
@@ -27,16 +27,16 @@
 }
 
 .secondary {
-  border: 1px solid #368f8b;
-  color: #368f8b;
+  border: 1px solid #17153B;
+  color: #17153B;
 }
 
 .secondary svg {
-   fill: #368f8b
+   fill: #17153B
 }
 
 .secondary:hover {
-  background-color: #368f8b;
+  background-color: #17153B;
   color: #fff;
 }
 
@@ -64,5 +64,10 @@
 }
 
 .disabled {
-  border: 1px solid #fff;
+  border: 1px solid #979696;
+  color: #767676;
+}
+
+.disabled svg {
+   fill: #767676;
 }

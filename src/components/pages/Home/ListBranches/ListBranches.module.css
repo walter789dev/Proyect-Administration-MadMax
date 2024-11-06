@@ -6,8 +6,8 @@
   padding: 7px 15px;
 }
 
-.branchInfo h3 {
-  font-size: var(--text-lg);
+.branchInfo h2 {
+  font-size: var(--text-xl);
 }
 
 .branchContainer {
