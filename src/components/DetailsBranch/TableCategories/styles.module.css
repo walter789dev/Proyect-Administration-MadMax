@@ -1,0 +1,22 @@
+.contenedor {
+  padding: 7px 20px;
+}
+
+.button {
+  display: flex;
+  justify-content: end;
+  margin: 10px 0px;
+}
+
+.title {
+  height: 52px;
+  margin-left: 20px;
+}
+
+.tables {
+  height: 75vh;
+  background-color: #fff;
+  list-style: none;
+  border-radius: 15px;
+  overflow-y: auto;
+}

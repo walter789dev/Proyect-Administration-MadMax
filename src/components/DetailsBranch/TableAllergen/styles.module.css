@@ -1,0 +1,56 @@
+.contenedor {
+  background-color: #ecf0f1;
+  padding: 7px 20px;
+}
+
+.title {
+  height: 52px;
+  margin-left: 20px;
+}
+
+.button {
+  display: flex;
+  justify-content: end;
+  margin: 10px 0px;
+}
+
+.tables {
+  height: 75vh;
+  background-color: #fff;
+  list-style: none;
+  border-radius: 15px;
+  overflow: hidden;
+}
+
+.tables li p {
+  padding: 15px 0px;
+}
+
+.element {
+  display: flex;
+  align-items: center;
+  font-size: 1.2rem;
+}
+
+.firstRow {
+  font-size: 1.2rem;
+  font-weight: bolder;
+  border-bottom: 1px solid #0093e9;
+}
+
+.columnOne {
+  text-align: center;
+  flex-grow: 1;
+}
+
+.columnTwo {
+  width: 250px;
+  text-align: center;
+}
+
+.columnTwo:has(button) {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 30px;
+}

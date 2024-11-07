@@ -1,0 +1,50 @@
+.element {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 0px;
+  font-size: 1.2rem;
+  border-bottom: 2px solid #ecf0f1;
+}
+
+.firstColumn {
+  width: 230px;
+  margin-left: 10px;
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-transform: capitalize;
+}
+
+.column {
+  width: 200px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-transform: capitalize;
+  text-align: center;
+}
+
+.lastColumn {
+  width: 250px;
+  text-align: center;
+}
+
+.columnButton {
+  width: 100px;
+  text-align: center;
+}
+
+.lastColumn:has(button) {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 30px;
+}
+
+.button {
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+}

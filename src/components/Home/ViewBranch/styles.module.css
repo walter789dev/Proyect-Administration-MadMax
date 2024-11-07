@@ -1,0 +1,50 @@
+.modalSection {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  max-width: 520px;
+  width: 35%;
+  min-height: 350px;
+  padding: 15px;
+  border-radius: 10px;
+  background-color: #ffff;
+  gap: 20px;
+}
+
+.modalSection h2 {
+  text-align: center;
+  font-size: var(--text-xl);
+}
+
+.modalInfo {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  height: 200px;
+  gap: 20px;
+}
+
+.modalImage {
+  width: 40%;
+  height: 100%;
+  border-radius: 15px;
+  overflow: hidden;
+}
+
+.modal2 {
+  width: 45%;
+}
+
+.modalImage > img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.modalText {
+  display: block;
+  text-transform: capitalize;
+  font-size: var(--text-lg);
+}

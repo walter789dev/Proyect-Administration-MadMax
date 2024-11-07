@@ -3,7 +3,8 @@ import { ChangeEvent, useState } from "react";
 function useImage() {
    const [loading, setLoading] = useState(false);
    const [image, setImage] = useState<FormData>();
-   const API_URL = "http://190.221.207.224:8090/images/uploads"
+   const URL = import.meta.env.VITE_URL
+   const API_URL = `${URL}/images/uploads`
 
    const handler = (e: ChangeEvent<HTMLInputElement>) => {
       if (e.target.files && e.target.files.length > 0) {

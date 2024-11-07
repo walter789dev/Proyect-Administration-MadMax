@@ -1,0 +1,33 @@
+.branchInfo {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 10px 20px;
+  padding: 7px 15px;
+}
+
+.branchInfo h2 {
+  font-size: var(--text-xl);
+}
+
+.branchContainer {
+  display: flex;
+  flex-wrap: wrap;
+  height: 83vh;
+  margin: 10px 0px 10px 30px;
+  padding: 10px;
+  overflow-y: auto;
+  gap: 30px;
+}
+
+.branchNotResult {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.branchNotResult img {
+  width: 55%;
+}

@@ -1,0 +1,33 @@
+.company {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding: 15px 10px;
+  transition: background-color 0.3s ease-in-out;
+  cursor: pointer;
+}
+
+.active {
+  background-color: #17153b;
+}
+
+.company:hover {
+  background-color: #17153b;
+}
+
+.companyData {
+  width: 60%;
+}
+
+.companyTitle {
+  text-transform: uppercase;
+  font-size: var(--text-lg);
+  font-weight: bolder;
+  color: #fff;
+}
+
+.companySubTitle {
+  text-transform: uppercase;
+  font-size: var(--text-sm);
+  color: #ddeedd;
+}

@@ -1,0 +1,50 @@
+.header {
+  display: flex;
+  position: relative;
+  align-items: center;
+  justify-content: center;
+  height: 50px;
+}
+
+.primary {
+  background-color: var(--primary-background);
+}
+
+.secondary {
+  background-color: var(--secondary-background);
+}
+
+.headerTitle {
+  font-size: var(--text-xxl);
+  font-weight: bold;
+  color: #fff;
+}
+
+/* From Uiverse.io by Jedi-hongbin */
+.header button {
+  position: absolute;
+  left: 20px;
+  display: flex;
+  height: 3em;
+  width: 160px;
+  align-items: center;
+  justify-content: center;
+  background-color: transparent;
+  border-radius: 3px;
+  letter-spacing: 1px;
+  cursor: pointer;
+  border: none;
+  font-size: 17px;
+  color: #fff;
+}
+
+.header button > svg {
+  margin-right: 5px;
+  margin-left: 5px;
+  transition: transform 0.1s ease-in-out;
+  fill: #fff;
+}
+
+.header button:hover > svg {
+  transform: translateX(-5px);
+}
