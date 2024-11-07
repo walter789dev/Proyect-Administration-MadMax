@@ -1,5 +1,5 @@
 import { ChangeEvent, FC, useEffect, useState } from "react";
-import styles from "./styles.module.css";
+import styles from "./FormBranch.module.css";
 import { ISucursal } from "../../../types/dtos/sucursal/ISucursal";
 import { IPais } from "../../../types/IPais";
 import { IProvincia } from "../../../types/IProvincia";

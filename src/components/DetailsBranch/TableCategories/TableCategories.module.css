@@ -14,9 +14,21 @@
 }
 
 .tables {
+  margin: 0px auto;
+  width: 60%;
   height: 75vh;
   background-color: #fff;
   list-style: none;
   border-radius: 15px;
   overflow-y: auto;
+}
+
+.tables::-webkit-scrollbar {
+  width: 10px;
+  background-color: #f1f1f1; /* Color de fondo del scroll */
+}
+
+.tables::-webkit-scrollbar-thumb {
+  background-color: #0093e9;
+  border-radius: 10px;
 }

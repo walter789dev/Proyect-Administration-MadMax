@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import styles from "./styles.module.css";
+import styles from "./ListBranches.module.css";
 import { ISucursal } from "../../../types/dtos/sucursal/ISucursal";
 import useModals from "../../../hooks/useModals";
 import { useAppDispatch, useAppSelector } from "../../../hooks/redux";
@@ -10,7 +10,7 @@ import Branch from "../Branch";
 import ModalOptions from "../../shared/ModalOptions";
 import FormBranch from "../FormBranch";
 import ViewBranch from "../ViewBranch";
-import defaultImage from "../../../assets/images/image-default.jpg";
+import defaultImage from "../../../assets/images/goods-truck.svg";
 
 const ListBranches = () => {
   const {

@@ -45,6 +45,7 @@
 
 .modalText {
   display: block;
+  margin: 5px 0px;
   text-transform: capitalize;
   font-size: var(--text-lg);
 }

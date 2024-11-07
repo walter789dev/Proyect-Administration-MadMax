@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import styles from "./styles.module.css";
+import styles from "./ListCompanies.module.css";
 import { useAppDispatch, useAppSelector } from "../../../hooks/redux";
 import useModals from "../../../hooks/useModals";
 import { IEmpresa } from "../../../types/dtos/empresa/IEmpresa";

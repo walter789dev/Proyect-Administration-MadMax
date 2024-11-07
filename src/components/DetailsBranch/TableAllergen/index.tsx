@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import styles from "./styles.module.css";
+import styles from "./TableAllergen.module.css";
 import { IAlergenos } from "../../../types/dtos/alergenos/IAlergenos";
 import useModals from "../../../hooks/useModals";
 import { helpHttp } from "../../../helpers/helpHttp";

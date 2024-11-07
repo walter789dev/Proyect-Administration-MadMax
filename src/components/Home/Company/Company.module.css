@@ -20,14 +20,14 @@
 }
 
 .companyTitle {
-  text-transform: uppercase;
+  text-transform: capitalize;
   font-size: var(--text-lg);
   font-weight: bolder;
   color: #fff;
 }
 
 .companySubTitle {
-  text-transform: uppercase;
+  text-transform: capitalize;
   font-size: var(--text-sm);
   color: #ddeedd;
 }

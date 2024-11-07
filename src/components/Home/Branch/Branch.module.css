@@ -29,10 +29,12 @@
 
 .cardInfo h3 {
   text-align: center;
+  text-transform: capitalize;
   font-size: var(--text-lg);
 }
 
-.cardInfoh4 {
+.cardInfo h4 {
+  font-weight: 500;
   font-size: var(--text-md);
 }
 

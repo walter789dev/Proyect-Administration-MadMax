@@ -1,5 +1,5 @@
 import { FC } from "react";
-import styles from "./styles.module.css";
+import styles from "./ViewBranch.module.css";
 import { ISucursal } from "../../../types/dtos/sucursal/ISucursal";
 import Modal from "../../shared/Modal";
 import ButtonForm from "../../shared/ButtonForm";

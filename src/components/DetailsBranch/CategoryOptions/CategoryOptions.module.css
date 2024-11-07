@@ -1,0 +1,27 @@
+.buttons {
+  width: 150px;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+}
+
+.button {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+.first {
+  width: 25px;
+  fill: rgb(28, 28, 30);
+}
+
+.second {
+  width: 20px;
+  fill: #0093e9;
+}
+
+.third {
+  width: 30px;
+  fill: green;
+}

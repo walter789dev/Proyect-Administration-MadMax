@@ -1,4 +1,4 @@
-import styles from "./styles.module.css";
+import styles from "./ModalInfo.module.css";
 import ButtonForm from "../ButtonForm";
 import { IEmpresa } from "../../../types/dtos/empresa/IEmpresa";
 import { FC } from "react";

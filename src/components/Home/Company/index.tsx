@@ -1,5 +1,5 @@
 import { FC, ReactNode } from "react";
-import styles from "./styles.module.css";
+import styles from "./Company.module.css";
 import { IEmpresa } from "../../../types/dtos/empresa/IEmpresa";
 import { useAppDispatch } from "../../../hooks/redux";
 import { setActiveCompany } from "../../../redux/slices/companySlice";

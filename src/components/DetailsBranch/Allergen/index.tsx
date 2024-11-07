@@ -1,5 +1,5 @@
 import { FC, ReactNode } from "react";
-import styles from "./styles.module.css";
+import styles from "./Allergen.module.css";
 
 interface IAllergen {
   denominacion: string;

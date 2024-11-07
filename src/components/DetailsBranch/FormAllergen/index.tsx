@@ -1,6 +1,6 @@
 import { FC, useEffect } from "react";
 import { IAlergenos } from "../../../types/dtos/alergenos/IAlergenos";
-import styles from "./styles.module.css";
+import styles from "./FormAllergen.module.css";
 import { ICreateAlergeno } from "../../../types/dtos/alergenos/ICreateAlergeno";
 import { IUpdateAlergeno } from "../../../types/dtos/alergenos/IUpdateAlergeno";
 import { helpHttp } from "../../../helpers/helpHttp";

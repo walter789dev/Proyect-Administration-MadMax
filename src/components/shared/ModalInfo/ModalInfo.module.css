@@ -5,7 +5,7 @@
   justify-content: space-around;
   align-items: center;
   min-width: 320px;
-  width: 36%;
+  width: 30%;
   padding: 15px;
   border-radius: 10px;
   background-color: #ffff;
@@ -25,14 +25,14 @@
 }
 
 .modalImage {
-  width: 45%;
+  width: 35%;
   height: 200px;
   border-radius: 15px;
   overflow: hidden;
 }
 
 .modal2 {
-  width: 45%;
+  width: 55%;
   padding-bottom: 10px;
 }
 
@@ -44,6 +44,7 @@
 
 .modalText {
   display: block;
+  margin: 5px 0px;
   text-transform: capitalize;
   font-size: var(--text-lg);
 }

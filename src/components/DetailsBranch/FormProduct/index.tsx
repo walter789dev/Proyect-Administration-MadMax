@@ -1,5 +1,5 @@
 import { ChangeEvent, FC, useState, useEffect } from "react";
-import styles from "./styles.module.css";
+import styles from "./FormProduct.module.css";
 import { IProductos } from "../../../types/dtos/productos/IProductos";
 import { ICreateProducto } from "../../../types/dtos/productos/ICreateProducto";
 import { IUpdateProducto } from "../../../types/dtos/productos/IUpdateProducto";

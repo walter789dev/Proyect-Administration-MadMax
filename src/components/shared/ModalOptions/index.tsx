@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import styles from "./styles.module.css";
+import styles from "./ModalOptions.module.css";
 import { useAppDispatch } from "../../../hooks/redux";
 import { setActiveBranch } from "../../../redux/slices/BranchSlice";
 import { ISucursal } from "../../../types/dtos/sucursal/ISucursal";

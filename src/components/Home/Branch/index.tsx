@@ -1,5 +1,5 @@
 import { FC, ReactNode } from "react";
-import styles from "./styles.module.css";
+import styles from "./Branch.module.css";
 import { ISucursal } from "../../../types/dtos/sucursal/ISucursal";
 import defaultImage from "../../../assets/images/image-default.jpg";
 
@@ -13,7 +13,7 @@ const Branch: FC<BranchProps> = ({ branch, children }) => {
     <figure className={styles.card}>
       <img src={branch.logo || defaultImage} />
       <figcaption className={styles.cardInfo}>
-        <h3>{branch.nombre}</h3>
+        <h3>{branch.nombre.toLowerCase()}</h3>
         <h4>
           {branch.horarioApertura} hrs a {branch.horarioCierre} hrs
         </h4>

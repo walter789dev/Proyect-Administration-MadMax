@@ -1,5 +1,5 @@
 import { FC, useEffect } from "react";
-import styles from "./styles.module.css";
+import styles from "./FormCompany.module.css";
 import { IEmpresa } from "../../../types/dtos/empresa/IEmpresa";
 import useForm from "../../../hooks/useForm";
 import { useAppDispatch } from "../../../hooks/redux";

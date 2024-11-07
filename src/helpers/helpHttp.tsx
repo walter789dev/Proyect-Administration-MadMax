@@ -7,8 +7,8 @@ interface IOptionsHTTP {
 }
 
 export function helpHttp() {
-  const API_URL = import.meta.env.VITE_URL;
-  // Manejo de la conexion a la BBDD - Generico
+  const API_URL = "http://190.221.207.224:8090";
+  // Manejo de la conexion a la BBDD - Generico import.meta.env.VITE_URL
   function customFetch<T>(
     url: string,
     options: IOptionsHTTP,

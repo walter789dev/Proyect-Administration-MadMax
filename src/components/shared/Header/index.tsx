@@ -1,5 +1,5 @@
 import { FC } from "react";
-import styles from "./styles.module.css";
+import styles from "./Header.module.css";
 import { useNavigate } from "react-router-dom";
 
 interface HeaderProps {

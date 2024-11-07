@@ -1,8 +1,10 @@
 import { FC, useEffect, useState } from "react";
-import styles from "./styles.module.css";
+import styles from "./TableCategories.module.css";
 import { ICategorias } from "../../../types/dtos/categorias/ICategorias";
 import { helpHttp } from "../../../helpers/helpHttp";
 import Button from "../../shared/Button";
+import Category from "../Category";
+import CategoryOptions from "../CategoryOptions";
 
 interface TableCategoriesProps {
   id: string | undefined;
@@ -29,7 +31,9 @@ const TableCategories: FC<TableCategoriesProps> = ({ id }) => {
         </header>
         <ul className={styles.tables}>
           {categorias?.map((category) => (
-            <li key={category.id}>{category.denominacion}</li>
+            <Category key={category.id} category={category}>
+              <CategoryOptions />
+            </Category>
           ))}
         </ul>
       </section>

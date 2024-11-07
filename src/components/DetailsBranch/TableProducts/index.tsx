@@ -1,5 +1,5 @@
 import { ChangeEvent, FC, useEffect, useState } from "react";
-import styles from "./styles.module.css";
+import styles from "./TableProducts.module.css";
 import { IProductos } from "../../../types/dtos/productos/IProductos";
 import useModals from "../../../hooks/useModals";
 import { helpHttp } from "../../../helpers/helpHttp";

@@ -1,5 +1,5 @@
 import { FC } from "react";
-import styles from "./styles.module.css";
+import styles from "./Options.module.css";
 
 interface OptionsProps {
   setRoutes: (index: number) => void;
