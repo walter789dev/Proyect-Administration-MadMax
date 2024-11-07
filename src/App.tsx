@@ -1,6 +1,6 @@
 import { Route, Routes } from "react-router-dom";
-import Home from "./components/pages/Home";
-import { DetailsBranch } from "./components/pages/DetailsBranch";
+import Home from "./pages/Home";
+import { DetailsBranch } from "./pages/DetailsBranch";
 
 function App() {
   return (

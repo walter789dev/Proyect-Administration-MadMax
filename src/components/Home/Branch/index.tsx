@@ -1,7 +1,7 @@
 import { FC, ReactNode } from "react";
 import styles from "./styles.module.css";
 import { ISucursal } from "../../../types/dtos/sucursal/ISucursal";
-import defaultImage from "../../../../assets/images/image-default.jpg";
+import defaultImage from "../../../assets/images/image-default.jpg";
 
 interface BranchProps {
   branch: ISucursal;
