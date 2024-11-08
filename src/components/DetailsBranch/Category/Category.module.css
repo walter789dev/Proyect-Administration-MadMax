@@ -11,3 +11,33 @@
   padding: 10px 30px;
   border-bottom: 1px solid rgb(187, 187, 187);
 }
+
+.button {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+.button svg {
+  width: 25px;
+  fill: #0093e9;
+}
+
+.content {
+  border-bottom: 1px solid darkblue;
+  list-style: none;
+}
+
+.contentLi {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 0px 30px;
+  padding: 10px 15px;
+  border-bottom: 1px solid rgb(187, 187, 187);
+  text-transform: uppercase;
+}
+
+.contentLi:last-child {
+  border: none;
+}

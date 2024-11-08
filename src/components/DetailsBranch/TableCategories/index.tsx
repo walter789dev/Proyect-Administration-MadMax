@@ -1,29 +1,33 @@
 import { FC, useEffect, useState } from "react";
 import styles from "./TableCategories.module.css";
-import { ICategorias } from "../../../types/dtos/categorias/ICategorias";
+import { IUpdateCategoria } from "../../../types/dtos/categorias/IUpdateCategoria";
 import { helpHttp } from "../../../helpers/helpHttp";
 import Button from "../../shared/Button";
 import Category from "../Category";
-import CategoryOptions from "../CategoryOptions";
+import useModals from "../../../hooks/useModals";
+import FormCategory from "../FormCategory";
+import { ICategorias } from "../../../types/dtos/categorias/ICategorias";
 
 interface TableCategoriesProps {
   id: string | undefined;
 }
 
 const TableCategories: FC<TableCategoriesProps> = ({ id }) => {
-  const [categorias, setCategorias] = useState<ICategorias[]>();
+  const [categorias, setCategorias] = useState<ICategorias[]>([]);
+  const { modalForm, dataToEdit, openForm, resetForm } =
+    useModals<IUpdateCategoria>();
 
   useEffect(() => {
     helpHttp()
-      .getAll(`categorias/allCategoriasPorSucursal/${id}`)
-      .then((res) => setCategorias(res as ICategorias[]));
+      .getAll<ICategorias>(`categorias/allCategoriasPorSucursal/${id}`)
+      .then((res) => setCategorias(res));
   }, []);
   return (
     <>
       <section className={styles.contenedor}>
         <header>
           <div className={styles.button}>
-            <Button text="Categoria" type="tertiary" openModal={() => {}} />
+            <Button text="Categoria" type="tertiary" openModal={openForm} />
           </div>
           <div className={styles.title}>
             <h2>Lista de Categorias: </h2>
@@ -31,12 +35,19 @@ const TableCategories: FC<TableCategoriesProps> = ({ id }) => {
         </header>
         <ul className={styles.tables}>
           {categorias?.map((category) => (
-            <Category key={category.id} category={category}>
-              <CategoryOptions />
-            </Category>
+            <Category key={category.id} id={id} category={category} />
           ))}
         </ul>
       </section>
+      {modalForm && (
+        <FormCategory
+          id={id}
+          type="Padre"
+          dataToEdit={dataToEdit}
+          closeModal={resetForm}
+          setCategorias={setCategorias}
+        />
+      )}
     </>
   );
 };

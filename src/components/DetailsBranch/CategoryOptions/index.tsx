@@ -1,13 +1,26 @@
+import { FC } from "react";
 import styles from "./CategoryOptions.module.css";
 
-const CategoryOptions = () => {
+interface CategoryOptProps {
+  change: boolean;
+}
+
+const CategoryOptions: FC<CategoryOptProps> = ({ change }) => {
   return (
     <div className={styles.buttons}>
-      <button className={styles.button}>
-        <svg className={styles.first} viewBox="0 -960 960 960">
-          <path d="M440-800v487L216-537l-56 57 320 320 320-320-56-57-224 224v-487h-80Z" />
-        </svg>
-      </button>
+      {change ? (
+        <button className={styles.button}>
+          <svg className={styles.first} viewBox="0 -960 960 960">
+            <path d="M440-800v487L216-537l-56 57 320 320 320-320-56-57-224 224v-487h-80Z" />
+          </svg>
+        </button>
+      ) : (
+        <button className={styles.button}>
+          <svg className={styles.first} viewBox="0 -960 960 960">
+            <path d="M440-160v-487L216-423l-56-57 320-320 320 320-56 57-224-224v487h-80Z" />
+          </svg>
+        </button>
+      )}
       <button className={styles.button}>
         <svg className={styles.second} viewBox="0 0 512 512">
           <path d="M290.7 93.2l128 128-278 278-114.1 12.6C11.4 513.5-1.6 500.6 .1 485.3l12.7-114.2 277.9-277.9zm207.2-19.1l-60.1-60.1c-18.8-18.8-49.2-18.8-67.9 0l-56.6 56.6 128 128 56.6-56.6c18.8-18.8 18.8-49.2 0-67.9z" />
