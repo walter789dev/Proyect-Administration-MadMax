@@ -3,7 +3,7 @@ import styles from "./Header.module.css";
 import { useNavigate } from "react-router-dom";
 
 interface HeaderProps {
-  title: string | undefined;
+  title?: string | undefined;
   type?: "sucursal";
 }
 // Header con el titulo de la página + estilos

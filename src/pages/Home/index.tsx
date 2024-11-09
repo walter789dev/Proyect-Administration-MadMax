@@ -6,7 +6,7 @@ import Header from "../../components/shared/Header";
 function Home() {
   return (
     <>
-      <Header title="Administración MadMax" />
+      <Header />
       <ContainerGrid>
         <ListCompanies />
         <ListBranches />

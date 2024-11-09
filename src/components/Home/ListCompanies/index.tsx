@@ -24,7 +24,7 @@ const ListCompanies = () => {
 
   const dispatch = useAppDispatch();
   const companies = useAppSelector((state) => state.companyReducer.companies);
-  const activeId = useAppSelector((state) => state.companyReducer.id);
+  const active = useAppSelector((state) => state.companyReducer.active);
 
   useEffect(() => {
     helpHttp()
@@ -46,7 +46,7 @@ const ListCompanies = () => {
             companies.map((company, id) => (
               <Company
                 key={id}
-                active={activeId === company.id}
+                active={active?.id === company.id}
                 company={company}
               >
                 <ModalOptions

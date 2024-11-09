@@ -14,7 +14,7 @@ const Company: FC<CompanyProp> = ({ active, company, children }) => {
   const dispatch = useAppDispatch();
   // Actualiza la Empresa que esta en foco para obtener sus sucursales
   const changeCompanyId = () => {
-    dispatch(setActiveCompany(company.id));
+    dispatch(setActiveCompany(company));
   };
 
   return (

@@ -34,13 +34,15 @@ const FormAllergen: FC<ModalProps> = ({
 
   const handlerSubmit = async () => {
     const voidValues = Object.keys(dataForm).some((item) => item.length === 0);
+    let newData = dataForm.imagen.url;
 
-    if (voidValues || !image) {
+    if (voidValues) {
       alert("Faltan campos por completar");
       return;
     }
 
-    const newData = await service();
+    if (image) newData = await service();
+
     let resInfo = {
       ...dataForm,
       imagen: {
@@ -64,7 +66,6 @@ const FormAllergen: FC<ModalProps> = ({
       const res = await post<ICreateAlergeno>(`alergenos`, resInfo);
       if (res) setAlergenos((state: IAlergenos[]) => [...state, resInfo]);
     }
-
     closeModal();
   };
 
@@ -87,7 +88,10 @@ const FormAllergen: FC<ModalProps> = ({
             value={dataForm.denominacion}
             onChange={handlerChange}
           />
-          <label htmlFor="file">Ingrese una imagen:</label>
+          <label htmlFor="file">
+            Ingrese una imagen:{" "}
+            {dataForm.imagen.url && <b>Tiene una imagen cargada</b>}
+          </label>
           <input id="file" type="file" onChange={handler} />
           <div className={styles.modalButtons}>
             {loading ? (

@@ -6,14 +6,22 @@ import ButtonForm from "../../shared/ButtonForm";
 import Modal from "../../shared/Modal";
 import useForm from "../../../hooks/useForm";
 import { helpHttp } from "../../../helpers/helpHttp";
-import { ICategorias } from "../../../types/dtos/categorias/ICategorias";
+import { useAppSelector } from "../../../hooks/redux";
+
+interface Type {
+  type: "Padre" | "Hija";
+  id: number | null;
+}
 
 interface FormProps {
   id: string | undefined;
   dataToEdit: IUpdateCategoria | null;
-  type: "Padre" | "Hija";
+  type: Type;
   closeModal: () => void;
-  setCategorias: (updater: (state: ICategorias[]) => ICategorias[]) => void;
+  setCategorias: (
+    updater: (state: ICreateCategoria[]) => ICreateCategoria[]
+  ) => void;
+  setActive: (state: boolean) => void;
 }
 
 const FormCategory: FC<FormProps> = ({
@@ -22,32 +30,56 @@ const FormCategory: FC<FormProps> = ({
   type,
   closeModal,
   setCategorias,
+  setActive,
 }) => {
+  const idEmpresa = useAppSelector((state) => state.companyReducer.id);
   const { dataForm, handlerChange, setDataForm } = useForm<
     ICreateCategoria | IUpdateCategoria
   >({
     denominacion: "",
-    idSucursales: [Number(id)],
+    idEmpresa: idEmpresa,
+    idCategoriaPadre: type.id,
   });
 
-  const { post } = helpHttp();
+  const { post, put } = helpHttp();
 
   const handlerSubmit = async () => {
-    if (type === "Padre") {
+    if (type.type === "Padre") {
       if (dataToEdit) {
+        const res = await put<IUpdateCategoria>(
+          `categorias/update/${dataForm.id}`,
+          {
+            ...dataForm,
+            idSucursales: [Number(id)],
+            idEmpresa,
+          } as IUpdateCategoria
+        );
+
+        if (res) {
+          setCategorias((categorias) => {
+            const filter = categorias.filter(
+              (category) => category.id != dataForm.id
+            );
+            return [...filter, dataForm];
+          });
+        }
       } else {
-        console.log(dataForm, dataToEdit);
         const res = await post<ICreateCategoria>(
           `categorias/create`,
           dataForm as ICreateCategoria
         );
-        if (res)
-          setCategorias(
-            (categorias) =>
-              [...categorias, { ...dataForm, id: res.id }] as ICategorias[]
-          );
+        if (res) setCategorias((categorias) => [...categorias, res]);
       }
     } else {
+      if (dataToEdit) {
+        const res = await put<IUpdateCategoria>(
+          `categorias/update/${dataForm.id}`,
+          dataForm as IUpdateCategoria
+        );
+        if (res) setActive(false);
+      } else {
+        await post<ICreateCategoria>(`categorias/create`, dataForm);
+      }
     }
     closeModal();
   };
@@ -59,7 +91,7 @@ const FormCategory: FC<FormProps> = ({
     <Modal>
       <section className={styles.modalSection}>
         <h2>
-          {dataToEdit ? "Editar" : "Añadir"} Categoria {type}
+          {dataToEdit ? "Editar" : "Añadir"} Categoria {type.type}
         </h2>
         <form className={styles.modalForm}>
           <input

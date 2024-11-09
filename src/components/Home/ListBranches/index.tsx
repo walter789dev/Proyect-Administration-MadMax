@@ -25,31 +25,32 @@ const ListBranches = () => {
 
   const dispatch = useAppDispatch();
   const branches = useAppSelector((state) => state.branchReducer.branches);
-  const activeId = useAppSelector((state) => state.companyReducer.id);
+  const active = useAppSelector((state) => state.companyReducer.active);
 
   const getBranches = () => {
     helpHttp()
-      .getAll<ISucursal>(`sucursales/porEmpresa/${activeId}`)
+      .getAll<ISucursal>(`sucursales/porEmpresa/${active?.id}`)
       .then((companiesData) => dispatch(setBranchesData(companiesData)));
   };
 
   useEffect(() => {
-    if (activeId) {
+    if (active) {
       getBranches();
     }
-  }, [activeId]);
+  }, [active]);
 
   return (
     <>
       <section>
         <header className={styles.branchInfo}>
           <h2>
-            Cantidad de sucursales: {branches?.length ? branches.length : "0"}
+            Cantidad de sucursales de <span>{active?.nombre}</span>:{" "}
+            {branches?.length ? branches.length : "0"}
           </h2>
           {/* Boton para abrir Modal de Sucursal */}
           <Button
             text="Sucursal"
-            type={activeId ? "secondary" : "disabled"}
+            type={active ? "secondary" : "disabled"}
             openModal={openForm}
           />
         </header>
@@ -71,7 +72,7 @@ const ListBranches = () => {
       </section>
       {modalForm && (
         <FormBranch
-          idCompany={activeId}
+          idCompany={active?.id}
           dataToEdit={dataToEdit}
           closeModal={resetForm}
           getBranches={getBranches}
