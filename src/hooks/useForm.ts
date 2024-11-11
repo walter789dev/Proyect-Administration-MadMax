@@ -7,8 +7,8 @@ function useForm<T>(initial: T) {
       e: ChangeEvent<HTMLInputElement | HTMLSelectElement>
    ) => {
       const { target } = e;
-      setDataForm((data) => ({
-         ...data,
+      setDataForm(() => ({
+         ...dataForm,
          [target.name]:
             isNaN(Number(target.value)) || Number(target.value) == 0
                ? target.value
@@ -16,10 +16,18 @@ function useForm<T>(initial: T) {
       }));
    };
 
+   const handlerCheck = (e: ChangeEvent<HTMLInputElement>) => {
+      setDataForm({
+         ...dataForm,
+         [e.target.name]: e.target.checked
+      })
+   }
+
    return {
       dataForm,
       setDataForm,
-      handlerChange
+      handlerChange,
+      handlerCheck
    };
 }
 

@@ -6,7 +6,7 @@ import { ICreateCategoria } from "../../../types/dtos/categorias/ICreateCategori
 import CategoryOptions from "../CategoryOptions";
 
 interface CategoryProps {
-  id: string | null;
+  id: number | null;
   active: boolean;
   category: ICreateCategoria;
   setType: (state: { type: "Padre" | "Hija"; id: number | null }) => void;
@@ -40,7 +40,7 @@ const Category: FC<CategoryProps> = ({
         className={styles.containerCategory}
         onClick={(e) => e.preventDefault()}
       >
-        {category.denominacion}
+        {category.denominacion.toLowerCase()}
         <CategoryOptions
           change={open}
           setOpen={setOpen}

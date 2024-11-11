@@ -1,15 +1,9 @@
-.modalSection {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 400px;
-  padding: 15px;
-  border-radius: 10px;
-  background-color: #ffff;
-  gap: 20px;
+.modalContent {
+  width: 750px;
+  padding: 5px;
+  background-color: white;
+  border-radius: 2rem;
 }
-
 
 .modalContent h2 {
   text-align: center;
@@ -30,13 +24,17 @@
   margin-bottom: 5px;
 }
 
-.modalContent input[type="text"]{
+.modalContent input[type="checkbox"] {
+  margin-right: 10px;
+}
+
+.modalContent input[type="text"],
+.modalContent input[type="number"] {
   width: 100%;
   padding: 8px;
   border: 1px solid #ccc;
   border-radius: 4px;
 }
-
 
 .containerButtons {
   display: flex;
@@ -72,7 +70,7 @@
 
 .customFileUpload::before {
   content: "🖼️";
-  font-size: 80px;
+  font-size: 40px;
   position: sticky;
   top: 50%;
   left: 50%;
@@ -84,8 +82,8 @@
   display: block;
   margin: 10px auto;
   width: 100%;
-  max-width: 160px;
-  height: 120px;
+  max-width: 80px;
+  height: 60px;
   border: 2px dashed #ccc;
   border-radius: 8px;
   text-align: center;
@@ -107,8 +105,11 @@
   width: 45%;
 }
 
-.fourthy {
+.modalButtons {
   display: flex;
-  flex-direction: column;
+  justify-content: center;
+}
+
+.modalButtons:has(button) {
   justify-content: space-between;
 }

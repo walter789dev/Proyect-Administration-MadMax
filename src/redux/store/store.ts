@@ -1,6 +1,6 @@
 import { configureStore } from '@reduxjs/toolkit'
 import companySlice from '../slices/companySlice'
-import branchSlice from '../slices/BranchSlice'
+import branchSlice from '../slices/branchSlice'
 
 export const store = configureStore({
    reducer: {

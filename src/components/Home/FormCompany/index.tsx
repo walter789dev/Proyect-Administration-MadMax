@@ -33,14 +33,14 @@ const FormCompany: FC<ModalProps> = ({ dataToEdit, closeModal }) => {
   const handlerSubmit = async () => {
     const voidValues = Object.keys(dataForm).some((item) => item.length === 0);
 
-    if (voidValues || !image) {
+    if (voidValues && !image && dataForm.logo.length) {
       alert("Faltan campos por completar");
       setLoading(false);
       return;
     }
 
     const newImage = await service();
-    let resInfo = { ...dataForm, logo: newImage };
+    let resInfo = { ...dataForm, logo: newImage || dataForm.logo };
 
     if (dataToEdit) {
       const res = await put<IEmpresa>(`empresas/${dataForm.id}`, resInfo);
@@ -86,7 +86,8 @@ const FormCompany: FC<ModalProps> = ({ dataToEdit, closeModal }) => {
             onChange={handlerChange}
           />
           <label className={styles.modalLabel} htmlFor="image">
-            Ingrese Logo:
+            Ingrese Logo:{" "}
+            {(image || dataForm.logo) && <b>Tiene una imagen cargada</b>}
           </label>
           <input
             id="image"

@@ -1,28 +1,55 @@
-import { useState } from "react";
-import { useAppSelector } from "../../hooks/redux";
-import { useParams } from "react-router-dom";
+import { FC } from "react";
+import styles from "./DetailsBranch.module.css";
+import { NavLink, Outlet } from "react-router-dom";
 import Header from "../../components/shared/Header";
 import ContainerGrid from "../../components/shared/ContainerGrid";
-import { Options } from "../../components/DetailsBranch/Options";
-import TableCategories from "../../components/DetailsBranch/TableCategories";
-import TableProducts from "../../components/DetailsBranch/TableProducts";
-import { TableAllergen } from "../../components/DetailsBranch/TableAllergen";
 
-export const DetailsBranch = () => {
-  const [routes, setRoutes] = useState(0);
-  const activeBranch = useAppSelector(
-    (state) => state.branchReducer.activeBranch
-  );
-  const { id } = useParams<{ id: string }>();
+interface DetailsBranchProps {
+  title: string | undefined;
+}
 
+export const DetailsBranch: FC<DetailsBranchProps> = ({ title }) => {
   return (
     <>
-      <Header title={activeBranch?.nombre} type="sucursal" />
+      <Header title={title} type="sucursal" />
       <ContainerGrid type="secondary">
-        <Options routes={routes} setRoutes={setRoutes} />
-        {routes == 0 && <TableCategories id={id} />}
-        {routes == 1 && <TableProducts id={id} />}
-        {routes == 2 && <TableAllergen />}
+        <nav className={styles.opciones}>
+          <h2 className={styles.opcionesTitle}>Administración</h2>
+          <ul className={styles.opcionesUl}>
+            <NavLink
+              to="."
+              end
+              className={({ isActive }) =>
+                isActive
+                  ? `${styles.opcion} ${styles.active}`
+                  : `${styles.opcion}`
+              }
+            >
+              Productos
+            </NavLink>
+            <NavLink
+              to="categorias"
+              className={({ isActive }) =>
+                isActive
+                  ? `${styles.opcion} ${styles.active}`
+                  : `${styles.opcion}`
+              }
+            >
+              Categorias
+            </NavLink>
+            <NavLink
+              to="alergenos"
+              className={({ isActive }) =>
+                isActive
+                  ? `${styles.opcion} ${styles.active}`
+                  : `${styles.opcion}`
+              }
+            >
+              Alérgenos
+            </NavLink>
+          </ul>
+        </nav>
+        <Outlet />
       </ContainerGrid>
     </>
   );

@@ -7,9 +7,10 @@ import Button from "../../shared/Button";
 import Product from "../Product";
 import ModalOptions from "../../shared/ModalOptions";
 import ModalInfo from "../../shared/ModalInfo";
+import FormProduct from "../FormProduct";
 
 interface TableProps {
-  id: string | undefined;
+  id: number | undefined;
 }
 
 interface FilterProducts {
@@ -23,7 +24,7 @@ const TableProducts: FC<TableProps> = ({ id }) => {
   const {
     modalForm,
     modalInfo,
-    //  dataToEdit,
+    dataToEdit,
     info,
     openForm,
     openView,
@@ -123,14 +124,14 @@ const TableProducts: FC<TableProps> = ({ id }) => {
           )}
         </ul>
       </section>
-      {
-        modalForm && ""
-        //   <FormProduct
-        //     product={dataToEdit}
-        //     closeModal={resetForm}
-        //     setProductos={setProducts}
-        //   />
-      }
+      {modalForm && (
+        <FormProduct
+          id={id}
+          product={dataToEdit}
+          closeModal={resetForm}
+          setProductos={setProducts}
+        />
+      )}
       {modalInfo && info && (
         <ModalInfo
           title="Producto"

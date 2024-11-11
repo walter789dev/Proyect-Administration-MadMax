@@ -6,6 +6,7 @@
 }
 
 .columnOne {
+  font-size: 17px;
   text-align: center;
   flex-grow: 1;
 }

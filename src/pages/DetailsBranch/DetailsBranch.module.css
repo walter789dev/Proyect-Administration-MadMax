@@ -45,6 +45,8 @@
   display: none;
 }
 
-.opcionesUl > li {
+.opcionesUl > a {
+  text-transform: capitalize;
+  text-decoration: none;
   margin-bottom: 1.2rem;
 }

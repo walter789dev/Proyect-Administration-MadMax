@@ -10,14 +10,12 @@ interface ProductProps {
 const Product: FC<ProductProps> = ({ product, children }) => {
   return (
     <li className={styles.element}>
-      <p className={styles.firstColumn}>{product.denominacion.toLowerCase()}</p>
+      <p className={styles.firstColumn}>{product.denominacion}</p>
       <p className={styles.column}>${product.precioVenta}</p>
       <p className={styles.column}>
         {product.descripcion || "No hay descripción"}
       </p>
-      <p className={styles.column}>
-        {product.categoria.denominacion.toLowerCase()}
-      </p>
+      <p className={styles.column}>{product.categoria.denominacion}</p>
       <p className={styles.column}>
         <button className={styles.button}>
           <svg

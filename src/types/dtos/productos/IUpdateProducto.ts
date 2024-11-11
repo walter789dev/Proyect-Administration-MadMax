@@ -6,8 +6,8 @@ export interface IUpdateProducto extends baseDto {
    precioVenta: number;
    descripcion: string;
    habilitado: boolean;
-   imagenes: IImagen[];
    codigo: string;
+   imagenes: IImagen[];
    idCategoria: number;
    idAlergenos: number[];
 }

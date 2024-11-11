@@ -137,7 +137,12 @@ const FormBranch: FC<ModalFormProps> = ({
   };
 
   useEffect(() => {
-    if (dataToEdit) setDataForm(dataToEdit);
+    if (dataToEdit) {
+      const localidad = dataToEdit.domicilio.localidad;
+      manageData(`provincias/findByPais/${localidad.provincia.pais.id}`);
+      manageData(`localidades/findByProvincia/${localidad.provincia.id}`);
+      setDataForm(dataToEdit);
+    }
 
     getAll<IPais>(`paises`)
       .then((paises) =>
@@ -151,7 +156,7 @@ const FormBranch: FC<ModalFormProps> = ({
 
   return (
     <Modal>
-      <div className={styles.modalContent}>
+      <section className={styles.modalContent}>
         <h2>{dataToEdit ? "Editar" : "Añadir"} Sucursal</h2>
         <form className={styles.modalForm}>
           <div className={styles.first}>
@@ -262,6 +267,7 @@ const FormBranch: FC<ModalFormProps> = ({
               <select
                 name="country"
                 required
+                value={dataToEdit?.domicilio.localidad.provincia.pais.id}
                 onChange={(e) =>
                   manageData(`provincias/findByPais/${e.target.value}`)
                 }
@@ -280,6 +286,7 @@ const FormBranch: FC<ModalFormProps> = ({
               <select
                 name="province"
                 required
+                value={dataToEdit?.domicilio.localidad.provincia.id}
                 onChange={(e) =>
                   manageData(`localidades/findByProvincia/${e.target.value}`)
                 }
@@ -297,6 +304,7 @@ const FormBranch: FC<ModalFormProps> = ({
               <label>Seleccione localidad: </label>
               <select
                 name="idLocalidad"
+                value={dataToEdit?.domicilio.localidad.id}
                 onChange={handlerChangeDomicilio}
                 required
               >
@@ -350,7 +358,7 @@ const FormBranch: FC<ModalFormProps> = ({
             </div>
           </div>
         </form>
-      </div>
+      </section>
     </Modal>
   );
 };

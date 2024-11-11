@@ -14,7 +14,7 @@ interface Type {
 }
 
 interface FormProps {
-  id: string | undefined;
+  id: number | undefined;
   dataToEdit: IUpdateCategoria | null;
   type: Type;
   closeModal: () => void;
@@ -32,7 +32,7 @@ const FormCategory: FC<FormProps> = ({
   setCategorias,
   setActive,
 }) => {
-  const idEmpresa = useAppSelector((state) => state.companyReducer.id);
+  const idEmpresa = useAppSelector((state) => state.companyReducer.active?.id);
   const { dataForm, handlerChange, setDataForm } = useForm<
     ICreateCategoria | IUpdateCategoria
   >({
@@ -50,7 +50,7 @@ const FormCategory: FC<FormProps> = ({
           `categorias/update/${dataForm.id}`,
           {
             ...dataForm,
-            idSucursales: [Number(id)],
+            idSucursales: [id],
             idEmpresa,
           } as IUpdateCategoria
         );

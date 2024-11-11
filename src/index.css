@@ -18,9 +18,9 @@ body {
   --text-xl: 1.324rem;
   --text-xxl: 1.502rem;
   /* ------- Paleta de Colores ------- */
-  --primary-color: #2E236C;
+  --primary-color: #2e236c;
   --secondary-color: #368f8b;
-  --primary-background: #170D37;
+  --primary-background: #170d37;
   --secondary-background: #160f29;
   --accent-color: #fff;
 }

@@ -9,7 +9,7 @@ import FormCategory from "../FormCategory";
 import { ICreateCategoria } from "../../../types/dtos/categorias/ICreateCategoria";
 
 interface TableCategoriesProps {
-  id: string | undefined;
+  id: number | undefined;
 }
 
 interface Type {

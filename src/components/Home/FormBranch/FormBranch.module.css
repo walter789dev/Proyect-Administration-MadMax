@@ -65,6 +65,10 @@
   cursor: pointer;
 }
 
+.modalContent input[type="checkbox"] {
+  margin-right: 10px;
+}
+
 .modalContent input[type="file"] {
   display: none;
 }

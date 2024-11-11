@@ -70,7 +70,19 @@ const FormAllergen: FC<ModalProps> = ({
   };
 
   useEffect(() => {
-    if (dataToEdit) setDataForm(dataToEdit);
+    if (dataToEdit) {
+      if (dataToEdit.imagen === null) {
+        setDataForm({
+          ...dataToEdit,
+          imagen: {
+            name: "",
+            url: "",
+          },
+        });
+      } else {
+        setDataForm(dataToEdit);
+      }
+    }
   }, [dataToEdit]);
 
   return (
