@@ -5,8 +5,22 @@
   font-family: Calibri;
 }
 
+*::selection {
+  background-color: #2e236c;
+  color: #fff;
+}
+
 body {
   overflow-y: hidden;
+}
+
+@keyframes scale-up-center {
+  0% {
+    transform: scale(0.7);
+  }
+  100% {
+    transform: scale(1);
+  }
 }
 
 :root {

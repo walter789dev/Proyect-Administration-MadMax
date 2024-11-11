@@ -19,24 +19,24 @@
 }
 
 .primary:hover {
-  background-color: #17153B;
+  background-color: #17153b;
 }
 
 .primary svg {
-   fill: #fff
+  fill: #fff;
 }
 
 .secondary {
-  border: 1px solid #17153B;
-  color: #17153B;
+  border: 1px solid #17153b;
+  color: #17153b;
 }
 
 .secondary svg {
-   fill: #17153B
+  fill: #17153b;
 }
 
 .secondary:hover {
-  background-color: #17153B;
+  background-color: #17153b;
   color: #fff;
 }
 
@@ -44,19 +44,19 @@
   fill: #fff;
 }
 
-.tertiary{
-  border: 1px solid #0093e9;
-  color: #0093e9;
+.tertiary {
+  border: 1px solid #050237;
+  color: #050237;
 }
 
 .tertiary svg {
-   fill: #0093e9;
+  fill: #050237;
 }
 
-.tertiary:hover{
-  border: 1px solid #0093e9;
+.tertiary:hover {
+  border: 1px solid #050237;
   color: #fff;
-  background-color: #0093e9
+  background-color: #050237;
 }
 
 .tertiary:hover svg {
@@ -69,5 +69,5 @@
 }
 
 .disabled svg {
-   fill: #767676;
+  fill: #767676;
 }

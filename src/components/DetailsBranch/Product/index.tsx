@@ -7,6 +7,7 @@ interface ProductProps {
   children: ReactNode;
 }
 
+// ---------- Componente Producto -------------
 const Product: FC<ProductProps> = ({ product, children }) => {
   return (
     <li className={styles.element}>

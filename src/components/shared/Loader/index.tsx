@@ -1,5 +1,6 @@
 import styles from "./Loader.module.css";
 
+// ------------ Loader de carga ---------
 const Loader = () => {
   return (
     <>

@@ -13,13 +13,14 @@ interface ModalInfoProps {
   setOpenModal: (state?: string) => void;
 }
 
-// Muestra Información de la Empresa | Sucursal seleccionada
+// -------- Muestra Información del elemento seleccionado -------
 const ModalInfo: FC<ModalInfoProps> = ({
   title,
   columns,
   info,
   setOpenModal,
 }) => {
+  // Logica para mostrar imagen dependiento de T
   const validateImage = () => {
     if ("imagen" in info) {
       return info.imagen ? info.imagen?.url : "";
@@ -38,6 +39,7 @@ const ModalInfo: FC<ModalInfoProps> = ({
             <img src={validateImage()} alt="Logo" />
           </div>
           <div className={styles.modal2}>
+            {/*Claves de objetos que no puedo recorrer */}
             {columns.map((key) => {
               if ("categoria" in info && key === "categoria") {
                 return (

@@ -8,6 +8,7 @@ interface DetailsBranchProps {
   title: string | undefined;
 }
 
+// Recibo el titulo de la página
 export const DetailsBranch: FC<DetailsBranchProps> = ({ title }) => {
   return (
     <>
@@ -16,6 +17,7 @@ export const DetailsBranch: FC<DetailsBranchProps> = ({ title }) => {
         <nav className={styles.opciones}>
           <h2 className={styles.opcionesTitle}>Administración</h2>
           <ul className={styles.opcionesUl}>
+            {/* Defino los enlaces a las rutas pertinentes*/}
             <NavLink
               to="."
               end

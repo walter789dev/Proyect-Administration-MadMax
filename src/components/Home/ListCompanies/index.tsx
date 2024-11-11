@@ -11,6 +11,7 @@ import Button from "../../shared/Button";
 import FormCompany from "../FormCompany";
 import ModalInfo from "../../shared/ModalInfo";
 
+// --------- Componente para listar Empresas ------------
 const ListCompanies = () => {
   const {
     modalForm,

@@ -9,10 +9,10 @@ interface CompanyProp {
   company: IEmpresa;
   children: ReactNode;
 }
-
+//-------- Componente de Empresa -----------
 const Company: FC<CompanyProp> = ({ active, company, children }) => {
   const dispatch = useAppDispatch();
-  // Actualiza la Empresa que esta en foco para obtener sus sucursales
+  // Actualiza la Empresa Activa para obtener sus sucursales
   const changeCompanyId = () => {
     dispatch(setActiveCompany(company));
   };

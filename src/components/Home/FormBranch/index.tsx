@@ -26,6 +26,7 @@ interface Position {
   localidades: ILocalidad[] | null;
 }
 
+// Estado Inicial del Formulario
 const initial: ICreateSucursal = {
   nombre: "",
   horarioApertura: "00:00",
@@ -46,28 +47,31 @@ const initial: ICreateSucursal = {
   eliminado: false,
 };
 
+// ------------- Formulario de Sucursal ------------
 const FormBranch: FC<ModalFormProps> = ({
   idCompany,
   dataToEdit,
   closeModal,
   getBranches,
 }) => {
+  // Información del Formulario
   const { dataForm, setDataForm, handlerChange } = useForm<
     ICreateSucursal | ISucursal
   >({
     ...initial,
     idEmpresa: idCompany || 0,
   });
-
+  // Manejo de los valores de los selects del formulario
   const [position, setPosition] = useState<Position>({
     paises: null,
     provincias: null,
     localidades: null,
   });
-
+  // Contiene la información de la imagen cargada + manejo
   const { image, loading, handler, service } = useImage();
   const { getAll, post, put } = helpHttp();
 
+  // Maneja los valores del objeto Domicilio
   const handlerChangeDomicilio = (
     e: ChangeEvent<HTMLSelectElement | HTMLInputElement>
   ) => {
@@ -85,7 +89,7 @@ const FormBranch: FC<ModalFormProps> = ({
         } as ISucursal | ICreateSucursal)
     );
   };
-
+  // Obtiene las provincias y localidades del pais seleccionado
   const manageData = async (url: string) => {
     const items = await getAll<IProvincia | ILocalidad>(url);
 
@@ -101,16 +105,17 @@ const FormBranch: FC<ModalFormProps> = ({
       }));
     }
   };
-
+  // Enviar informacion pertienente
   const handlerSubmit = async () => {
     let response = {};
     let newImage = dataForm.logo;
-
+    // Si no existe una url, creo la url de nueva imagen
     if (newImage.length === 0) {
       newImage = await service();
     }
-
+    // En caso de Actualizar Sucursal
     if (dataToEdit) {
+      // Filtro la información necesario para Actualizar
       const { empresa, domicilio, ...preDataForm } = dataForm as ISucursal;
       const { localidad, ...finalDomicilio } = domicilio;
 
@@ -131,19 +136,19 @@ const FormBranch: FC<ModalFormProps> = ({
         logo: newImage,
       } as ICreateSucursal);
     }
-
     if (response) getBranches();
     closeModal();
   };
 
   useEffect(() => {
+    // Mostrar el pais, provincia, localidad del elemento a actualizar
     if (dataToEdit) {
       const localidad = dataToEdit.domicilio.localidad;
       manageData(`provincias/findByPais/${localidad.provincia.pais.id}`);
       manageData(`localidades/findByProvincia/${localidad.provincia.id}`);
       setDataForm(dataToEdit);
     }
-
+    // Obtengo los paises al inicial
     getAll<IPais>(`paises`)
       .then((paises) =>
         setPosition((elements) => ({
@@ -329,6 +334,9 @@ const FormBranch: FC<ModalFormProps> = ({
                 </b>
               </label>
               <label className={styles.customFileUpload}>
+                <svg viewBox="0 -960 960 960">
+                  <path d="M440-440ZM120-120q-33 0-56.5-23.5T40-200v-480q0-33 23.5-56.5T120-760h126l74-80h240v80H355l-73 80H120v480h640v-360h80v360q0 33-23.5 56.5T760-120H120Zm640-560v-80h-80v-80h80v-80h80v80h80v80h-80v80h-80ZM440-260q75 0 127.5-52.5T620-440q0-75-52.5-127.5T440-620q-75 0-127.5 52.5T260-440q0 75 52.5 127.5T440-260Zm0-80q-42 0-71-29t-29-71q0-42 29-71t71-29q42 0 71 29t29 71q0 42-29 71t-71 29Z" />
+                </svg>
                 <input
                   type="file"
                   id="image"

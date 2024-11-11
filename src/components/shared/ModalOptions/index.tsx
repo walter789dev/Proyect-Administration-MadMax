@@ -1,8 +1,8 @@
 import { useNavigate } from "react-router-dom";
 import styles from "./ModalOptions.module.css";
 import { useAppDispatch } from "../../../hooks/redux";
-import { setActiveBranch } from "../../../redux/slices/BranchSlice";
 import { ISucursal } from "../../../types/dtos/sucursal/ISucursal";
+import { setActiveBranch } from "../../../redux/slices/branchSlice";
 
 interface OptionsProp<T> {
   type?: "primary" | "secondary" | "custom";
@@ -11,8 +11,7 @@ interface OptionsProp<T> {
   view: (data: T) => void;
   del?: (data: number | undefined) => void;
 }
-
-// Maneja el modal de Vista, Editar de Empresa y Sucursal + Estilos
+// --- Maneja las Opciones de Vista, Editar, Ver Sucursal y Eliminar ---
 const ModalOptions = <T,>({
   type = "primary",
   item,
@@ -23,10 +22,11 @@ const ModalOptions = <T,>({
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
 
+  // Validar en caso de que no tenga el id correspondiente
   function hasId(item: any): item is { id: number } {
     return item && typeof item.id === "number";
   }
-
+  // Redirigir a Página de Ver Sucursal
   const activeBranch = () => {
     dispatch(setActiveBranch(item as ISucursal));
     navigate(`/productos/${hasId(item) && item.id}`);

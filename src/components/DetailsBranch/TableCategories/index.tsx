@@ -17,15 +17,18 @@ interface Type {
   id: number | null;
 }
 
+// ---------- Componente para listar Categorias -----------
 const TableCategories: FC<TableCategoriesProps> = ({ id }) => {
   const [categorias, setCategorias] = useState<ICreateCategoria[]>([]);
+  const { modalForm, dataToEdit, openForm, resetForm } =
+    useModals<IUpdateCategoria>();
+
   const [active, setActive] = useState(false);
+  // Indica si se Crea/Edita Categoria Padre/Hija
   const [type, setType] = useState<Type>({
     type: "Padre",
     id: null,
   });
-  const { modalForm, dataToEdit, openForm, resetForm } =
-    useModals<IUpdateCategoria>();
 
   useEffect(() => {
     helpHttp()

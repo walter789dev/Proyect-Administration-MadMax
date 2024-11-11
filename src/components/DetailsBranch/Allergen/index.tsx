@@ -6,6 +6,7 @@ interface IAllergen {
   children: ReactNode;
 }
 
+// ----------- Componente Alergeno --------
 const Allergen: FC<IAllergen> = ({ denominacion, children }) => {
   return (
     <li className={styles.element}>

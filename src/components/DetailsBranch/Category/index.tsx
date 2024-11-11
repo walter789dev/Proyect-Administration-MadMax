@@ -13,6 +13,7 @@ interface CategoryProps {
   openForm: (state?: IUpdateCategoria) => void;
 }
 
+// ---------- Componente Categoria -----------
 const Category: FC<CategoryProps> = ({
   id,
   category,
@@ -20,8 +21,9 @@ const Category: FC<CategoryProps> = ({
   openForm,
   active,
 }) => {
+  // Contiene las subcategorias de dicha Categoria
   const [subCategories, setSubCategories] = useState<IUpdateCategoria[]>([]);
-  const [open, setOpen] = useState<boolean>(false);
+  const [open, setOpen] = useState<boolean>(false); // Maneja el icono Arrow top y bottom
 
   useEffect(() => {
     if (open) {

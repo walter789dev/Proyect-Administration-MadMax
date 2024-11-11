@@ -9,6 +9,7 @@ import ModalOptions from "../../shared/ModalOptions";
 import FormAllergen from "../FormAllergen";
 import ModalInfo from "../../shared/ModalInfo";
 
+// ---------- Componente para listar Alergenos -----------
 export const TableAllergen = () => {
   const [alergenos, setAlergenos] = useState<IAlergenos[]>([]);
   const {

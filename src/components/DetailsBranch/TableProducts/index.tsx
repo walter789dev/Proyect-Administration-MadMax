@@ -18,9 +18,8 @@ interface FilterProducts {
   categories: string[];
 }
 
+// ------------ Componente oara Listar Productos -----------
 const TableProducts: FC<TableProps> = ({ id }) => {
-  const [products, setProducts] = useState<IProductos[]>([]);
-  const [filterProducts, setFilterProducts] = useState<FilterProducts>();
   const {
     modalForm,
     modalInfo,
@@ -30,24 +29,25 @@ const TableProducts: FC<TableProps> = ({ id }) => {
     openView,
     resetForm,
   } = useModals<IProductos>();
+  const [products, setProducts] = useState<IProductos[]>([]);
+  // Lista de productos filtrados por categorias
+  const [filterProducts, setFilterProducts] = useState<FilterProducts>();
+  const { getAll, del } = helpHttp(); // Metodos HTTP
 
-  const { getAll, del } = helpHttp();
-
+  // Maneja la lista de productos de acuerdo al filtro aplicado
   const handlerChangeFilter = (e: ChangeEvent<HTMLSelectElement>) => {
     let filter = [] as IProductos[];
-
     if (e.target.value.length > 0) {
       filter = products.filter(
         (product) => product.categoria.denominacion === e.target.value
       );
     }
-
     setFilterProducts((state) => ({
       categories: state?.categories as string[],
       products: filter,
     }));
   };
-
+  // Eliminar Producto
   const deleteProducto = (id: number | undefined) => {
     del<IProductos>(`articulos/${id}`).then(() =>
       setProducts(products.filter((item) => item.id !== id))
@@ -57,6 +57,7 @@ const TableProducts: FC<TableProps> = ({ id }) => {
   useEffect(() => {
     getAll<IProductos>(`articulos/porSucursal/${id}`).then((res) => {
       setProducts(res);
+      // Asigno los productos y las categorias para filtrar productos
       setFilterProducts({
         products: [],
         categories: Array.from(

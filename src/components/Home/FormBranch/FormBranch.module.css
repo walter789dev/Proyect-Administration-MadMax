@@ -3,6 +3,16 @@
   padding: 5px;
   background-color: white;
   border-radius: 2rem;
+  animation: scale-up-center 0.5s;
+}
+
+@keyframes scale-up-center {
+  0% {
+    transform: scale(0.8);
+  }
+  100% {
+    transform: scale(1);
+  }
 }
 
 .modalContent h2 {
@@ -22,6 +32,10 @@
   display: block;
   width: 100%;
   margin-bottom: 5px;
+}
+
+.modalContent b {
+  color: #2e236c;
 }
 
 .modalContent input[type="text"],
@@ -73,22 +87,12 @@
   display: none;
 }
 
-.customFileUpload::before {
-  content: "🖼️";
-  font-size: 80px;
-  position: sticky;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  color: #888;
-}
-
 .customFileUpload {
   display: block;
   margin: 30px auto;
   width: 100%;
-  max-width: 180px;
-  height: 120px;
+  max-width: 130px;
+  height: 90px;
   border: 2px dashed #ccc;
   border-radius: 8px;
   text-align: center;
@@ -96,6 +100,12 @@
   position: relative;
   color: #666;
   font-size: 0.9rem;
+}
+
+.customFileUpload svg {
+  margin: 10px auto;
+  width: 70px;
+  fill: #2e236c;
 }
 
 .modalForm {

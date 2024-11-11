@@ -10,7 +10,17 @@
   padding: 15px;
   border-radius: 10px;
   background-color: #ffff;
+  animation: scale-up-center 0.5s;
   gap: 20px;
+}
+
+@keyframes scale-up-center {
+  0% {
+    transform: scale(0.5);
+  }
+  100% {
+    transform: scale(1);
+  }
 }
 
 .modalSection h2 {

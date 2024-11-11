@@ -5,7 +5,11 @@
   border-radius: 10px;
   box-shadow: -3px 6px 7px -3px rgba(181, 181, 181, 1);
   overflow: hidden;
-  transition: transform 0.2s ease;
+  transition: transform 0.2s ease-in-out;
+}
+
+.card:hover {
+  transform: translateY(-5px);
 }
 
 .card > img {

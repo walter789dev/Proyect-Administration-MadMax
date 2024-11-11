@@ -10,7 +10,9 @@ function App() {
   const active = useAppSelector((state) => state.branchReducer.activeBranch);
   return (
     <Routes>
+      {/* Página de Inicio */}
       <Route path="/" element={<Home />} />
+      {/* Página de Información de Sucursales */}
       <Route
         path="/productos/:id"
         element={<DetailsBranch title={active?.nombre} />}

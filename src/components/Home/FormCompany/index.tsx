@@ -18,7 +18,9 @@ interface ModalProps {
   closeModal: (state?: string) => void;
 }
 
+// ------------ Formulario de Empresa ---------
 const FormCompany: FC<ModalProps> = ({ dataToEdit, closeModal }) => {
+  // Informacion inicial del formulario
   const { dataForm, setDataForm, handlerChange } = useForm<IEmpresa>({
     nombre: "",
     razonSocial: "",
@@ -27,10 +29,13 @@ const FormCompany: FC<ModalProps> = ({ dataToEdit, closeModal }) => {
   });
 
   const dispatch = useAppDispatch();
-  const { put, post } = helpHttp();
+  const { put, post } = helpHttp(); // Metodos HTTP
+  // Información de la imagen creada para enviar al servidor
   const { image, loading, handler, service, setLoading } = useImage();
 
+  // Enviar la infomación pertinente
   const handlerSubmit = async () => {
+    // Verifica si las claves no tienen valores vacios
     const voidValues = Object.keys(dataForm).some((item) => item.length === 0);
 
     if (voidValues && !image && dataForm.logo.length) {
@@ -38,7 +43,7 @@ const FormCompany: FC<ModalProps> = ({ dataToEdit, closeModal }) => {
       setLoading(false);
       return;
     }
-
+    // Obtenga la url de la imagen subida
     const newImage = await service();
     let resInfo = { ...dataForm, logo: newImage || dataForm.logo };
 
@@ -86,15 +91,21 @@ const FormCompany: FC<ModalProps> = ({ dataToEdit, closeModal }) => {
             onChange={handlerChange}
           />
           <label className={styles.modalLabel} htmlFor="image">
-            Ingrese Logo:{" "}
+            Ingrese Logo de empresa:{" "}
             {(image || dataForm.logo) && <b>Tiene una imagen cargada</b>}
           </label>
-          <input
-            id="image"
-            type="file"
-            onChange={handler}
-            accept="image/jpge, image/jpg"
-          />
+          <label className={styles.customFileUpload}>
+            <svg viewBox="0 -960 960 960">
+              <path d="M440-440ZM120-120q-33 0-56.5-23.5T40-200v-480q0-33 23.5-56.5T120-760h126l74-80h240v80H355l-73 80H120v480h640v-360h80v360q0 33-23.5 56.5T760-120H120Zm640-560v-80h-80v-80h80v-80h80v80h80v80h-80v80h-80ZM440-260q75 0 127.5-52.5T620-440q0-75-52.5-127.5T440-620q-75 0-127.5 52.5T260-440q0 75 52.5 127.5T440-260Zm0-80q-42 0-71-29t-29-71q0-42 29-71t71-29q42 0 71 29t29 71q0 42-29 71t-71 29Z" />
+            </svg>
+            <input
+              type="file"
+              id="image"
+              name="image"
+              onChange={handler}
+              accept="image/jpge, image/jpg"
+            />
+          </label>
           {/* Cancelar y Enviar/Actualizar Empresa en BBDD */}
           <div className={styles.modalButtons}>
             {loading ? (

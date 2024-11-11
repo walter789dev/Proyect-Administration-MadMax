@@ -24,6 +24,7 @@ interface FormProps {
   setActive: (state: boolean) => void;
 }
 
+// --------- Componente Formulario de Categoria ----------
 const FormCategory: FC<FormProps> = ({
   id,
   dataToEdit,
@@ -33,6 +34,7 @@ const FormCategory: FC<FormProps> = ({
   setActive,
 }) => {
   const idEmpresa = useAppSelector((state) => state.companyReducer.active?.id);
+  // Informacion del formulario
   const { dataForm, handlerChange, setDataForm } = useForm<
     ICreateCategoria | IUpdateCategoria
   >({
@@ -40,11 +42,14 @@ const FormCategory: FC<FormProps> = ({
     idEmpresa: idEmpresa,
     idCategoriaPadre: type.id,
   });
-
+  // Metodo HTTP
   const { post, put } = helpHttp();
 
+  // Enviar la informacion pertinente
   const handlerSubmit = async () => {
+    // En caso de crear una categoria Padre
     if (type.type === "Padre") {
+      // Actualizar categoria Padre
       if (dataToEdit) {
         const res = await put<IUpdateCategoria>(
           `categorias/update/${dataForm.id}`,
@@ -56,6 +61,7 @@ const FormCategory: FC<FormProps> = ({
         );
 
         if (res) {
+          // Actualizo lista de categorias
           setCategorias((categorias) => {
             const filter = categorias.filter(
               (category) => category.id != dataForm.id
@@ -64,6 +70,7 @@ const FormCategory: FC<FormProps> = ({
           });
         }
       } else {
+        // Crear Categoria Padre
         const res = await post<ICreateCategoria>(
           `categorias/create`,
           dataForm as ICreateCategoria
@@ -71,6 +78,7 @@ const FormCategory: FC<FormProps> = ({
         if (res) setCategorias((categorias) => [...categorias, res]);
       }
     } else {
+      // Editar Categoria Hija
       if (dataToEdit) {
         const res = await put<IUpdateCategoria>(
           `categorias/update/${dataForm.id}`,
@@ -78,6 +86,7 @@ const FormCategory: FC<FormProps> = ({
         );
         if (res) setActive(false);
       } else {
+        // Crear Categoria Hija
         await post<ICreateCategoria>(`categorias/create`, dataForm);
       }
     }

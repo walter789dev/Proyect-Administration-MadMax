@@ -5,6 +5,16 @@
   padding: 20px 0px;
   border-radius: 10px;
   background-color: #ffff;
+  animation: scale-up-center 0.4s ease-in-out;
+}
+
+@keyframes scale-up-center {
+  0% {
+    transform: scale(0.7);
+  }
+  100% {
+    transform: scale(1);
+  }
 }
 
 .modalSection h2 {

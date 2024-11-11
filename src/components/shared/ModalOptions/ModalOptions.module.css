@@ -10,6 +10,10 @@
   fill: #2e236c;
 }
 
+.primary svg:hover {
+  fill: #2e0afa;
+}
+
 .primary .first {
   width: 30px;
 }
@@ -36,7 +40,7 @@
 
 .custom .first {
   width: 32px;
-  fill: #0093e9;
+  fill: #110d4d;
 }
 
 .custom .second {

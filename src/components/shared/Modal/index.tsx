@@ -5,6 +5,7 @@ interface ModalProps {
   children: ReactNode;
 }
 
+// --------- Establece el fondo opaco para los modales pertinentes --------
 const Modal: FC<ModalProps> = ({ children }) => {
   return <div className={styles.modal}>{children}</div>;
 };

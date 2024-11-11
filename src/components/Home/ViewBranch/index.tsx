@@ -10,6 +10,7 @@ interface ModalInfoProps {
   setOpenModal: (state?: string) => void;
 }
 
+// --------- Componente para mostrar Información de Sucursal ---------
 const ViewBranch: FC<ModalInfoProps> = ({ info, columns, setOpenModal }) => {
   return (
     <Modal>

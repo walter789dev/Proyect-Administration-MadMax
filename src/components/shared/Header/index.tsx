@@ -6,7 +6,7 @@ interface HeaderProps {
   title?: string | undefined;
   type?: "sucursal";
 }
-// Header con el titulo de la página + estilos
+// ------- Header con el titulo de la página + estilos ----------
 const Header: FC<HeaderProps> = ({ title, type }) => {
   const navigate = useNavigate();
 
@@ -15,6 +15,7 @@ const Header: FC<HeaderProps> = ({ title, type }) => {
       <h1 className={styles.headerTitle}>
         {title ? `Sucursal: ${title}` : "MadMax Administration"}
       </h1>
+      {/*Boton para volver a Inicio */}
       {type && (
         <button onClick={() => navigate("/")}>
           <svg width="25" version="1.1" viewBox="0 0 1024 1024">

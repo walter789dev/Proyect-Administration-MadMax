@@ -4,7 +4,7 @@ import { ISucursal } from "../../../types/dtos/sucursal/ISucursal";
 import useModals from "../../../hooks/useModals";
 import { useAppDispatch, useAppSelector } from "../../../hooks/redux";
 import { helpHttp } from "../../../helpers/helpHttp";
-import { setBranchesData } from "../../../redux/slices/BranchSlice";
+import { setBranchesData } from "../../../redux/slices/branchSlice";
 import Button from "../../shared/Button";
 import Branch from "../Branch";
 import ModalOptions from "../../shared/ModalOptions";
@@ -12,6 +12,7 @@ import FormBranch from "../FormBranch";
 import ViewBranch from "../ViewBranch";
 import defaultImage from "../../../assets/images/goods-truck.svg";
 
+// -------- Componente para listar las Sucursales ----------
 const ListBranches = () => {
   const {
     modalForm,
@@ -25,32 +26,32 @@ const ListBranches = () => {
 
   const dispatch = useAppDispatch();
   const branches = useAppSelector((state) => state.branchReducer.branches);
-  const active = useAppSelector((state) => state.companyReducer.active);
+  const activeCompany = useAppSelector((state) => state.companyReducer.active);
 
   const getBranches = () => {
     helpHttp()
-      .getAll<ISucursal>(`sucursales/porEmpresa/${active?.id}`)
-      .then((companiesData) => dispatch(setBranchesData(companiesData)));
+      .getAll<ISucursal>(`sucursales/porEmpresa/${activeCompany?.id}`)
+      .then((branchData) => dispatch(setBranchesData(branchData)));
   };
 
   useEffect(() => {
-    if (active) {
+    if (activeCompany) {
       getBranches();
     }
-  }, [active]);
+  }, [activeCompany]);
 
   return (
     <>
       <section>
         <header className={styles.branchInfo}>
           <h2>
-            Cantidad de sucursales de <span>{active?.nombre}</span>:{" "}
+            Cantidad de sucursales de <span>{activeCompany?.nombre}</span>:{" "}
             {branches?.length ? branches.length : "0"}
           </h2>
           {/* Boton para abrir Modal de Sucursal */}
           <Button
             text="Sucursal"
-            type={active ? "secondary" : "disabled"}
+            type={activeCompany ? "secondary" : "disabled"}
             openModal={openForm}
           />
         </header>
@@ -72,7 +73,7 @@ const ListBranches = () => {
       </section>
       {modalForm && (
         <FormBranch
-          idCompany={active?.id}
+          idCompany={activeCompany?.id}
           dataToEdit={dataToEdit}
           closeModal={resetForm}
           getBranches={getBranches}

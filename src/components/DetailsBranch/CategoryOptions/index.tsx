@@ -8,6 +8,7 @@ interface CategoryOptProps {
   setOpen: (state: boolean) => void;
 }
 
+// ------- Componente de Opciones para Categoria (Añadir, editar, Abrir/Cerrar)-----------
 const CategoryOptions: FC<CategoryOptProps> = ({
   change,
   edit,

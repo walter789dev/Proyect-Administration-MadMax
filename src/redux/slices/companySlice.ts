@@ -5,30 +5,29 @@ interface CompanyState {
    companies: IEmpresa[],
    active: IEmpresa | null | undefined
 }
-// Listado de Empresas + ID Empresa activa para obtener Sucursales
+// Listado de Empresas + Empresa Activa para obtener Sucursales
 const initialState: CompanyState = {
    companies: [],
    active: null
 }
-// Reducers para manejar información de Empresas
+
 export const companySlice = createSlice({
    name: "Company",
    initialState,
    reducers: {
-      // Define Empresas[] + Empresa Activa para Sucursal
+      // Define el listado de Empresas + Empresa Activa para Sucursal
       setCompaniesData(state, action: PayloadAction<IEmpresa[]>) {
          state.companies = action.payload
-
          if (!state.active) {
             const element = action.payload.find(item => "id" in item)
             state.active = element
          }
       },
-      // Recibo las empresas de la API
+      // Actualizo el listado de empresas con la empresa creada
       updateCompaniesData(state, action: PayloadAction<IEmpresa>) {
          state.companies = [...state.companies, action.payload]
       },
-      // Actualizo las empresas con la Empresa creada / actualizada
+      // Actualizo el listado de empresas con la empresa actualizada
       updateCompany(state, action: PayloadAction<IEmpresa>) {
          const newState = state.companies.map((item) => (
             (item.id === action.payload.id) ? action.payload : item
