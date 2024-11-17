@@ -1,6 +1,7 @@
 import { IImagen } from "../../IImagen";
 
 export interface ICreateProducto {
+   id?: number
    denominacion: string;
    precioVenta: number;
    descripcion: string;

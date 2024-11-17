@@ -5,8 +5,8 @@ import { ICreateCategoria } from "../../../types/dtos/categorias/ICreateCategori
 import ButtonForm from "../../shared/ButtonForm";
 import Modal from "../../shared/Modal";
 import useForm from "../../../hooks/useForm";
-import { helpHttp } from "../../../helpers/helpHttp";
 import { useAppSelector } from "../../../hooks/redux";
+import { CategoriaService } from "../../../services/DetailsBranch/CategoriaService";
 
 interface Type {
   type: "Padre" | "Hija";
@@ -34,7 +34,6 @@ const FormCategory: FC<FormProps> = ({
   setActive,
 }) => {
   const idEmpresa = useAppSelector((state) => state.companyReducer.active?.id);
-  // Informacion del formulario
   const { dataForm, handlerChange, setDataForm } = useForm<
     ICreateCategoria | IUpdateCategoria
   >({
@@ -42,17 +41,14 @@ const FormCategory: FC<FormProps> = ({
     idEmpresa: idEmpresa,
     idCategoriaPadre: type.id,
   });
-  // Metodo HTTP
-  const { post, put } = helpHttp();
 
-  // Enviar la informacion pertinente
+  const categoriaService = new CategoriaService("categorias");
+
   const handlerSubmit = async () => {
-    // En caso de crear una categoria Padre
     if (type.type === "Padre") {
-      // Actualizar categoria Padre
       if (dataToEdit) {
-        const res = await put<IUpdateCategoria>(
-          `categorias/update/${dataForm.id}`,
+        const editCategory = await categoriaService.put(
+          `update/${dataForm.id}`,
           {
             ...dataForm,
             idSucursales: [id],
@@ -60,34 +56,31 @@ const FormCategory: FC<FormProps> = ({
           } as IUpdateCategoria
         );
 
-        if (res) {
-          // Actualizo lista de categorias
-          setCategorias((categorias) => {
-            const filter = categorias.filter(
-              (category) => category.id != dataForm.id
-            );
-            return [...filter, dataForm];
-          });
+        if (editCategory) {
+          setCategorias((categorias) =>
+            categorias.map((category) =>
+              category.id == editCategory.id ? editCategory : category
+            )
+          );
         }
       } else {
-        // Crear Categoria Padre
-        const res = await post<ICreateCategoria>(
+        const newCategory = await categoriaService.post(
           `categorias/create`,
           dataForm as ICreateCategoria
         );
-        if (res) setCategorias((categorias) => [...categorias, res]);
+        if (newCategory)
+          setCategorias((categorias) => [...categorias, newCategory]);
       }
     } else {
-      // Editar Categoria Hija
+      // Categoria Hija
       if (dataToEdit) {
-        const res = await put<IUpdateCategoria>(
-          `categorias/update/${dataForm.id}`,
+        const res = await categoriaService.put(
+          `update/${dataForm.id}`,
           dataForm as IUpdateCategoria
         );
         if (res) setActive(false);
       } else {
-        // Crear Categoria Hija
-        await post<ICreateCategoria>(`categorias/create`, dataForm);
+        await categoriaService.post(`create`, dataForm);
       }
     }
     closeModal();

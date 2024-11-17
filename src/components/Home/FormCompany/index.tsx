@@ -2,25 +2,24 @@ import { FC, useEffect } from "react";
 import styles from "./FormCompany.module.css";
 import { IEmpresa } from "../../../types/dtos/empresa/IEmpresa";
 import useForm from "../../../hooks/useForm";
-import { useAppDispatch } from "../../../hooks/redux";
-import { helpHttp } from "../../../helpers/helpHttp";
 import useImage from "../../../hooks/useImage";
-import {
-  updateCompaniesData,
-  updateCompany,
-} from "../../../redux/slices/companySlice";
 import Modal from "../../shared/Modal";
 import Loader from "../../shared/Loader";
 import ButtonForm from "../../shared/ButtonForm";
+import { CompanyService } from "../../../services/Home/CompanyService";
 
 interface ModalProps {
   dataToEdit: IEmpresa | null;
   closeModal: (state?: string) => void;
+  setCompany: (updater: (state: IEmpresa[]) => IEmpresa[]) => void;
 }
 
 // ------------ Formulario de Empresa ---------
-const FormCompany: FC<ModalProps> = ({ dataToEdit, closeModal }) => {
-  // Informacion inicial del formulario
+const FormCompany: FC<ModalProps> = ({
+  dataToEdit,
+  closeModal,
+  setCompany,
+}) => {
   const { dataForm, setDataForm, handlerChange } = useForm<IEmpresa>({
     nombre: "",
     razonSocial: "",
@@ -28,14 +27,11 @@ const FormCompany: FC<ModalProps> = ({ dataToEdit, closeModal }) => {
     logo: "",
   });
 
-  const dispatch = useAppDispatch();
-  const { put, post } = helpHttp(); // Metodos HTTP
+  const companyService = new CompanyService("empresas");
   // Información de la imagen creada para enviar al servidor
   const { image, loading, handler, service, setLoading } = useImage();
 
-  // Enviar la infomación pertinente
   const handlerSubmit = async () => {
-    // Verifica si las claves no tienen valores vacios
     const voidValues = Object.keys(dataForm).some((item) => item.length === 0);
 
     if (voidValues && !image && dataForm.logo.length) {
@@ -43,16 +39,21 @@ const FormCompany: FC<ModalProps> = ({ dataToEdit, closeModal }) => {
       setLoading(false);
       return;
     }
-    // Obtenga la url de la imagen subida
+
     const newImage = await service();
     let resInfo = { ...dataForm, logo: newImage || dataForm.logo };
 
     if (dataToEdit) {
-      const res = await put<IEmpresa>(`empresas/${dataForm.id}`, resInfo);
-      if (res) dispatch(updateCompany(resInfo));
+      const editCompany = await companyService.put(`${dataForm.id}`, resInfo);
+      setCompany((companies: IEmpresa[]) =>
+        companies.map((c) => (c.id === editCompany.id ? editCompany : c))
+      );
     } else {
-      const res = await post<IEmpresa>(`empresas`, resInfo);
-      if (res) dispatch(updateCompaniesData({ ...resInfo, id: res.id }));
+      const newCompany = await companyService.post(resInfo);
+      setCompany((companies: IEmpresa[]) => ({
+        ...companies,
+        newCompany,
+      }));
     }
     closeModal();
   };

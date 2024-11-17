@@ -1,16 +1,15 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import styles from "./ListBranches.module.css";
 import { ISucursal } from "../../../types/dtos/sucursal/ISucursal";
 import useModals from "../../../hooks/useModals";
-import { useAppDispatch, useAppSelector } from "../../../hooks/redux";
-import { helpHttp } from "../../../helpers/helpHttp";
-import { setBranchesData } from "../../../redux/slices/branchSlice";
+import { useAppSelector } from "../../../hooks/redux";
 import Button from "../../shared/Button";
 import Branch from "../Branch";
 import ModalOptions from "../../shared/ModalOptions";
 import FormBranch from "../FormBranch";
 import ViewBranch from "../ViewBranch";
 import defaultImage from "../../../assets/images/goods-truck.svg";
+import { BranchService } from "../../../services/Home/BranchService";
 
 // -------- Componente para listar las Sucursales ----------
 const ListBranches = () => {
@@ -23,21 +22,22 @@ const ListBranches = () => {
     openView,
     resetForm,
   } = useModals<ISucursal>();
+  const [branches, setBranches] = useState<ISucursal[]>([]);
 
-  const dispatch = useAppDispatch();
-  const branches = useAppSelector((state) => state.branchReducer.branches);
+  const branchService = new BranchService("sucursales");
   const activeCompany = useAppSelector((state) => state.companyReducer.active);
 
-  const getBranches = () => {
-    helpHttp()
-      .getAll<ISucursal>(`sucursales/porEmpresa/${activeCompany?.id}`)
-      .then((branchData) => dispatch(setBranchesData(branchData)));
-  };
-
   useEffect(() => {
-    if (activeCompany) {
-      getBranches();
-    }
+    const getBranches = async () => {
+      if (activeCompany) {
+        const sucursales = await branchService.getAll(
+          `porEmpresa/${activeCompany.id}`
+        );
+        setBranches(sucursales as ISucursal[]);
+      }
+    };
+
+    getBranches();
   }, [activeCompany]);
 
   return (
@@ -76,7 +76,7 @@ const ListBranches = () => {
           idCompany={activeCompany?.id}
           dataToEdit={dataToEdit}
           closeModal={resetForm}
-          getBranches={getBranches}
+          setBranches={setBranches}
         />
       )}
       {modalInfo && info && (

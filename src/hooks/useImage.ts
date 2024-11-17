@@ -5,7 +5,7 @@ function useImage() {
    const [loading, setLoading] = useState(false);
    // Verfica si ha recibido una imagen desde input:file
    const [image, setImage] = useState<FormData>();
-   const URL = import.meta.env.VITE_URL
+   const URL = "http://190.221.207.224:8090" || import.meta.env.VITE_URL
    const API_URL = `${URL}/images/uploads`
 
    // Obtiene la información de la imagen ingresa por input:file

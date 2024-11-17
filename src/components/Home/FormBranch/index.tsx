@@ -8,16 +8,19 @@ import { ICreateSucursal } from "../../../types/dtos/sucursal/ICreateSucursal";
 import { IUpdateSucursal } from "../../../types/dtos/sucursal/IUpdateSucursal";
 import useForm from "../../../hooks/useForm";
 import useImage from "../../../hooks/useImage";
-import { helpHttp } from "../../../helpers/helpHttp";
 import Modal from "../../shared/Modal";
 import Loader from "../../shared/Loader";
 import ButtonForm from "../../shared/ButtonForm";
+import { BranchService } from "../../../services/Home/BranchService";
+import { PaisService } from "../../../services/Home/PaisService";
+import { ProvinciaService } from "../../../services/Home/ProvinciaService";
+import { LocalidadService } from "../../../services/Home/LocalidadService";
 
 interface ModalFormProps {
   idCompany: number | undefined;
   dataToEdit: ISucursal | null;
   closeModal: (state?: string) => void;
-  getBranches: () => void;
+  setBranches: (updater: (state: ISucursal[]) => ISucursal[]) => void;
 }
 
 interface Position {
@@ -52,9 +55,8 @@ const FormBranch: FC<ModalFormProps> = ({
   idCompany,
   dataToEdit,
   closeModal,
-  getBranches,
+  setBranches,
 }) => {
-  // Información del Formulario
   const { dataForm, setDataForm, handlerChange } = useForm<
     ICreateSucursal | ISucursal
   >({
@@ -68,8 +70,8 @@ const FormBranch: FC<ModalFormProps> = ({
     localidades: null,
   });
   // Contiene la información de la imagen cargada + manejo
+  const branchService = new BranchService("sucursales");
   const { image, loading, handler, service } = useImage();
-  const { getAll, post, put } = helpHttp();
 
   // Maneja los valores del objeto Domicilio
   const handlerChangeDomicilio = (
@@ -90,8 +92,16 @@ const FormBranch: FC<ModalFormProps> = ({
     );
   };
   // Obtiene las provincias y localidades del pais seleccionado
-  const manageData = async (url: string) => {
-    const items = await getAll<IProvincia | ILocalidad>(url);
+  const manageData = async (id: string, type?: "Prov") => {
+    let items = [];
+
+    if (type === "Prov") {
+      const service = new ProvinciaService("provincias");
+      items = await service.getAll(`findByPais/${id}`);
+    } else {
+      const service = new LocalidadService("localidades");
+      items = await service.getAll(`findByProvincia/${id}`);
+    }
 
     if ("provincia" in items[0]) {
       setPosition((elements) => ({
@@ -105,17 +115,15 @@ const FormBranch: FC<ModalFormProps> = ({
       }));
     }
   };
-  // Enviar informacion pertienente
+
   const handlerSubmit = async () => {
-    let response = {};
     let newImage = dataForm.logo;
     // Si no existe una url, creo la url de nueva imagen
     if (newImage.length === 0) {
       newImage = await service();
     }
-    // En caso de Actualizar Sucursal
+
     if (dataToEdit) {
-      // Filtro la información necesario para Actualizar
       const { empresa, domicilio, ...preDataForm } = dataForm as ISucursal;
       const { localidad, ...finalDomicilio } = domicilio;
 
@@ -126,37 +134,50 @@ const FormBranch: FC<ModalFormProps> = ({
         logo: newImage,
       };
 
-      response = await put<IUpdateSucursal>(
-        `sucursales/update/${finalEdit.idEmpresa}`,
+      const editBranch = await branchService.put(
+        `update/${finalEdit.idEmpresa}`,
         finalEdit
       );
+
+      setBranches(
+        (branches: ISucursal[]) =>
+          branches.map((branch) =>
+            branch.id === editBranch.id ? editBranch : branch
+          ) as ISucursal[]
+      );
     } else {
-      response = await post<ICreateSucursal>(`sucursales/create`, {
+      const newBranch = await branchService.post(`create`, {
         ...dataForm,
         logo: newImage,
-      } as ICreateSucursal);
+      });
+      setBranches((branches: ISucursal[]) => ({
+        ...branches,
+        newBranch,
+      }));
     }
-    if (response) getBranches();
+
     closeModal();
   };
 
   useEffect(() => {
-    // Mostrar el pais, provincia, localidad del elemento a actualizar
-    if (dataToEdit) {
-      const localidad = dataToEdit.domicilio.localidad;
-      manageData(`provincias/findByPais/${localidad.provincia.pais.id}`);
-      manageData(`localidades/findByProvincia/${localidad.provincia.id}`);
-      setDataForm(dataToEdit);
-    }
-    // Obtengo los paises al inicial
-    getAll<IPais>(`paises`)
-      .then((paises) =>
-        setPosition((elements) => ({
-          ...elements,
-          paises: paises,
-        }))
-      )
-      .catch(() => console.log("Conexion: No se ha podido obtener Paises"));
+    const getFormBranch = async () => {
+      const paisService = new PaisService("paises");
+
+      if (dataToEdit) {
+        const localidad = dataToEdit.domicilio.localidad;
+        manageData(`${localidad.provincia.pais.id}`, "Prov");
+        manageData(`${localidad.provincia.id}`);
+        setDataForm(dataToEdit);
+      }
+
+      const paises = await paisService.getAll();
+      setPosition((elements) => ({
+        ...elements,
+        paises: paises,
+      }));
+    };
+
+    getFormBranch();
   }, []);
 
   return (

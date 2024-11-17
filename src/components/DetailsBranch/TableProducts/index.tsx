@@ -1,21 +1,16 @@
-import { ChangeEvent, FC, useEffect, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import styles from "./TableProducts.module.css";
 import { IProductos } from "../../../types/dtos/productos/IProductos";
 import useModals from "../../../hooks/useModals";
-import { helpHttp } from "../../../helpers/helpHttp";
 import Button from "../../shared/Button";
 import Product from "../Product";
 import ModalOptions from "../../shared/ModalOptions";
 import ModalInfo from "../../shared/ModalInfo";
 import FormProduct from "../FormProduct";
+import { ProductoService } from "../../../services/DetailsBranch/ProductoService";
 
 interface TableProps {
   id: number | undefined;
-}
-
-interface FilterProducts {
-  products: IProductos[];
-  categories: string[];
 }
 
 // ------------ Componente oara Listar Productos -----------
@@ -30,41 +25,53 @@ const TableProducts: FC<TableProps> = ({ id }) => {
     resetForm,
   } = useModals<IProductos>();
   const [products, setProducts] = useState<IProductos[]>([]);
+  const [pages, setPages] = useState({
+    page: 1,
+    totalPage: 0,
+    totalProducts: 0,
+  });
   // Lista de productos filtrados por categorias
-  const [filterProducts, setFilterProducts] = useState<FilterProducts>();
-  const { getAll, del } = helpHttp(); // Metodos HTTP
+  const [filterProducts, setFilterProducts] = useState<IProductos[]>([]);
+  const productoService = new ProductoService("articulos");
 
-  // Maneja la lista de productos de acuerdo al filtro aplicado
-  const handlerChangeFilter = (e: ChangeEvent<HTMLSelectElement>) => {
-    let filter = [] as IProductos[];
-    if (e.target.value.length > 0) {
-      filter = products.filter(
-        (product) => product.categoria.denominacion === e.target.value
-      );
-    }
-    setFilterProducts((state) => ({
-      categories: state?.categories as string[],
-      products: filter,
-    }));
-  };
   // Eliminar Producto
-  const deleteProducto = (id: number | undefined) => {
-    del<IProductos>(`articulos/${id}`).then(() =>
-      setProducts(products.filter((item) => item.id !== id))
-    );
+  const deleteProducto = async (id: number) => {
+    await productoService.delete(id);
+    const filter = products.filter((item) => item.id !== id);
+    setProducts(filter);
+
+    setPages({
+      page: 1,
+      totalProducts: products.length,
+      totalPage: Math.ceil(products.length / 7) || 1,
+    });
+    setFilterProducts(filter.slice(0, 7));
+  };
+
+  const paged = (res: IProductos[], index?: number) => {
+    if (index && pages.page != index) {
+      setFilterProducts(products.slice((index - 1) * 7, 7 * index));
+      setPages({
+        ...pages,
+        page: index,
+      });
+    } else {
+      setPages((data) => ({
+        ...data,
+        totalProducts: res.length,
+        totalPage: Math.ceil(res.length / 7),
+      }));
+      setFilterProducts(res.slice(0, 7));
+    }
   };
 
   useEffect(() => {
-    getAll<IProductos>(`articulos/porSucursal/${id}`).then((res) => {
-      setProducts(res);
-      // Asigno los productos y las categorias para filtrar productos
-      setFilterProducts({
-        products: [],
-        categories: Array.from(
-          new Set(res.map((item) => item.categoria.denominacion))
-        ),
-      });
-    });
+    const getProductos = async () => {
+      const productos = await productoService.getAll(`porSucursal/${id}`);
+      setProducts(productos as IProductos[]);
+      if (pages.totalPage !== pages.page) paged(productos as IProductos[]);
+    };
+    getProductos();
   }, []);
   return (
     <>
@@ -74,15 +81,24 @@ const TableProducts: FC<TableProps> = ({ id }) => {
             <Button text="Producto" type="tertiary" openModal={openForm} />
           </div>
           <div className={styles.filter}>
-            <h2>Filtrar Por Categoria: </h2>
-            <select onChange={handlerChangeFilter}>
-              <option value="">TODAS</option>
-              {filterProducts?.categories.map((categ) => (
-                <option key={categ} value={categ}>
-                  {categ}
-                </option>
-              ))}
-            </select>
+            <h3>Total de productos: {products.length}</h3>
+            <ul className={styles.pagedProducts}>
+              {filterProducts.length &&
+                [...Array(pages.totalPage)].map((_, index) => {
+                  const validate = pages.page === index + 1;
+                  return (
+                    <li
+                      onClick={
+                        !validate ? () => paged([], index + 1) : () => {}
+                      }
+                      className={`${styles.page} ${validate && styles.active}`}
+                      key={index}
+                    >
+                      {index + 1}
+                    </li>
+                  );
+                })}
+            </ul>
           </div>
         </header>
         <ul className={styles.tables}>
@@ -95,8 +111,8 @@ const TableProducts: FC<TableProps> = ({ id }) => {
             <p className={styles.lastColumn}>Acciones</p>
           </li>
           {products.length ? (
-            filterProducts?.products.length ? (
-              filterProducts.products.map((product, id) => (
+            filterProducts.length ? (
+              filterProducts.map((product, id) => (
                 <Product key={id} product={product}>
                   <ModalOptions
                     type="custom"
@@ -131,6 +147,7 @@ const TableProducts: FC<TableProps> = ({ id }) => {
           product={dataToEdit}
           closeModal={resetForm}
           setProductos={setProducts}
+          addFilter={paged}
         />
       )}
       {modalInfo && info && (

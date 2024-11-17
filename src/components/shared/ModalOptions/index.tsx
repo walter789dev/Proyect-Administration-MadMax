@@ -9,7 +9,7 @@ interface OptionsProp<T> {
   item: T;
   edit: (data: T) => void;
   view: (data: T) => void;
-  del?: (data: number | undefined) => void;
+  del?: (data: number) => void;
 }
 // --- Maneja las Opciones de Vista, Editar, Ver Sucursal y Eliminar ---
 const ModalOptions = <T,>({

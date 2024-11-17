@@ -3,7 +3,6 @@ import styles from "./FormProduct.module.css";
 import { IProductos } from "../../../types/dtos/productos/IProductos";
 import { ICreateProducto } from "../../../types/dtos/productos/ICreateProducto";
 import { IUpdateProducto } from "../../../types/dtos/productos/IUpdateProducto";
-import { helpHttp } from "../../../helpers/helpHttp";
 import Modal from "../../shared/Modal";
 import ButtonForm from "../../shared/ButtonForm";
 import useForm from "../../../hooks/useForm";
@@ -12,12 +11,16 @@ import { ICreateCategoria } from "../../../types/dtos/categorias/ICreateCategori
 import { IImagen } from "../../../types/IImagen";
 import useImage from "../../../hooks/useImage";
 import Loader from "../../shared/Loader";
+import { ProductoService } from "../../../services/DetailsBranch/ProductoService";
+import { AlergenoService } from "../../../services/DetailsBranch/AlergenoService";
+import { CategoriaService } from "../../../services/DetailsBranch/CategoriaService";
 
 interface FormProductProps {
   id: number | undefined;
   product: IProductos | null;
   closeModal: (state?: string) => void;
   setProductos: (updater: (state: IProductos[]) => IProductos[]) => void;
+  addFilter: (res: IProductos[]) => void;
 }
 
 interface SelectProps {
@@ -30,6 +33,7 @@ const FormProduct: FC<FormProductProps> = ({
   product,
   closeModal,
   setProductos,
+  addFilter,
 }) => {
   const { dataForm, setDataForm, handlerChange, handlerCheck } = useForm<
     ICreateProducto | IUpdateProducto
@@ -46,7 +50,7 @@ const FormProduct: FC<FormProductProps> = ({
 
   const [select, setSelect] = useState<SelectProps>();
   const { image, loading, handler, setLoading, service } = useImage();
-  const { getAll, post, put } = helpHttp();
+  const productoService = new ProductoService("articulos");
 
   const handlerAlergeno = (e: ChangeEvent<HTMLSelectElement>) => {
     setDataForm({
@@ -68,15 +72,16 @@ const FormProduct: FC<FormProductProps> = ({
         };
       }
 
-      const res = await put<IUpdateProducto>(`articulos/update/${product.id}`, {
+      const editProduct = await productoService.put(`update/${product.id}`, {
         ...dataForm,
         imagenes: [newImage],
       });
 
-      if (res) {
+      if (editProduct) {
         setProductos((state: IProductos[]) => {
-          const updated = state.filter((item) => item.id !== res.id);
-          return [...updated, res] as IProductos[];
+          const updated = state.filter((item) => item.id !== editProduct?.id);
+          addFilter([...updated, editProduct] as IProductos[]);
+          return [...updated, editProduct] as IProductos[];
         });
       }
     } else {
@@ -91,13 +96,16 @@ const FormProduct: FC<FormProductProps> = ({
         url: imagenServer,
       };
 
-      const res = await post<ICreateProducto>(`articulos/create`, {
+      const newProduct = await productoService.post(`create`, {
         ...dataForm,
         imagenes: [imagen],
       });
 
-      if (res)
-        setProductos((state: IProductos[]) => [...state, res] as IProductos[]);
+      if (newProduct)
+        setProductos((state: IProductos[]) => {
+          addFilter([...state, newProduct] as IProductos[]);
+          return [...state, newProduct] as IProductos[];
+        });
     }
     closeModal();
   };
@@ -116,9 +124,11 @@ const FormProduct: FC<FormProductProps> = ({
   }, [product]);
 
   useEffect(() => {
+    const alergenoService = new AlergenoService("alergenos");
+    const categoryService = new CategoriaService("categorias");
     Promise.all([
-      getAll<IAlergenos>("alergenos"),
-      getAll<ICreateCategoria>(`categorias/allCategoriasPorSucursal/${id}`),
+      alergenoService.getAll(),
+      categoryService.getAll(`allSubCategoriasPorSucursal/${id}`),
     ]).then((res) =>
       setSelect({
         alergenos: res[0],

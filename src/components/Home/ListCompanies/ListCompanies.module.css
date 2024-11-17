@@ -3,6 +3,7 @@
   flex-direction: column;
   align-items: center;
   padding-top: 40px;
+  padding-right: 3px;
   gap: 30px;
   background: var(--primary-color);
 }
@@ -23,14 +24,24 @@
 }
 
 .companiesUl::-webkit-scrollbar {
-  display: none;
+  width: 8px;
+}
+
+.companiesUl::-webkit-scrollbar-track {
+  background: #2e236c;
+  border-radius: 4px;
+}
+
+.companiesUl::-webkit-scrollbar-thumb {
+  background: #fff;
+  border-radius: 4px;
 }
 
 .companiesUl > li {
-  margin-bottom: 1.2rem;
+  margin-bottom: 10px;
 }
 
 .void {
-   text-align: center;
-   color: #fff;
+  text-align: center;
+  color: #fff;
 }

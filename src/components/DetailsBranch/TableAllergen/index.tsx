@@ -2,16 +2,15 @@ import { useEffect, useState } from "react";
 import styles from "./TableAllergen.module.css";
 import { IAlergenos } from "../../../types/dtos/alergenos/IAlergenos";
 import useModals from "../../../hooks/useModals";
-import { helpHttp } from "../../../helpers/helpHttp";
 import Button from "../../shared/Button";
 import Allergen from "../Allergen";
 import ModalOptions from "../../shared/ModalOptions";
 import FormAllergen from "../FormAllergen";
 import ModalInfo from "../../shared/ModalInfo";
+import { AlergenoService } from "../../../services/DetailsBranch/AlergenoService";
 
 // ---------- Componente para listar Alergenos -----------
 export const TableAllergen = () => {
-  const [alergenos, setAlergenos] = useState<IAlergenos[]>([]);
   const {
     modalForm,
     modalInfo,
@@ -22,16 +21,19 @@ export const TableAllergen = () => {
     resetForm,
   } = useModals<IAlergenos>();
 
-  const { getAll, del } = helpHttp();
+  const [alergenos, setAlergenos] = useState<IAlergenos[]>([]);
+  const alergenoService = new AlergenoService("alergenos");
 
-  const deleteAlergeno = (id: number | undefined) => {
-    del<IAlergenos>(`alergenos/${id}`).then(() =>
-      setAlergenos(alergenos.filter((item) => item.id !== id))
-    );
+  const deleteAlergeno = async (id: number) => {
+    await alergenoService.delete(id);
+    setAlergenos(alergenos.filter((item) => item.id !== id));
   };
 
   useEffect(() => {
-    getAll<IAlergenos>("alergenos").then((res) => setAlergenos(res));
+    const getAlergenos = async () => {
+      setAlergenos(await alergenoService.getAll());
+    };
+    getAlergenos();
   }, []);
   return (
     <>

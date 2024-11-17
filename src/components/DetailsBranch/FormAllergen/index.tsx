@@ -2,13 +2,12 @@ import { FC, useEffect } from "react";
 import { IAlergenos } from "../../../types/dtos/alergenos/IAlergenos";
 import styles from "./FormAllergen.module.css";
 import { ICreateAlergeno } from "../../../types/dtos/alergenos/ICreateAlergeno";
-import { IUpdateAlergeno } from "../../../types/dtos/alergenos/IUpdateAlergeno";
-import { helpHttp } from "../../../helpers/helpHttp";
 import useImage from "../../../hooks/useImage";
 import useForm from "../../../hooks/useForm";
 import Modal from "../../shared/Modal";
 import Loader from "../../shared/Loader";
 import ButtonForm from "../../shared/ButtonForm";
+import { AlergenoService } from "../../../services/DetailsBranch/AlergenoService";
 
 interface ModalProps {
   dataToEdit: IAlergenos | null;
@@ -22,7 +21,6 @@ const FormAllergen: FC<ModalProps> = ({
   closeModal,
   setAlergenos,
 }) => {
-  // Información del Formulario
   const { dataForm, setDataForm, handlerChange } = useForm<ICreateAlergeno>({
     denominacion: "",
     imagen: {
@@ -30,12 +28,11 @@ const FormAllergen: FC<ModalProps> = ({
       url: "",
     },
   });
-  // Metodos de HTTP
-  const { post, put } = helpHttp();
+
+  const alergenoService = new AlergenoService("alergenos");
   // Manejo de imagen para cargar al servidor
   const { image, loading, handler, service } = useImage();
 
-  // Envio de la información pertinente
   const handlerSubmit = async () => {
     const voidValues = Object.keys(dataForm).some((item) => item.length === 0);
     let newData = dataForm.imagen.url;
@@ -55,29 +52,25 @@ const FormAllergen: FC<ModalProps> = ({
       },
     };
 
-    // Si hay que actualizar el elemento
     if (dataToEdit) {
-      const res = await put<IUpdateAlergeno>(
-        `alergenos/${dataForm.id}`,
-        resInfo
-      );
-      if (res) {
-        setAlergenos((state: IAlergenos[]) => {
-          const filter = state.filter((item) => item.id != dataForm.id);
-          return [...filter, resInfo];
-        });
+      const editAlergeno = await alergenoService.put(`${dataForm.id}`, resInfo);
+      if (editAlergeno) {
+        setAlergenos((state: IAlergenos[]) =>
+          state.map((item) =>
+            item.id === editAlergeno.id ? editAlergeno : item
+          )
+        );
       }
     } else {
-      const res = await post<ICreateAlergeno>(`alergenos`, resInfo);
-      if (res) setAlergenos((state: IAlergenos[]) => [...state, resInfo]);
+      const newAlergeno = await alergenoService.post("", resInfo);
+      if (newAlergeno)
+        setAlergenos((state: IAlergenos[]) => [...state, newAlergeno]);
     }
     closeModal();
   };
 
   useEffect(() => {
-    // Defino la estructura del elemento a actualizar
     if (dataToEdit) {
-      // En caso de que no tenga imagen
       if (dataToEdit.imagen === null) {
         setDataForm({
           ...dataToEdit,

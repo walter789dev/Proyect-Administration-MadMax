@@ -1,15 +1,15 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import styles from "./ListCompanies.module.css";
 import { useAppDispatch, useAppSelector } from "../../../hooks/redux";
 import useModals from "../../../hooks/useModals";
 import { IEmpresa } from "../../../types/dtos/empresa/IEmpresa";
-import { helpHttp } from "../../../helpers/helpHttp";
-import { setCompaniesData } from "../../../redux/slices/companySlice";
+import { setActiveCompany } from "../../../redux/slices/companySlice";
 import Company from "../Company";
 import ModalOptions from "../../shared/ModalOptions";
 import Button from "../../shared/Button";
 import FormCompany from "../FormCompany";
 import ModalInfo from "../../shared/ModalInfo";
+import { CompanyService } from "../../../services/Home/CompanyService";
 
 // --------- Componente para listar Empresas ------------
 const ListCompanies = () => {
@@ -22,18 +22,20 @@ const ListCompanies = () => {
     openView,
     resetForm,
   } = useModals<IEmpresa>();
+  const [companies, setCompanies] = useState<IEmpresa[]>([]);
 
   const dispatch = useAppDispatch();
-  const companies = useAppSelector((state) => state.companyReducer.companies);
+  const companyService = new CompanyService("empresas");
   const active = useAppSelector((state) => state.companyReducer.active);
 
   useEffect(() => {
-    helpHttp()
-      .getAll<IEmpresa>(`empresas`)
-      .then((companiesData) => dispatch(setCompaniesData(companiesData)))
-      .catch(() =>
-        console.log("Conexion: Ha ocurrido un error al obtener Empresas")
-      );
+    const getCompanies = async () => {
+      const companies = await companyService.getAll();
+      if (!active) dispatch(setActiveCompany(companies[0]));
+      setCompanies(companies);
+    };
+
+    getCompanies();
   }, []);
 
   return (
@@ -63,7 +65,11 @@ const ListCompanies = () => {
         <Button text="Empresa" type="primary" openModal={openForm} />
       </nav>
       {modalForm && (
-        <FormCompany dataToEdit={dataToEdit} closeModal={resetForm} />
+        <FormCompany
+          dataToEdit={dataToEdit}
+          closeModal={resetForm}
+          setCompany={setCompanies}
+        />
       )}
       {modalInfo && info && (
         <ModalInfo

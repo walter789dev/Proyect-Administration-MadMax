@@ -1,9 +1,9 @@
 import { FC, useEffect, useState } from "react";
 import styles from "./Category.module.css";
-import { helpHttp } from "../../../helpers/helpHttp";
 import { IUpdateCategoria } from "../../../types/dtos/categorias/IUpdateCategoria";
 import { ICreateCategoria } from "../../../types/dtos/categorias/ICreateCategoria";
 import CategoryOptions from "../CategoryOptions";
+import { CategoriaService } from "../../../services/DetailsBranch/CategoriaService";
 
 interface CategoryProps {
   id: number | null;
@@ -21,18 +21,20 @@ const Category: FC<CategoryProps> = ({
   openForm,
   active,
 }) => {
-  // Contiene las subcategorias de dicha Categoria
   const [subCategories, setSubCategories] = useState<IUpdateCategoria[]>([]);
+  const categoriaService = new CategoriaService("categorias");
   const [open, setOpen] = useState<boolean>(false); // Maneja el icono Arrow top y bottom
 
   useEffect(() => {
-    if (open) {
-      helpHttp()
-        .getAll(
-          `categorias/allSubCategoriasPorCategoriaPadre/${category.id}/${id}`
-        )
-        .then((res) => setSubCategories(res as IUpdateCategoria[]));
-    }
+    const getSubCategorias = async () => {
+      if (open) {
+        const subCategorias = await categoriaService.getAll(
+          `allSubCategoriasPorCategoriaPadre/${category.id}/${id}`
+        );
+        setSubCategories(subCategorias as IUpdateCategoria[]);
+      }
+    };
+    getSubCategorias();
   }, [open]);
 
   useEffect(() => setOpen(active), [active]);

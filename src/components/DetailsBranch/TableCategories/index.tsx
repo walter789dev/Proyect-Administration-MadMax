@@ -1,12 +1,12 @@
 import { FC, useEffect, useState } from "react";
 import styles from "./TableCategories.module.css";
 import { IUpdateCategoria } from "../../../types/dtos/categorias/IUpdateCategoria";
-import { helpHttp } from "../../../helpers/helpHttp";
 import Button from "../../shared/Button";
 import Category from "../Category";
 import useModals from "../../../hooks/useModals";
 import FormCategory from "../FormCategory";
 import { ICreateCategoria } from "../../../types/dtos/categorias/ICreateCategoria";
+import { CategoriaService } from "../../../services/DetailsBranch/CategoriaService";
 
 interface TableCategoriesProps {
   id: number | undefined;
@@ -23,6 +23,7 @@ const TableCategories: FC<TableCategoriesProps> = ({ id }) => {
   const { modalForm, dataToEdit, openForm, resetForm } =
     useModals<IUpdateCategoria>();
 
+  const categoriaService = new CategoriaService(`categorias`);
   const [active, setActive] = useState(false);
   // Indica si se Crea/Edita Categoria Padre/Hija
   const [type, setType] = useState<Type>({
@@ -31,9 +32,12 @@ const TableCategories: FC<TableCategoriesProps> = ({ id }) => {
   });
 
   useEffect(() => {
-    helpHttp()
-      .getAll<ICreateCategoria>(`categorias/allCategoriasPorSucursal/${id}`)
-      .then((res) => setCategorias(res));
+    const getCategorias = async () => {
+      setCategorias(
+        await categoriaService.getAll(`allCategoriasPorSucursal/${id}`)
+      );
+    };
+    getCategorias();
   }, []);
   return (
     <>
