@@ -4,6 +4,8 @@ import { IUpdateCategoria } from "../../../types/dtos/categorias/IUpdateCategori
 import { ICreateCategoria } from "../../../types/dtos/categorias/ICreateCategoria";
 import CategoryOptions from "../CategoryOptions";
 import { CategoriaService } from "../../../services/DetailsBranch/CategoriaService";
+import { ICategorias } from "../../../types/dtos/categorias/ICategorias";
+import { useAppSelector } from "../../../hooks/redux";
 
 interface CategoryProps {
   id: number | null;
@@ -21,8 +23,9 @@ const Category: FC<CategoryProps> = ({
   openForm,
   active,
 }) => {
-  const [subCategories, setSubCategories] = useState<IUpdateCategoria[]>([]);
+  const [subCategories, setSubCategories] = useState<ICategorias[]>([]);
   const categoriaService = new CategoriaService("categorias");
+  const idEmpresa = useAppSelector((state) => state.companyReducer.active?.id);
   const [open, setOpen] = useState<boolean>(false); // Maneja el icono Arrow top y bottom
 
   useEffect(() => {
@@ -31,7 +34,7 @@ const Category: FC<CategoryProps> = ({
         const subCategorias = await categoriaService.getAll(
           `allSubCategoriasPorCategoriaPadre/${category.id}/${id}`
         );
-        setSubCategories(subCategorias as IUpdateCategoria[]);
+        setSubCategories(subCategorias as ICategorias[]);
       }
     };
     getSubCategorias();
@@ -44,11 +47,17 @@ const Category: FC<CategoryProps> = ({
         className={styles.containerCategory}
         onClick={(e) => e.preventDefault()}
       >
-        {category.denominacion.toLowerCase()}
+        {category.denominacion.toLowerCase() || "No disponible"}
         <CategoryOptions
           change={open}
           setOpen={setOpen}
-          edit={() => openForm(category as IUpdateCategoria)}
+          edit={() => {
+            setType({
+              type: "Padre",
+              id: null,
+            });
+            openForm(category as IUpdateCategoria);
+          }}
           add={() => {
             setType({
               type: "Hija",
@@ -62,7 +71,7 @@ const Category: FC<CategoryProps> = ({
         {open &&
           subCategories?.map((subCateg, i) => (
             <li key={i} className={styles.contentLi}>
-              {subCateg.denominacion}
+              {subCateg.denominacion.toLowerCase() || "No disponible"}
               <button
                 className={styles.button}
                 onClick={() => {
@@ -70,7 +79,16 @@ const Category: FC<CategoryProps> = ({
                     type: "Hija",
                     id: category.id || null,
                   });
-                  openForm(subCateg);
+                  const { categoriaPadre, sucursales, ...finalSubcat } =
+                    subCateg;
+                  openForm({
+                    ...finalSubcat,
+                    idEmpresa: idEmpresa as number,
+                    idCategoriaPadre: categoriaPadre?.id as number,
+                    idSucursales: sucursales.map(
+                      (sucursal) => sucursal.id
+                    ) as number[],
+                  });
                 }}
               >
                 <svg className={styles.second} viewBox="0 0 512 512">

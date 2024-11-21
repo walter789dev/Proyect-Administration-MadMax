@@ -28,6 +28,10 @@
   width: 300px;
 }
 
+.formGroup span {
+  margin-right: 10px;
+}
+
 .modalContent label {
   display: block;
   width: 100%;
@@ -36,6 +40,7 @@
 
 .modalContent input[type="checkbox"] {
   margin-right: 10px;
+  accent-color: #2e236c;
 }
 
 .modalContent b {

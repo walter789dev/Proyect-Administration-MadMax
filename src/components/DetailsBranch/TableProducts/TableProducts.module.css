@@ -21,18 +21,28 @@
 .pagedProducts {
   display: flex;
   margin-right: 10%;
-  gap: 20px;
+  gap: 10px;
 }
 
 .page {
-  font-size: 1.3rem;
-  color: #9e9a9a;
-  text-decoration: underline;
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #888787;
+  padding: 3px 8px;
+  border-radius: 5px;
   cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.page:hover {
+  background-color: #2e236c;
+  color: #fff;
+  transform: translateY(-2px);
 }
 
 .active {
-  color: #1100ff;
+  background-color: #2e236c;
+  color: #fff;
 }
 
 .tables {

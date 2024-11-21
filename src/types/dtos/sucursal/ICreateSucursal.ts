@@ -6,15 +6,15 @@ export interface ICreateSucursal {
    horarioApertura: string;
    horarioCierre: string;
    esCasaMatriz: boolean;
-   latitud: number;
-   longitud: number;
+   latitud: number | null;
+   longitud: number | null;
    domicilio: {
       id?: number
       calle: string;
-      numero: number;
-      cp: number;
-      piso: number;
-      nroDpto: number;
+      numero: number | null;
+      cp: number | null;
+      piso: number | null;
+      nroDpto: number | null;
       idLocalidad?: number;
    };
    idEmpresa: number;

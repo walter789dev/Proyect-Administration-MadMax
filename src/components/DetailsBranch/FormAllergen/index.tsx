@@ -102,7 +102,7 @@ const FormAllergen: FC<ModalProps> = ({
           />
           <label htmlFor="file">
             Ingrese una imagen:{" "}
-            {dataForm.imagen.url && <b>Tiene una imagen cargada</b>}
+            {(dataForm.imagen.url || image) && <b>Tiene una imagen cargada</b>}
           </label>
           <label className={styles.customFileUpload}>
             <svg viewBox="0 -960 960 960">

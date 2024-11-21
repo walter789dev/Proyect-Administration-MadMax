@@ -35,16 +35,16 @@ const initial: ICreateSucursal = {
   horarioApertura: "00:00",
   horarioCierre: "00:00",
   esCasaMatriz: false,
-  latitud: 0,
-  longitud: 0,
+  latitud: null,
+  longitud: null,
   logo: "",
   domicilio: {
     calle: "",
-    numero: 0,
-    cp: 0,
-    nroDpto: 0,
+    numero: null,
+    cp: null,
+    nroDpto: null,
     idLocalidad: 0,
-    piso: 0,
+    piso: null,
   },
   idEmpresa: 0,
   eliminado: false,
@@ -73,55 +73,44 @@ const FormBranch: FC<ModalFormProps> = ({
   const branchService = new BranchService("sucursales");
   const { image, loading, handler, service } = useImage();
 
-  // Maneja los valores del objeto Domicilio
   const handlerChangeDomicilio = (
     e: ChangeEvent<HTMLSelectElement | HTMLInputElement>
   ) => {
+    const numValue = Number(e.target.value);
+    const finalValue =
+      !isNaN(numValue) && numValue !== 0 ? numValue : e.target.value;
+
     setDataForm(
       (data) =>
         ({
           ...data,
           domicilio: {
             ...data.domicilio,
-            [e.target.name]:
-              isNaN(Number(e.target.value)) || Number(e.target.value) == 0
-                ? e.target.value
-                : Number(e.target.value),
+            [e.target.name]: finalValue,
           },
         } as ISucursal | ICreateSucursal)
     );
   };
   // Obtiene las provincias y localidades del pais seleccionado
   const manageData = async (id: string, type?: "Prov") => {
-    let items = [];
+    const service =
+      type === "Prov"
+        ? new ProvinciaService("provincias")
+        : new LocalidadService("localidades");
 
-    if (type === "Prov") {
-      const service = new ProvinciaService("provincias");
-      items = await service.getAll(`findByPais/${id}`);
-    } else {
-      const service = new LocalidadService("localidades");
-      items = await service.getAll(`findByProvincia/${id}`);
-    }
+    const endpoint =
+      type === "Prov" ? `findByPais/${id}` : `findByProvincia/${id}`;
 
-    if ("provincia" in items[0]) {
-      setPosition((elements) => ({
-        ...elements,
-        localidades: items as ILocalidad[],
-      }));
-    } else {
-      setPosition((elements) => ({
-        ...elements,
-        provincias: items as IProvincia[],
-      }));
-    }
+    const items = await service.getAll(endpoint);
+
+    setPosition((prev) => ({
+      ...prev,
+      [type === "Prov" ? "provincias" : "localidades"]: items,
+    }));
   };
 
   const handlerSubmit = async () => {
-    let newImage = dataForm.logo;
-    // Si no existe una url, creo la url de nueva imagen
-    if (newImage.length === 0) {
-      newImage = await service();
-    }
+    let newImage = image ? await service() : dataForm.logo;
 
     if (dataToEdit) {
       const { empresa, domicilio, ...preDataForm } = dataForm as ISucursal;
@@ -130,7 +119,10 @@ const FormBranch: FC<ModalFormProps> = ({
       const finalEdit: IUpdateSucursal = {
         ...preDataForm,
         idEmpresa: empresa?.id as number,
-        domicilio: finalDomicilio,
+        domicilio: {
+          ...finalDomicilio,
+          idLocalidad: domicilio.idLocalidad,
+        },
         logo: newImage,
       };
 
@@ -150,10 +142,9 @@ const FormBranch: FC<ModalFormProps> = ({
         ...dataForm,
         logo: newImage,
       });
-      setBranches((branches: ISucursal[]) => ({
-        ...branches,
-        newBranch,
-      }));
+      setBranches(
+        (branches: ISucursal[]) => [...branches, newBranch] as ISucursal[]
+      );
     }
 
     closeModal();
@@ -163,18 +154,18 @@ const FormBranch: FC<ModalFormProps> = ({
     const getFormBranch = async () => {
       const paisService = new PaisService("paises");
 
+      const paises = await paisService.getAll();
+      setPosition((elements) => ({
+        ...elements,
+        paises: paises,
+      }));
+
       if (dataToEdit) {
         const localidad = dataToEdit.domicilio.localidad;
         manageData(`${localidad.provincia.pais.id}`, "Prov");
         manageData(`${localidad.provincia.id}`);
         setDataForm(dataToEdit);
       }
-
-      const paises = await paisService.getAll();
-      setPosition((elements) => ({
-        ...elements,
-        paises: paises,
-      }));
     };
 
     getFormBranch();
@@ -202,7 +193,7 @@ const FormBranch: FC<ModalFormProps> = ({
               className={styles.formGroup}
               name="latitud"
               placeholder="Ingrese latitud"
-              value={dataForm.latitud}
+              value={dataForm.latitud ?? ""}
               onChange={handlerChange}
             />
             <label>Ingrese longitud: </label>
@@ -211,7 +202,7 @@ const FormBranch: FC<ModalFormProps> = ({
               className={styles.formGroup}
               name="longitud"
               placeholder="Ingrese longitud"
-              value={dataForm.longitud}
+              value={dataForm.longitud ?? ""}
               onChange={handlerChange}
             />
             <label>Ingrese codigo postal: </label>
@@ -221,7 +212,7 @@ const FormBranch: FC<ModalFormProps> = ({
               name="cp"
               required
               placeholder="Ingrese codigo postal"
-              value={dataForm.domicilio.cp}
+              value={dataForm.domicilio.cp ?? ""}
               onChange={handlerChangeDomicilio}
             />
           </div>
@@ -243,7 +234,7 @@ const FormBranch: FC<ModalFormProps> = ({
               name="numero"
               required
               placeholder="Ingrese número de calle"
-              value={dataForm.domicilio.numero}
+              value={dataForm.domicilio.numero ?? ""}
               onChange={handlerChangeDomicilio}
             />
             <label>Ingrese número de departamento: </label>
@@ -252,7 +243,7 @@ const FormBranch: FC<ModalFormProps> = ({
               className={styles.formGroup}
               name="nroDpto"
               placeholder="Ingrese N° de departamento"
-              value={dataForm.domicilio.nroDpto}
+              value={dataForm.domicilio.nroDpto ?? ""}
               onChange={handlerChangeDomicilio}
             />
             <label>Ingrese número de piso: </label>
@@ -261,7 +252,7 @@ const FormBranch: FC<ModalFormProps> = ({
               className={styles.formGroup}
               name="piso"
               placeholder="Ingrese N° de piso"
-              value={dataForm.domicilio.piso}
+              value={dataForm.domicilio.piso ?? ""}
               onChange={handlerChangeDomicilio}
             />
           </div>
@@ -294,17 +285,27 @@ const FormBranch: FC<ModalFormProps> = ({
                 name="country"
                 required
                 value={dataToEdit?.domicilio.localidad.provincia.pais.id}
-                onChange={(e) =>
-                  manageData(`provincias/findByPais/${e.target.value}`)
-                }
+                onChange={(e) => manageData(e.target.value, "Prov")}
               >
                 <option value="">Seleccione...</option>
                 {position.paises != null &&
-                  position.paises?.map((pais, id) => (
-                    <option key={id} value={pais.id}>
-                      {pais.nombre}
-                    </option>
-                  ))}
+                  position.paises?.map((pais, id) => {
+                    if (
+                      dataToEdit?.domicilio.localidad.provincia.pais.id ===
+                      pais.id
+                    ) {
+                      return (
+                        <option key={id} value={pais.id} selected>
+                          {pais.nombre}
+                        </option>
+                      );
+                    }
+                    return (
+                      <option key={id} value={pais.id}>
+                        {pais.nombre}
+                      </option>
+                    );
+                  })}
               </select>
             </div>
             <div className={styles.formGroup}>
@@ -312,35 +313,52 @@ const FormBranch: FC<ModalFormProps> = ({
               <select
                 name="province"
                 required
-                value={dataToEdit?.domicilio.localidad.provincia.id}
-                onChange={(e) =>
-                  manageData(`localidades/findByProvincia/${e.target.value}`)
-                }
+                onChange={(e) => manageData(e.target.value)}
               >
                 <option value="">Seleccione...</option>
                 {position.provincias != null &&
-                  position.provincias?.map((prov, id) => (
-                    <option key={id} value={prov.id}>
-                      {prov.nombre}
-                    </option>
-                  ))}
+                  position.provincias?.map((prov, id) => {
+                    if (
+                      dataToEdit?.domicilio.localidad.provincia.id === prov.id
+                    ) {
+                      return (
+                        <option key={id} value={prov.id} selected>
+                          {prov.nombre}
+                        </option>
+                      );
+                    }
+                    return (
+                      <option key={id} value={prov.id}>
+                        {prov.nombre}
+                      </option>
+                    );
+                  })}
               </select>
             </div>
             <div className={styles.formGroup}>
               <label>Seleccione localidad: </label>
               <select
                 name="idLocalidad"
-                value={dataToEdit?.domicilio.localidad.id}
                 onChange={handlerChangeDomicilio}
                 required
               >
                 <option value="">Seleccione...</option>
                 {position.localidades != null &&
-                  position.localidades?.map((local, id) => (
-                    <option key={id} value={local.id}>
-                      {local.nombre}
-                    </option>
-                  ))}
+                  position.localidades?.map((local, id) => {
+                    if (dataToEdit?.domicilio.localidad.id === local.id) {
+                      return (
+                        <option key={id} value={local.id} selected>
+                          {local.nombre}
+                        </option>
+                      );
+                    } else {
+                      return (
+                        <option key={id} value={local.id}>
+                          {local.nombre}
+                        </option>
+                      );
+                    }
+                  })}
               </select>
             </div>
           </div>

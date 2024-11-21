@@ -1,35 +1,53 @@
 import styles from "./ModalInfo.module.css";
 import ButtonForm from "../ButtonForm";
-import { IEmpresa } from "../../../types/dtos/empresa/IEmpresa";
-import { FC } from "react";
-import { IAlergenos } from "../../../types/dtos/alergenos/IAlergenos";
 import Modal from "../Modal";
-import { IProductos } from "../../../types/dtos/productos/IProductos";
 
-interface ModalInfoProps {
+// Definimos una interfaz base para asegurar que todos los tipos tienen las propiedades comunes
+interface BaseInfo {
+  [key: string]: any;
+}
+
+interface ModalInfoProps<T extends BaseInfo> {
   title: string;
-  info: IEmpresa | IAlergenos | IProductos;
+  info: T;
   columns: string[];
   setOpenModal: (state?: string) => void;
 }
 
-// -------- Muestra Información del elemento seleccionado -------
-const ModalInfo: FC<ModalInfoProps> = ({
+// Hacemos el componente genérico
+const ModalInfo = <T extends BaseInfo>({
   title,
   columns,
   info,
   setOpenModal,
-}) => {
-  // Logica para mostrar imagen dependiento de T
+}: ModalInfoProps<T>) => {
+  // Modificamos la función validateImage para ser más genérica
   const validateImage = () => {
     if ("imagen" in info) {
-      return info.imagen ? info.imagen?.url : "";
+      return info.imagen?.url || "";
     }
     if ("imagenes" in info) {
-      return info.imagenes.length ? info.imagenes[0].url : "";
+      return info.imagenes?.length ? info.imagenes[0].url : "";
     }
-    return info.logo || "";
+    return "logo" in info ? info.logo || "" : "";
   };
+
+  // Función helper para renderizar el valor según el tipo
+  const renderValue = (key: string) => {
+    if ("categoria" in info && key === "categoria") {
+      return info.categoria.denominacion;
+    }
+    if ("habilitado" in info && key === "habilitado") {
+      return info.habilitado ? "Si" : "No";
+    }
+    if ("alergenos" in info && key === "alergenos") {
+      return info.alergenos.length > 0
+        ? info.alergenos.map((element: any) => element.denominacion).join(", ")
+        : "No tiene";
+    }
+    return info[key];
+  };
+
   return (
     <Modal>
       <section className={styles.modalSection}>
@@ -39,40 +57,11 @@ const ModalInfo: FC<ModalInfoProps> = ({
             <img src={validateImage()} alt="Logo" />
           </div>
           <div className={styles.modal2}>
-            {/*Claves de objetos que no puedo recorrer */}
-            {columns.map((key) => {
-              if ("categoria" in info && key === "categoria") {
-                return (
-                  <p key={key} className={styles.modalText}>
-                    <b>{key}:</b> {info.categoria["denominacion"]}
-                  </p>
-                );
-              }
-              if ("habilitado" in info && key === "habilitado") {
-                <p key={key} className={styles.modalText}>
-                  <b>{key}: </b> {info.habilitado ? "Si" : "No"}
-                </p>;
-              }
-
-              if ("alergenos" in info && key === "alergenos") {
-                return (
-                  <p key={key} className={styles.modalText}>
-                    <b>Alergenos: </b>{" "}
-                    {info.alergenos.length > 0
-                      ? info.alergenos
-                          .map((element) => element.denominacion)
-                          .join(", ")
-                      : "No tiene"}
-                  </p>
-                );
-              }
-              return (
-                <p key={key} className={styles.modalText}>
-                  <b>{key}:</b>{" "}
-                  {info[key as keyof (IEmpresa | IAlergenos | IProductos)]}
-                </p>
-              );
-            })}
+            {columns.map((key) => (
+              <p key={key} className={styles.modalText}>
+                <b>{key}:</b> {renderValue(key)}
+              </p>
+            ))}
           </div>
         </div>
         <ButtonForm

@@ -57,19 +57,22 @@ const FormCategory: FC<FormProps> = ({
         );
 
         if (editCategory) {
-          setCategorias((categorias) =>
-            categorias.map((category) =>
-              category.id == editCategory.id ? editCategory : category
-            )
+          setCategorias(
+            (categorias) =>
+              categorias.map((category) =>
+                category.id == editCategory.id ? editCategory : category
+              ) as ICreateCategoria[]
           );
         }
       } else {
         const newCategory = await categoriaService.post(
-          `categorias/create`,
+          `create`,
           dataForm as ICreateCategoria
         );
         if (newCategory)
-          setCategorias((categorias) => [...categorias, newCategory]);
+          setCategorias(
+            (categorias) => [...categorias, newCategory] as ICreateCategoria[]
+          );
       }
     } else {
       // Categoria Hija
@@ -87,7 +90,9 @@ const FormCategory: FC<FormProps> = ({
   };
 
   useEffect(() => {
-    if (dataToEdit) setDataForm(dataToEdit);
+    if (dataToEdit) {
+      setDataForm(dataToEdit);
+    }
   }, []);
   return (
     <Modal>

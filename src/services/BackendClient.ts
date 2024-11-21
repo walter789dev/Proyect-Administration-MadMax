@@ -26,7 +26,7 @@ export abstract class BackendClient<T> extends AbstractBackendClient<T> {
    }
 
    async post(url: string, data: T,): Promise<T> {
-      const response = await fetch(`${this.baseUrl}/${url}`, {
+      const response = await fetch(`${this.baseUrl}${url && `/${url}`}`, {
          method: "POST",
          headers: {
             "Content-Type": "application/json",

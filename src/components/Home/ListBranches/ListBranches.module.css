@@ -16,12 +16,23 @@
 
 .branchContainer {
   display: flex;
+  width: 90%;
   flex-wrap: wrap;
   height: 83vh;
-  margin: 10px 0px 10px 30px;
+  margin: 10px auto;
   padding: 10px;
   overflow-y: auto;
   gap: 30px;
+}
+
+.branchContainer::-webkit-scrollbar {
+  width: 10px;
+  border-radius: 20px;
+}
+
+.branchContainer::-webkit-scrollbar-thumb {
+  background-color: #2e236c;
+  border-radius: 6px;
 }
 
 .branchNotResult {

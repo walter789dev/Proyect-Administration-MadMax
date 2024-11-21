@@ -45,17 +45,29 @@ const FormProduct: FC<FormProductProps> = ({
     codigo: "",
     imagenes: [],
     idCategoria: 0,
-    idAlergenos: [0],
+    idAlergenos: [],
   });
 
   const [select, setSelect] = useState<SelectProps>();
   const { image, loading, handler, setLoading, service } = useImage();
   const productoService = new ProductoService("articulos");
 
-  const handlerAlergeno = (e: ChangeEvent<HTMLSelectElement>) => {
-    setDataForm({
-      ...dataForm,
-      idAlergenos: [Number(e.target.value)],
+  const handlerAlergeno = (e: ChangeEvent<HTMLInputElement>) => {
+    setDataForm((prev) => {
+      const includeValue = prev.idAlergenos.includes(Number(e.target.value));
+      if (includeValue) {
+        return {
+          ...prev,
+          idAlergenos: prev.idAlergenos.filter(
+            (id) => id !== Number(e.target.value)
+          ),
+        };
+      } else {
+        return {
+          ...prev,
+          idAlergenos: [...prev.idAlergenos, Number(e.target.value)],
+        };
+      }
     });
   };
 
@@ -115,8 +127,9 @@ const FormProduct: FC<FormProductProps> = ({
       const idAlergenos = product.alergenos.map((alergen) =>
         Number(alergen.id)
       );
+      const { alergenos, categoria, ...finalForm } = product;
       setDataForm({
-        ...product,
+        ...finalForm,
         idCategoria: product.categoria.id,
         idAlergenos,
       });
@@ -184,19 +197,19 @@ const FormProduct: FC<FormProductProps> = ({
           </div>
           <div className={styles.second}>
             <div className={styles.formGroup}>
-              <label>Seleccione alergeno: </label>
-              <select
-                name="idAlergenos"
-                value={dataForm.idAlergenos[0]}
-                onChange={handlerAlergeno}
-              >
-                <option value="">Seleccione...</option>
-                {select?.alergenos.map((alergen, id) => (
-                  <option key={id} value={alergen.id}>
-                    {alergen.denominacion}
-                  </option>
-                ))}
-              </select>
+              <label>Seleccione alergeno/s: </label>
+              {select?.alergenos.map((alergen, id) => (
+                <span key={id}>
+                  <input
+                    type="checkbox"
+                    name="idAlergenos"
+                    value={alergen.id}
+                    checked={dataForm.idAlergenos.includes(Number(alergen.id))}
+                    onChange={handlerAlergeno}
+                  />
+                  {alergen.denominacion}
+                </span>
+              ))}
             </div>
             <div className={styles.formGroup}>
               <label>Seleccione categoria: </label>

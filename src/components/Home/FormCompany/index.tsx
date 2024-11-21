@@ -34,7 +34,7 @@ const FormCompany: FC<ModalProps> = ({
   const handlerSubmit = async () => {
     const voidValues = Object.keys(dataForm).some((item) => item.length === 0);
 
-    if (voidValues && !image && dataForm.logo.length) {
+    if (voidValues && !image && dataForm.logo.length === 0) {
       alert("Faltan campos por completar");
       setLoading(false);
       return;
@@ -49,11 +49,9 @@ const FormCompany: FC<ModalProps> = ({
         companies.map((c) => (c.id === editCompany.id ? editCompany : c))
       );
     } else {
-      const newCompany = await companyService.post(resInfo);
-      setCompany((companies: IEmpresa[]) => ({
-        ...companies,
-        newCompany,
-      }));
+      const newCompany = await companyService.post("", resInfo);
+      console.log(newCompany);
+      setCompany((companies: IEmpresa[]) => [...companies, newCompany]);
     }
     closeModal();
   };
