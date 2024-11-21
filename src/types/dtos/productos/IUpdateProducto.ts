@@ -3,7 +3,7 @@ import { baseDto } from "../baseDto/baseDto";
 
 export interface IUpdateProducto extends baseDto {
    denominacion: string;
-   precioVenta: number;
+   precioVenta: number | null;
    descripcion: string;
    habilitado: boolean;
    codigo: string;

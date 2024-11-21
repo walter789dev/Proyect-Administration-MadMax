@@ -1,6 +1,6 @@
 export abstract class AbstractBackendClient<T> {
   protected baseUrl: string;
-  protected viteUrl: string = "http://190.221.207.224:8090";
+  protected viteUrl: string = import.meta.env.VITE_URL;
 
   constructor(baseUrl: string) {
     this.baseUrl = this.viteUrl + "/" + baseUrl;

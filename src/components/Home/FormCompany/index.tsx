@@ -32,15 +32,21 @@ const FormCompany: FC<ModalProps> = ({
   const { image, loading, handler, service, setLoading } = useImage();
 
   const handlerSubmit = async () => {
+    let newImage: string;
     const voidValues = Object.keys(dataForm).some((item) => item.length === 0);
 
-    if (voidValues && !image && dataForm.logo.length === 0) {
+    if (voidValues && dataForm.logo.length === 0) {
       alert("Faltan campos por completar");
       setLoading(false);
       return;
     }
 
-    const newImage = await service();
+    if (image) {
+      newImage = await service();
+    } else {
+      newImage = dataForm.logo;
+    }
+
     let resInfo = { ...dataForm, logo: newImage || dataForm.logo };
 
     if (dataToEdit) {

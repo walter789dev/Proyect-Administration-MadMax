@@ -3,7 +3,7 @@ import { IImagen } from "../../IImagen";
 export interface ICreateProducto {
    id?: number
    denominacion: string;
-   precioVenta: number;
+   precioVenta: number | null;
    descripcion: string;
    habilitado: boolean;
    codigo: string;

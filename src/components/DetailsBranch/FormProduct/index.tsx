@@ -39,7 +39,7 @@ const FormProduct: FC<FormProductProps> = ({
     ICreateProducto | IUpdateProducto
   >({
     denominacion: "",
-    precioVenta: 0,
+    precioVenta: null,
     descripcion: "",
     habilitado: false,
     codigo: "",
@@ -145,7 +145,7 @@ const FormProduct: FC<FormProductProps> = ({
     ]).then((res) =>
       setSelect({
         alergenos: res[0],
-        categories: res[1],
+        categories: res[1] as ICreateCategoria[],
       })
     );
   }, []);
@@ -173,7 +173,7 @@ const FormProduct: FC<FormProductProps> = ({
               name="precioVenta"
               type="number"
               placeholder="Ingresa precio"
-              value={dataForm.precioVenta}
+              value={dataForm.precioVenta || ""}
               onChange={handlerChange}
             />
             <label>Ingrese descripción: </label>

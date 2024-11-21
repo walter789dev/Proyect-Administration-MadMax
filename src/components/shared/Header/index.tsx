@@ -13,7 +13,7 @@ const Header: FC<HeaderProps> = ({ title, type }) => {
   return (
     <header className={`${styles.header} ${styles.primary}`}>
       <h1 className={styles.headerTitle}>
-        {title ? `Sucursal: ${title}` : "MadMax Administration"}
+        {title ? `Sucursal: ${title}` : "MadMax Administración"}
       </h1>
       {/*Boton para volver a Inicio */}
       {type && (
